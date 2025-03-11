@@ -1,0 +1,97 @@
+@import '~@/assets/css/colors';
+
+/*---------------------------------
+  helper
+---------------------------------*/
+@for $i from 0 through 40 {
+  .mt#{$i * 2} {
+    margin-top: #{$i * 2}px !important;
+  }
+  .mr#{$i * 2} {
+    margin-right: #{$i * 2}px !important;
+  }
+  .mb#{$i * 2} {
+    margin-bottom: #{$i * 2}px !important;
+  }
+  .ml#{$i * 2} {
+    margin-left: #{$i * 2}px !important;
+  }
+  .pt#{$i * 2} {
+    padding-top: #{$i * 2}px !important;
+  }
+  .pr#{$i * 2} {
+    padding-right: #{$i * 2}px !important;
+  }
+  .pb#{$i * 2} {
+    padding-bottom: #{$i * 2}px !important;
+  }
+  .pl#{$i * 2} {
+    padding-left: #{$i * 2}px !important;
+  }
+  .fs#{$i} {
+    font-size: #{$i}px !important;
+  }
+  .lh#{$i * 2} {
+    line-height: #{$i * 2}px !important;
+  }
+}
+
+.wf {
+  width: 100%;
+}
+
+.wh {
+  width: 50%;
+}
+
+.flex {
+  display: flex;
+}
+
+.ffc {
+  flex-flow: column;
+}
+
+.db {
+  display: block;
+}
+
+.dn {
+  display: none;
+}
+
+.tac {
+  text-align: center;
+}
+
+.tar {
+  text-align: right;
+}
+
+.tal {
+  text-align: left;
+}
+
+.fwn {
+  font-weight: normal;
+}
+
+.fwb {
+  font-weight: 600;
+}
+
+.tdu {
+  text-decoration: underline;
+}
+
+.tdn {
+  text-decoration: none;
+}
+
+.cw {
+  color: #fff;
+}
+
+.cr {
+  color: $red1;
+}
