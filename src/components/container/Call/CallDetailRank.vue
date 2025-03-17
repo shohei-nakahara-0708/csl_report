@@ -155,7 +155,7 @@
 
                                                         <div class="call-list-data tr" :style="MR[0].ratio">
                                                           <div @mouseover="onHoverItem2_3(MR[0], index, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(MR[0], index, $event)" class="call-list-data-item td">
-                                                            <span class="data">{{ MR[0].Total }}</span>
+                                                            <span class="data">{{ MR[0].Total }}({{ MR[0].ターゲット数 }})</span>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -211,6 +211,7 @@
                   <SelectBox class="mb20" @tap-item="onTapSelectBoxItem" :width="'160px'" :category="'チャネル'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.チャネル" />
                    <SelectBox class="mb20" @tap-item="onTapSelectBoxItem" :width="'160px'" :category="'Target'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.Target" />
                    <SelectBox class="mb20" @tap-item="onTapSelectBoxItem" :width="'160px'" :category="'製品'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+                    <SelectBox class="mb20" @tap-item="onTapSelectBoxItem" :width="'160px'" :category="'医師名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.医師名" />
                 </div>
               </div>
             </div>
@@ -274,6 +275,7 @@ interface State {
     エリア?: any;
     Target?: any;
     製品?: any;
+    医師名?: any;
   };
   selectedFilterItems2: {
     Call実施の月?: any;
@@ -283,6 +285,7 @@ interface State {
     エリア?: any;
     Target?: any;
     製品?: any;
+    医師名?: any;
   };
   selectedFilterItemsBK: {
     Call実施の月?: any;
@@ -292,6 +295,7 @@ interface State {
     エリア?: any;
     Target?: any;
     製品?: any;
+    医師名?: any;
   };
   keyword: any;
   accountList: any;
@@ -413,6 +417,13 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
+        医師名: {
+          name: "医師名",
+          list: {
+            すべて: "すべて",
+          },
+          listOrg: ["すべて"],
+        },
       },
       testObj2: {
         Call実施の月: {
@@ -464,6 +475,13 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
+        医師名: {
+          name: "医師名",
+          list: {
+            すべて: "すべて",
+          },
+          listOrg: ["すべて"],
+        },
       },
       selectedFilterItems: {
         Call実施の月: ["すべて"],
@@ -472,7 +490,8 @@ export default defineComponent({
         チャネル: ["すべて"],
         エリア: ["すべて"],
         Target: ["すべて"],
-         製品: ["すべて"],
+        製品: ["すべて"],
+         医師名: ["すべて"],
       },
       selectedFilterItems2: {
         Call実施の月: ["すべて"],
@@ -481,7 +500,8 @@ export default defineComponent({
         チャネル: ["すべて"],
         エリア: ["すべて"],
         Target: ["すべて"],
-           製品: ["すべて"],
+        製品: ["すべて"],
+         医師名: ["すべて"],   
       },
       selectedFilterItemsBK: {
         Call実施の月: ["すべて"],
@@ -490,7 +510,8 @@ export default defineComponent({
         チャネル: ["すべて"],
         エリア: ["すべて"],
         Target: ["すべて"],
-           製品: ["すべて"],
+        製品: ["すべて"],
+            医師名: ["すべて"],
       },
       accountList: null,
       accountList2: [],
@@ -660,7 +681,10 @@ export default defineComponent({
               let dataObj = [];
               let dataObj2 = {};
               let Targets = [];
-               let products = [];
+              let products = [];
+              let docters = [];
+              let targetCount = 0
+                
 
               if (!state.selectedFilterItems.MR.includes("すべて")) {
             if (!state.selectedFilterItems.MR.includes(key3)) {
@@ -683,12 +707,19 @@ export default defineComponent({
                   
                   let products2 = []
                   for (const elemente of state.selectedFilterItems.チャネル) {
-                    fiterSum.push(callList[key][key2][key3][element]
+
+                    let t = callList[key][key2][key3][element]
                       .filter((x) => {
             if (state.selectedFilterItems.Target.includes("すべて")) {
               return true;
             } else {
               return x.Target == state.selectedFilterItems.Target[0]
+            }
+          }).filter((x) => {
+            if (state.selectedFilterItems.医師名.includes("すべて")) {
+              return true;
+            } else {
+              return state.selectedFilterItems.医師名.includes(x.Dr_name)
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -697,20 +728,39 @@ export default defineComponent({
               
               return state.selectedFilterItems.製品.includes(x["prodcut1"]) || state.selectedFilterItems.製品.includes(x["prodcut2"])|| state.selectedFilterItems.製品.includes(x["prodcut3"])|| state.selectedFilterItems.製品.includes(x["prodcut4"])|| state.selectedFilterItems.製品.includes(x["prodcut5"])|| state.selectedFilterItems.製品.includes(x["prodcut6"])
             }
-          }).filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).length);
+          }).filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente))
+
+
+                    fiterSum.push(t.length);
           
 
           
                     // console.log(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)));
                     if (state.isScreen === "月別実績") {
                         products2.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v));
-                         Targets.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]).filter((v) => v));
+                      Targets.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]).filter((v) => v));
+                      docters.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));  
                     } else {
                         if (!state.selectedFilterItems.Call実施の月.includes("すべて") && !state.selectedFilterItems.Call実施の月.includes(element) ) {
                     continue
                 } 
                       Targets.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]));
-                      products2.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v));  
+                        docters.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));
+                      products2.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v)); 
+
+                      let Targets2 = t.map((p) => p["Target"])
+                      console.log(key3);
+                      
+                      console.log(Targets2);
+                         
+
+                   for (const p of Targets2) {
+         
+                   if (p === "Target") {
+                      targetCount += 1
+                    }                       
+                   }
+
                     }
               
                        
@@ -734,6 +784,7 @@ export default defineComponent({
                    
                   }
 
+                
 
                   
                   
@@ -741,12 +792,39 @@ export default defineComponent({
                   products = [...new Set(products)];
                   Targets = Targets.flat(2)
                   Targets = [...new Set(Targets)];
+                  docters = docters.flat(2)
+                  docters = [...new Set(docters)];
                   
                   
               
 
                   const sum = fiterSum.reduce((sum, num) => sum + num, 0);
                   obj[element] = sum;
+
+                  let t = callList[key][key2][key3][element]
+                      .filter((x) => {
+            if (state.selectedFilterItems.Target.includes("すべて")) {
+              return true;
+            } else {
+              return x.Target == state.selectedFilterItems.Target[0]
+            }
+          }).filter((x) => {
+            if (state.selectedFilterItems.医師名.includes("すべて")) {
+              return true;
+            } else {
+              return state.selectedFilterItems.医師名.includes(x.Dr_name)
+            }
+          }).filter((x) => {
+            if (state.selectedFilterItems.製品.includes("すべて")) {
+              return true;
+            } else {
+              
+              return state.selectedFilterItems.製品.includes(x["prodcut1"]) || state.selectedFilterItems.製品.includes(x["prodcut2"])|| state.selectedFilterItems.製品.includes(x["prodcut3"])|| state.selectedFilterItems.製品.includes(x["prodcut4"])|| state.selectedFilterItems.製品.includes(x["prodcut5"])|| state.selectedFilterItems.製品.includes(x["prodcut6"])
+            }
+          })
+
+
+
 
 
 
@@ -758,6 +836,12 @@ export default defineComponent({
               return true;
             } else {
               return x.Target == state.selectedFilterItems.Target[0]
+            }
+          }).filter((x) => {
+            if (state.selectedFilterItems.医師名.includes("すべて")) {
+              return true;
+            } else {
+              return state.selectedFilterItems.医師名.includes(x.Dr_name)
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -773,10 +857,25 @@ export default defineComponent({
                   Targets2 = Targets2.flat(2)
 
                    for (const p of Targets2) {
-                  Targets.push(p)  
+                     Targets.push(p)  
+                   if (p === "Target") {
+                      targetCount += 1
+                    }                       
+                   }
+
+
                    
-                  }
-                       
+                let docters2 = (t.map((p) => p["Dr_name"]).filter((v) => v));
+                  docters2 = docters2.flat(2)
+
+                   for (const p of docters2) {
+                  docters.push(p)  
+                   
+                   }
+
+                
+
+                  
                   let products2 = (t.map((p) => p["Detailed_Products_vod__c"]).filter((v) => v));
                   products2 = products2.flat(2)       
                   products2 = [...new Set(products2)];
@@ -801,7 +900,8 @@ export default defineComponent({
                   
                   
                   // Targets = Targets.flat(2)       
-                Targets = [...new Set(Targets)];
+                  Targets = [...new Set(Targets)];
+              docters = [...new Set(docters)];  
                 }
 
                 let channels = callList[key][key2][key3][element].filter((x) => {
@@ -809,6 +909,12 @@ export default defineComponent({
               return true;
             } else {
               return x.Target == state.selectedFilterItems.Target[0]
+            }
+          }).filter((x) => {
+            if (state.selectedFilterItems.医師名.includes("すべて")) {
+              return true;
+            } else {
+              return state.selectedFilterItems.医師名.includes(x.Dr_name)
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -862,7 +968,9 @@ export default defineComponent({
                 チャネル: dataCategory,
                 チャネル2: dataCategory2,
                 Target: Targets,
-                製品:products 
+                製品: products,
+                医師名: docters,
+               ターゲット数:targetCount    
               };
               result.push(rec);
             }
@@ -965,6 +1073,7 @@ export default defineComponent({
       await creatDataDataCatgory(state.data, false);
 
       await creatDataMR(state.data, false);
+      await creatDataDocter(state.data, false);
 
       await creatDataArea(state.data, false);
 
@@ -1395,7 +1504,7 @@ await creatDataProduct(state.data, false);
           continue;
         }
 
-        if (state.selectFiliterCategory[0] === "チャネル" && element === "チャネル" || state.selectFiliterCategory.includes("Target") && element === "Target"|| state.selectFiliterCategory.includes("製品") && element === "製品") {
+        if (state.selectFiliterCategory[0] === "チャネル" && element === "チャネル" || state.selectFiliterCategory.includes("Target") && element === "Target"|| state.selectFiliterCategory.includes("製品") && element === "製品"|| state.selectFiliterCategory.includes("Target") && element === "Target"|| state.selectFiliterCategory.includes("医師名") && element === "医師名") {
           continue;
         }
 
@@ -1421,7 +1530,7 @@ if (state.selectFiliterCategory[0] === element) {
       await creatData(state.data);
 
       {
-        const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target" && n !== "製品");
+        const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target" && n !== "製品"&& n !== "医師名");
 
         for (let index = 0; index < test.length; index++) {
           let element = test[index];
@@ -1457,6 +1566,7 @@ if (state.selectFiliterCategory[0] === element) {
       await creatDataDataCatgory(state.data, "Call実施の月");
       await creatDataTarget(state.data, "Call実施の月");
       await creatDataProduct(state.data, "Call実施の月");
+       await creatDataDocter(state.data, "Call実施の月");
        
 
 
@@ -1582,13 +1692,19 @@ if (state.selectFiliterCategory[0] === element) {
           state.dataOrgFilter = [...state.data];
         }
 
+        if (state.selectFiliterCategory[0]  === "医師名") {
+          state.dataOrgFilter = [...state.data];
+        } else {
+          state.dataOrgFilter = [...state.data];
+        }
+
         
         state.dataOrg3 = [...state.data];
       }
 
        
 
-      const test = state.selectFiliterCategory.filter((n) => n !== "チャネル"  && n !== "Target" && n !== "製品");
+      const test = state.selectFiliterCategory.filter((n) => n !== "チャネル"  && n !== "Target" && n !== "製品" && n !== "医師名");
 
       if (test.includes(_obj.category)) {
         const i = state.selectFiliterCategory.indexOf(_obj.category) + 1;
@@ -1596,7 +1712,7 @@ if (state.selectFiliterCategory[0] === element) {
         const i2 = state.selectFiliterCategory.indexOf(_obj.category);
 
         for (let index = i; index < state.selectFiliterCategory.length; index++) {
-          if (state.selectFiliterCategory[index] === "チャネル" && state.selectFiliterCategory[index] === "Target"&& state.selectFiliterCategory[index] === "製品") {
+          if (state.selectFiliterCategory[index] === "チャネル" && state.selectFiliterCategory[index] === "Target"&& state.selectFiliterCategory[index] === "製品"&& state.selectFiliterCategory[index] === "医師名") {
             continue;
           }
           state.selectedFilterItems[state.selectFiliterCategory[index]] = ["すべて"];
@@ -1687,11 +1803,11 @@ if (state.selectFiliterCategory[0] === element) {
               state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== element);
             }
             state.testObj[element].list["すべて"] = "すべて";
-          } else if (element === "Target" || _obj.category === "Target"|| element === "製品" || _obj.category === "製品") {
+          } else if (element === "Target" || _obj.category === "Target"|| element === "製品" || _obj.category === "製品"|| element === "医師名" || _obj.category === "医師名") {
             console.log("a");
         
           } else {
-            const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target"&& n !== "製品");
+            const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target"&& n !== "製品"&& n !== "医師名");
             let data;
             if (state.dataOrgFilter2.length > 0) {
               data = state.dataOrgFilter2;
@@ -2145,6 +2261,53 @@ if (state.selectFiliterCategory[0] === element) {
         for (const element of state.selectedFilterItems.製品) {
           if (!mrList.includes(element) && element !== "すべて") {
             state.selectedFilterItems.製品 = state.selectedFilterItems.製品.filter((n) => n !== element);
+          }
+        }
+      }
+
+      return mrList;
+     };
+
+      const creatDataDocter = (data, category) => {
+          // state.testObj.Target.list["すべて"] = "すべて"
+          // state.selectedFilterItems.Target = ["すべて"]
+
+      const mrList = data
+        .filter((x) => {
+          if (x.Total === 0 && state.isScreen === "半期実績") {
+            return false;
+          } else {
+            return true;
+          }
+        })
+        .map((p) => p["医師名"])
+        .flat(2)
+        .sort((a, b) => {
+          if (a > b) return 1;
+          if (a < b) return -1;
+        });
+        
+
+      for (const key of mrList) {
+        if (!state.testObj.医師名.list[key]) {
+          state.testObj.医師名.list[key] = key;
+          state.selectedFilterItems.医師名.push(key);
+        }
+        // state.selectedFilterItems.MR.push(key);
+      }
+        if (category === "Call実施の月") {
+        if (!state.selectedFilterItems2.医師名.includes("すべて")) {
+          if (state.selectedFilterItems2.医師名.length > 0) {
+            state.selectedFilterItems.医師名 = state.selectedFilterItems2.製品;
+          }
+        }
+        }
+      
+
+      if (category === "医師名") {
+        for (const element of state.selectedFilterItems.医師名) {
+          if (!mrList.includes(element) && element !== "すべて") {
+            state.selectedFilterItems.医師名 = state.selectedFilterItems.医師名.filter((n) => n !== element);
           }
         }
       }
@@ -2910,7 +3073,7 @@ if (state.selectFiliterCategory[0] === element) {
       }
 
       for (const element in state.selectedFilterItems) {
-        if (element === "チャネル" || element === "Call実施の月" || element === "Target"|| element === "製品") {
+        if (element === "チャネル" || element === "Call実施の月" || element === "Target"|| element === "製品" || element === "医師名") {
           continue;
         }
 
@@ -2939,7 +3102,7 @@ if (state.selectFiliterCategory[0] === element) {
      
 
 
-      const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target"&& n !== "製品");
+      const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target"&& n !== "製品" && n !== "医師名");
 
       for (let index = 0; index < test.length; index++) {
         let element = test[index];
@@ -2977,7 +3140,8 @@ if (state.selectFiliterCategory[0] === element) {
 
       await creatDataDataCatgory(state.data, "Call実施の月");
       await creatDataTarget(state.data, "Call実施の月");
-       await creatDataProduct(state.data, "Call実施の月");
+      await creatDataProduct(state.data, "Call実施の月");
+       await creatDataDocter(state.data, "Call実施の月");
 
             for (const element in state.selectedFilterItems) {
         if (!state.selectFiliterCategory.includes(element)) {
