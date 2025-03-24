@@ -155,7 +155,7 @@
 
                                                         <div class="call-list-data tr" :style="MR[0].ratio">
                                                           <div @mouseover="onHoverItem2_3(MR[0], index, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(MR[0], index, $event)" class="call-list-data-item td">
-                                                            <span class="data">{{ MR[0].Total }}({{ MR[0].ターゲット数 }})</span>
+                                                            <span class="data">{{ MR[0].Total }}<span style="font-size:100%;">({{ MR[0].ターゲット数 }})</span></span>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -737,16 +737,16 @@ export default defineComponent({
           
                     // console.log(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)));
                     if (state.isScreen === "月別実績") {
-                        products2.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v));
-                      Targets.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]).filter((v) => v));
-                      docters.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));  
+                        products2.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v));
+                      Targets.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]).filter((v) => v));
+                      docters.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));  
                     } else {
                         if (!state.selectedFilterItems.Call実施の月.includes("すべて") && !state.selectedFilterItems.Call実施の月.includes(element) ) {
                     continue
                 } 
-                      Targets.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]));
-                        docters.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));
-                      products2.push(callList[key][key2][key3][element].filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v)); 
+                      Targets.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Target"]));
+                        docters.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Dr_name"]).filter((v) => v));
+                      products2.push(t.filter((item) => getShareName(item.CSLB_Channel_Type__c) == getShareName(elemente)).map((p) => p["Detailed_Products_vod__c"]).filter((v) => v)); 
 
                       let Targets2 = t.map((p) => p["Target"])
                       console.log(key3);
@@ -765,6 +765,9 @@ export default defineComponent({
               
                        
                   }
+
+                  console.log(docters);
+                  
 
                    
                   products2 = products2.flat(2)       
@@ -1197,7 +1200,7 @@ await creatDataProduct(state.data, false);
           }
         }
       } else if (windowSize > 1200) {
-        maxIndex80 = maxIndex / 0.85;
+        maxIndex80 = maxIndex / 0.8;
 
         if (numberDigit >= 4) {
           maxIndexCe = maxIndex80;
@@ -1252,7 +1255,7 @@ await creatDataProduct(state.data, false);
           }
         }
       } else if (windowSize > 1050) {
-        maxIndex80 = maxIndex / 0.8;
+        maxIndex80 = maxIndex / 0.7;
 
         if (numberDigit >= 4) {
           maxIndexCe = maxIndex80;
@@ -1317,7 +1320,7 @@ await creatDataProduct(state.data, false);
           }
         }
       } else {
-        maxIndex80 = maxIndex / 0.8;
+        maxIndex80 = maxIndex / 0.7;
 
         if (numberDigit >= 4) {
           maxIndexCe = maxIndex80;
@@ -3207,7 +3210,8 @@ if (state.selectFiliterCategory[0] === element) {
         for (const item of items2) {
           item.classList.remove("no-active");
           item.classList.add("on");
-          number.push(item.textContent);
+          let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
         }
 
         console.log(number);
@@ -3280,7 +3284,9 @@ if (state.selectFiliterCategory[0] === element) {
       const number = [];
 
       for (const item of items2) {
-        number.push(item.textContent);
+        let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
+       
       }
 
       if (items2.length > 1) {

@@ -5,7 +5,6 @@
         <span>{{ title }}</span>
       </Heading2>
       <div class="popup__close" @tap.prevent="tapClose">
-        <p class="popup__close-text">閉じる</p>
       </div>
       <div class="popup__header">
         <ul>
@@ -111,7 +110,7 @@ export default defineComponent({
 
     &inner-box {
       width: 100%;
-      height: calc(100% - 20px);
+      height: calc(100% - 45px);
       overflow: hidden;
       word-break: break-all;
     }
@@ -159,30 +158,29 @@ export default defineComponent({
 
     &title {
       position: relative;
+      font-size: 25px;
+      margin-bottom: 10px;
 
       &::before {
         content: '';
         position: absolute;
         width: 5px;
         height: 100%;
-        background: $main;
+        background: #1e007c;
       }
     }
 
     &close {
       position: absolute;
-      top: 18px;
-      right: 24px;
-      width: 50px;
-      height: 24px;
+      top: -15px;
+      right: -18px;
+      width: 40px;
+      height: 40px;
+        background: url('~@/assets/images/icon/close.png') no-repeat top center;
+        background-size: cover;
     }
 
-    &close-text {
-      text-align: center;
-      font-weight: bold;
-      line-height: 24px;
-      color: $main;
-    }
+
   }
 }
 

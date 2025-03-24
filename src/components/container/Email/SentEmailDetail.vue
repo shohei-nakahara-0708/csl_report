@@ -34,24 +34,24 @@
                 </div>
                
                 <div class="pr20" :style="state.isScreen ==='集計画面' ? 'justify-content: space-between;' : '' " style="display: flex;">
-                  <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'メール送付月'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.メール送付月" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'メール送付月'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.メール送付月" />
 
-                <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'エリア'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.エリア" v-if="state.isScreen === '集計画面'" />
+                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'エリア'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.エリア" v-if="state.isScreen === '集計画面'" />
 
-                <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'150px'" :category="'テリトリー名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.テリトリー名" v-if="state.isScreen === '集計画面'" />
+                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'130px'" :category="'テリトリー名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.テリトリー名" v-if="state.isScreen === '集計画面'" />
 
-                <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'MR'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.MR" v-if="state.isScreen === '集計画面'" />
+                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'MR'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.MR" v-if="state.isScreen === '集計画面'" />
 
-                   <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem2" :width="'150px'" :category="'施設名'" :select-obj="state.selectedObj" :selected-value="state.selectedFilterItems3.施設名" v-if="state.isScreen === '送付先詳細'" />
-               <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'医師名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.医師名"   v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'" />
+                   <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem2" :width="'130px'" :category="'施設名'" :select-obj="state.selectedObj" :selected-value="state.selectedFilterItems3.施設名" v-if="state.isScreen === '送付先詳細'" />
+               <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'医師名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.医師名"   v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'" />
                 
-               <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'Target'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.Target" v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'"/>
+               <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'Target'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.Target" v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'"/>
 
-                 <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'200px'" :category="'フラグメント'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.フラグメント" />
+                 <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'150px'" :category="'フラグメント'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.フラグメント" />
 
-                  <SelectBox3 class="mb20 mr20" @tap-item="onTapSelectBoxItem" :width="'100px'" :category="'製品'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'製品'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
 
-                   <SelectBox5 class="mb20 mr20" @tap-item="onTapSelectBoxItemOptIn" :width="'100px'" :category="'許諾製品'" :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品"  v-if="state.isScreen === '集計画面'" />
+                   <SelectBox5 class="mb20 mr10" @tap-item="onTapSelectBoxItemOptIn" :width="'90px'" :category="'許諾製品'" :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品"  v-if="state.isScreen === '集計画面'" />
                 </div>
 
                 
@@ -141,6 +141,44 @@
                           </template>
                           <template v-if="state.sortObj.セカンド.MR == 'DESC'">
                             <div class="sort-desc" data-sort="MR"></div>
+                          </template>
+                        </div>
+                      </template>
+
+                    </li>
+                    <li @tap="onTapSortVisible('isHoverFlag23')" @mouseover="state.isHoverFlag23 = true" @mouseleave="state.isHoverFlag23 = false" class="call-list4 call-list fwb  opt">
+                      オプトイン数/<br>ターゲット数
+                      <template v-if="!Object.keys(state.sortObj.セカンド).includes('オプトイン数')">
+                      <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag23" data-sort="オプトイン数">
+                       <div class="sort-asc2" data-sort="オプトイン数"></div>
+                      </div>
+                    </template>
+                      <template v-else>
+                        <div class="sort-button opt" @tap="onTapSort" data-sort="オプトイン数">
+                          <template v-if="state.sortObj.セカンド.オプトイン数 == 'ASC'">
+                            <div class="sort-asc" data-sort="オプトイン数"></div>
+                          </template>
+                          <template v-if="state.sortObj.セカンド.オプトイン数 == 'DESC'">
+                            <div class="sort-desc" data-sort="オプトイン数"></div>
+                          </template>
+                        </div>
+                      </template>
+
+                    </li>
+                    <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true" @mouseleave="state.isHoverFlag24 = false" class="call-list4 call-list fwb opt">
+                      ユニーク<br>送信数
+                      <template v-if="!Object.keys(state.sortObj.セカンド).includes('ユニーク')">
+                      <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag24" data-sort="ユニーク">
+                       <div class="sort-asc2" data-sort="ユニーク"></div>
+                      </div>
+                    </template>
+                      <template v-else>
+                        <div class="sort-button opt" @tap="onTapSort" data-sort="ユニーク">
+                          <template v-if="state.sortObj.セカンド.ユニーク == 'ASC'">
+                            <div class="sort-asc" data-sort="ユニーク"></div>
+                          </template>
+                          <template v-if="state.sortObj.セカンド.ユニーク == 'DESC'">
+                            <div class="sort-desc" data-sort="ユニーク"></div>
                           </template>
                         </div>
                       </template>
@@ -491,7 +529,7 @@
 
                                                     <div class="call-list-data tr" :style="MR.ratio">
                                                       <div @mouseover="onHoverItem2_3(MR, MRValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(MR, MRValue, $event)" class="call-list-data-item td" data-kinds="MR">
-                                                        <span class="data">{{ MR.Total }}({{ MR.ターゲット数 }})</span>
+                                                        <span class="data">{{ MR.Total }}<span style="font-size:100%;">({{ MR.ターゲット数 }})</span></span>
                                                       </div>
                                                     </div>
                                                      </div>
@@ -802,6 +840,8 @@ import { useApplicationStore } from "@/store/modules/applicationModule";
 import { useAccountStore } from "@/store/modules/accountModule";
 import optInData from "@/assets/data/optin.json";
 import optInDetailData from "@/assets/data/optinDetail.json";
+import optInDataOld from "@/assets/data/optinOld.json";
+import optInDetailDataOld from "@/assets/data/optinDetailOld.json";
 
 interface State {
   iScrollObj: null | IScroll;
@@ -930,6 +970,8 @@ interface State {
   isHoverFlag20: boolean;
   isHoverFlag21: boolean;
   isHoverFlag22: boolean;
+  isHoverFlag23: boolean;
+  isHoverFlag24: boolean;
   popupData: any;
   isScreen: any;
   activeDOM: any;
@@ -1381,6 +1423,8 @@ export default defineComponent({
       isHoverFlag19: false,
       isHoverFlag20: false,
       isHoverFlag21: false,
+      isHoverFlag23: false,
+      isHoverFlag24: false,
       popupData: {},
       isScreen: "集計画面",
       activeDOM: [],
@@ -1460,15 +1504,11 @@ export default defineComponent({
 
     let emailList2
     let emailList3
+    let optIn
+    let optInDetail
 
-    let optIn = JSON.stringify(optInData);
-    optIn = JSON.parse(optIn);
+   
 
-     let optInDetail = JSON.stringify(optInDetailData);
-    optInDetail = JSON.parse(optInDetail);
-
-    console.log("optInDetail");
-    console.log(optInDetail);
     
     
 
@@ -1479,10 +1519,21 @@ export default defineComponent({
     if (state.date === "newData") {
       emailList2 = Account.getsentEmailListByKeyNew(props.id);
     emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
+
+    optIn = JSON.stringify(optInData);
+    optInDetail = JSON.stringify(optInDetailData);
+     
+    
     } else {
       emailList2 = Account.getsentEmailListByKey(props.id);
-    emailList3 = Account.getsentEmailList2ByKey(props.id);
+      emailList3 = Account.getsentEmailList2ByKey(props.id);
+
+     optIn = JSON.stringify(optInDataOld);
+    optInDetail = JSON.stringify(optInDetailDataOld);
     }
+
+    optIn = JSON.parse(optIn);
+     optInDetail = JSON.parse(optInDetail);
 
     
 
@@ -1719,7 +1770,16 @@ export default defineComponent({
             Targets = [...new Set(Targets)];
             flagments = [...new Set(flagments)];
              produts = [...new Set(produts)];
+             
+            let optNumberStr = getOptin(key3)
 
+            let optNumber
+
+            if (optNumberStr) {
+              optNumber = optNumberStr.split("/")[0]
+            } else {
+              optNumber = 0
+            }
             
 
             const rec = {
@@ -1737,6 +1797,8 @@ export default defineComponent({
               "prodcut1": produts,
               ユニーク: uniqueCount,
               ターゲット数:  targetCount,
+              オプトイン数: Number(optNumber),
+              オプトイン数_ターゲット数:optNumberStr,
               Dr_name:  docters
             };
             if (Targets.length > 0) {
@@ -1746,9 +1808,9 @@ export default defineComponent({
           }
         }
       }
+
+      console.log(result3);
       
-
-
 
       return result3
 
@@ -1788,6 +1850,22 @@ export default defineComponent({
               } else if (state.sortObj["セカンド"]["MR"] == "DESC") {
                 if (a.MR > b.MR) return -1;
                 if (a.MR < b.MR) return 1;
+              }
+              
+                if (state.sortObj["セカンド"]["オプトイン数"] == "ASC") {
+                if (a.オプトイン数 > b.オプトイン数) return 1;
+                if (a.オプトイン数 < b.オプトイン数) return -1;
+              } else if (state.sortObj["セカンド"]["オプトイン数"] == "DESC") {
+                if (a.オプトイン数 > b.オプトイン数) return -1;
+                if (a.オプトイン数 < b.オプトイン数) return 1;
+              }
+
+                  if (state.sortObj["セカンド"]["ユニーク"] == "ASC") {
+                if (a.ユニーク > b.ユニーク) return 1;
+                if (a.ユニーク < b.ユニーク) return -1;
+              } else if (state.sortObj["セカンド"]["ユニーク"] == "DESC") {
+                if (a.ユニーク > b.ユニーク) return -1;
+                if (a.ユニーク < b.ユニーク) return 1;
               }
             } else {
               if (a.テリトリー名 > b.テリトリー名) return 1;
@@ -2548,7 +2626,7 @@ export default defineComponent({
             }
           }
         } else if (windowSize > 1100) {
-          maxIndex80 = maxIndex / 0.85;
+          maxIndex80 = maxIndex / 0.8;
 
           if (numberDigit >= 4) {
             maxIndexCe = maxIndex80;
@@ -2597,7 +2675,7 @@ export default defineComponent({
             }
           }
         } else  {
-          maxIndex80 = maxIndex / 0.85;
+          maxIndex80 = maxIndex / 0.7;
 
           if (numberDigit >= 4) {
             maxIndexCe = maxIndex80;
@@ -2621,11 +2699,11 @@ export default defineComponent({
               girdNumPulus = 50;
             }
 
-             if (maxIndex <= 160) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-             }
+            //  if (maxIndex <= 160) {
+            //   maxIndexCe = maxIndex80;
+            //   girdNum = maxIndexCe / 20;
+            //   girdNumPulus = 20;
+            //  }
             
           } else if (numberDigit <= 2) {
             if (maxIndex <= 100) {
@@ -2636,19 +2714,19 @@ export default defineComponent({
 
             if (maxIndex <= 80) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
+              girdNum = maxIndexCe / 20;
+              girdNumPulus = 20;
             }
             if (maxIndex <= 40) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
+              girdNum = maxIndexCe / 10;
+              girdNumPulus = 10;
             }
 
             if (maxIndex <= 20) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 2;
-              girdNumPulus = 2;
+              girdNum = maxIndexCe / 5;
+              girdNumPulus = 5;
             }
 
 
@@ -5607,7 +5685,9 @@ console.log(data);
           for (const item of items2) {
             item.classList.remove("no-active");
             item.classList.add("on");
-            number.push(item.textContent);
+            let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
+            // number.push(item.textContent);
           }
 
           if (items2.length > 1) {
@@ -5908,7 +5988,9 @@ console.log(data);
           for (const item of items2) {
             item.classList.remove("no-active");
             item.classList.add("on");
-            number.push(item.textContent);
+            // number.push(item.textContent);
+            let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
           }
 
            console.log(evt.target.dataset.kinds)
@@ -6583,7 +6665,9 @@ console.log(data);
 
       if (items2) {
         for (const item of items2) {
-        number.push(item.textContent);
+        // number.push(item.textContent);
+        let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
         }
 
         console.log('number');
@@ -6608,7 +6692,9 @@ console.log(data);
 
       if (items2) {
         for (const item of items2) {
-        number.push(item.textContent);
+        // number.push(item.textContent);
+        let t = item.textContent.substr(0, item.textContent.indexOf('('))
+          number.push(t);
         }
 
         console.log('number');
@@ -7080,6 +7166,16 @@ console.log(data);
              state.isHoverFlag22 = true;
             
             break;
+
+             case "isHoverFlag23":
+             state.isHoverFlag23 = true;
+            
+            break;
+
+             case "isHoverFlag24":
+             state.isHoverFlag24 = true;
+            
+            break;
         
             
          default:
@@ -7130,6 +7226,8 @@ console.log(data);
       state.isHoverFlag5 = false;
       state.isHoverFlag6 = false;
       state.isHoverFlag7 = false;
+      state.isHoverFlag23 = false;
+      state.isHoverFlag24 = false;
 
       // }
     };
@@ -7361,6 +7459,9 @@ console.log(state.selectObj);
      }
 
     const onTapTargetPopup = async (mr, evt) => {
+      if (!state.selectedFilterItemsOptIn.許諾製品) {
+        return
+      }
       state.isPopup = true
 
       // if (!state.selectedFilterItemsOptIn.許諾製品) {
@@ -7988,7 +8089,7 @@ console.log(state.selectObj);
       text-overflow: ellipsis;
     }
     &1 {
-      width: 120px;
+      width: 100px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -8009,7 +8110,7 @@ console.log(state.selectObj);
       text-align: center;
     }
     &3 {
-      width: 230px;
+      width: 200px;
       padding-left: 5px;
       padding-right: 5px;
       white-space: nowrap;
@@ -8022,11 +8123,17 @@ console.log(state.selectObj);
     }
 
     &4 {
-      width: 120px;
+      width: 100px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
+
+      &.opt {
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 3px 0;
+      }
     }
 
      &6 {
@@ -8370,6 +8477,8 @@ console.log(state.selectObj);
 .data {
   font-weight: bold;
   word-wrap: break-word;
+  display: flex;
+  align-items: center;
 }
 
 .test3 {
@@ -8390,7 +8499,7 @@ console.log(state.selectObj);
    padding-right: 5px;
 
   &-left {
-    width: 600px;
+    width: 730px;
     text-align: right;
   }
 
@@ -8450,6 +8559,10 @@ console.log(state.selectObj);
     height: 15px;
     right: 0;
     top: 6px;
+
+    &.opt {
+      top: 12px;
+    }
   &:hover{
     background-color: #fff;
   }
@@ -8484,7 +8597,7 @@ console.log(state.selectObj);
        width: 15px;
     height: 15px;
     top: 5px;
-    left: 100px;
+    left: 90px;
 
        &:hover{
     background-color: #d9d9d9;
@@ -8695,7 +8808,7 @@ console.log(state.selectObj);
   }
 }
 
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 190px) {
   .call-list10  {
     width: 215px;
   }

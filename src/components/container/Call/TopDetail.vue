@@ -294,8 +294,8 @@ ul.list {
        background: url('~@/assets/images/callTop/cab.png') no-repeat top center;
         background-size: cover;
 
-           &.newData {
-       background: url('~@/assets/images/callTop/cabnew.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/cabOld.png') no-repeat top center;
         background-size: cover;
      }
 
@@ -304,8 +304,8 @@ ul.list {
        background: url('~@/assets/images/callTop/hem.png') no-repeat top center;
         background-size: cover;
 
-                &.newData {
-       background: url('~@/assets/images/callTop/hemnew.png') no-repeat top center;
+                &.oldData {
+       background: url('~@/assets/images/callTop/hemOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -313,8 +313,8 @@ ul.list {
        background: url('~@/assets/images/callTop/ig.png') no-repeat top center;
         background-size: cover;
 
-                  &.newData {
-       background: url('~@/assets/images/callTop/ignew.png') no-repeat top center;
+                  &.oldData {
+       background: url('~@/assets/images/callTop/igOld.png') no-repeat top center;
         background-size: cover;
      }
 
@@ -323,8 +323,8 @@ ul.list {
        background: url('~@/assets/images/callTop/hae.png') no-repeat top center;
         background-size: cover;
 
-                  &.newData {
-       background: url('~@/assets/images/callTop/haenew.png') no-repeat top center;
+                  &.oldData {
+       background: url('~@/assets/images/callTop/haeOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -349,8 +349,8 @@ ul.list {
        background: url('~@/assets/images/callTop/cab2.png') no-repeat top center;
         background-size: cover;
 
-           &.newData {
-       background: url('~@/assets/images/callTop/cabnew2.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/cabOld2.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -359,8 +359,8 @@ ul.list {
         background-size: cover;
 
 
-           &.newData {
-       background: url('~@/assets/images/callTop/hemnew2.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/hemOld2.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -368,8 +368,8 @@ ul.list {
        background: url('~@/assets/images/callTop/ig2.png') no-repeat top center;
         background-size: cover;
 
-              &.newData {
-       background: url('~@/assets/images/callTop/ignew2.png') no-repeat top center;
+              &.oldData {
+       background: url('~@/assets/images/callTop/igOld2.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -377,8 +377,8 @@ ul.list {
        background: url('~@/assets/images/callTop/hae2.png') no-repeat top center;
         background-size: cover;
 
-              &.newData {
-       background: url('~@/assets/images/callTop/haenew2.png') no-repeat top center;
+              &.oldData {
+       background: url('~@/assets/images/callTop/haeOld2.png') no-repeat top center;
         background-size: cover;
      }
 

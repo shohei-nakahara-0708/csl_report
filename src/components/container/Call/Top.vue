@@ -274,8 +274,8 @@ cursor: pointer;
        background: url('~@/assets/images/callTop/cab.png') no-repeat top center;
         background-size: cover;
 
-        &.newData {
-       background: url('~@/assets/images/callTop/cabnew.png') no-repeat top center;
+        &.oldData {
+       background: url('~@/assets/images/callTop/cabOld.png') no-repeat top center;
         background-size: cover;
      }
      
@@ -286,8 +286,8 @@ cursor: pointer;
        background: url('~@/assets/images/callTop/hem.png') no-repeat top center;
         background-size: cover;
 
-           &.newData {
-       background: url('~@/assets/images/callTop/hemnew.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/hemOld.png') no-repeat top center;
         background-size: cover;
      }
 
@@ -297,8 +297,8 @@ cursor: pointer;
         background-size: cover;
 
 
-           &.newData {
-       background: url('~@/assets/images/callTop/ignew.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/igOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -307,8 +307,8 @@ cursor: pointer;
         background-size: cover;
 
 
-           &.newData {
-       background: url('~@/assets/images/callTop/haenew.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/callTop/haeOld.png') no-repeat top center;
         background-size: cover;
      }
 

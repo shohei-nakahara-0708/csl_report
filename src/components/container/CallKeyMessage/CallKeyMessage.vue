@@ -74,7 +74,7 @@
                     <div>
                       <div id="my-chart">
                         <div class="charts-css bar show-labels show-primary-axis show-6-secondary-axes show-data-axes data-spacing-2 data-outside">
-                          <template v-for="(obj,key, index) in state.dataDetail" :key="index">
+                          <template v-for="(obj,key) in state.dataDetail" :key="key">
                             <div class="tbody call-list-item" style="flex-direction: row; padding: 0 10px">
                                <div class="test">
                                  <div  @mouseover="onHoverItem2_4(obj, key, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2_2(obj, key, $event)" class="call-list5 call-list-title" data-kinds="MR" :class="[{ on: state.selectObj.RANK.Category == 'Clm_Presentation_Name_vod__c' && state.selectKeyMessage == obj.Clm_Presentation_Name_vod__c}]">
@@ -83,7 +83,7 @@
                                
                                   <div class="call-list-data tr" :style="obj.ratio">
                                                       <div @mouseover="onHoverItem2_3(obj, key, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(obj, key, $event)" class="call-list-data-item td"  data-kinds="DATA" :class="[getSpareClass2(obj.Total),{ on: state.selectObj.RANK.Category == 'DATA' && state.selectKeyMessage == obj.Clm_Presentation_Name_vod__c, 'no-active': state.selectKeyMessage !== obj.Clm_Presentation_Name_vod__c && state.selectKeyMessage}]">
-                                                        <span class="data">{{ obj.Total }}</span>
+                                                        <span class="data">{{ obj.Total }}({{ obj.ターゲット数 }})</span>
                                                       </div>
                                                     </div>
                                </div>
@@ -2444,8 +2444,7 @@ if (state.selectedFilterItemsBK.営業部.length === 0) {
           
       }
 
-      
-
+   
       for (const element of state.data) {
 
                   if (!dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]) {
@@ -2455,19 +2454,36 @@ if (state.selectedFilterItemsBK.営業部.length === 0) {
               dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]["data"] = []
             }
 
+            if (!dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]["ターゲット数"]) {
+              dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]["ターゲット数"] = []
+            }
+
+
 
         dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]["data"].push(element)
+        if (element.Target === "Target") {
+          dataObj2[element["Clm_Presentation_Name_vod__c"].trim()]["ターゲット数"].push(element.Target)
+        }
+         
        }
 
 
-    
+      console.log("dataObj2");
+      console.log(dataObj2);
+             
+
+
+   
 
       for (const key in dataObj2) {
         const Total = dataObj2[key]["data"].length
+        let targetTotal = dataObj2[key]["ターゲット数"].length
+        
         state.dataDetail.push({
           "Total": Total,
           "Clm_Presentation_Name_vod__c": key,
-          "data":dataObj2[key]["data"]
+          "data": dataObj2[key]["data"],
+         ターゲット数:targetTotal 
         })
       }
 
