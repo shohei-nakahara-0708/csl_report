@@ -5868,7 +5868,11 @@ console.log(data);
 
 
 
+<<<<<<< HEAD
             if (!state.selectedFilterItems.製品.includes("すべて")) {
+=======
+            if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
+>>>>>>> main
             state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
              creatDataProduct(data, "goScreen");
             } else {
