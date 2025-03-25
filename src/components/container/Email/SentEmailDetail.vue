@@ -5278,6 +5278,14 @@ console.log(data);
           state.optInObj.許諾製品.list.push(key)
         }
       }
+
+        state.optInObj.許諾製品.list.sort((a, b) => {
+      if (a === "デフォルトに戻す" || b === "デフォルトに戻す") {
+        return 0 
+      }  
+                  if (a > b) return 1;
+                  if (a < b) return -1;
+                });
     };
 
     const creatData = (data,flg) => {
