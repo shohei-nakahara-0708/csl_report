@@ -3184,7 +3184,6 @@ export default defineComponent({
         if (state.dataContent.length === 0 && Object.values(state.selectObj["送付先詳細"]["Value"]).length === 0) {
           creatData(state.data,false);
         }
-         data = state.dataOrg
       } else if (_obj.selectedValue === "集計画面") {
         targetData = state.selectedFilterItems
         creatData(state.data, false);
@@ -3243,7 +3242,7 @@ export default defineComponent({
 
       let data2
 
-       if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
+       if (_obj.selectedValue === "集計画面") {
       data2 = data
      } else {
      data2 = data.filter((x) => {
@@ -3278,7 +3277,7 @@ export default defineComponent({
             creatDataFlagment(data2, false);
           }
 
-               if (_obj.selectedValue === "集計画面"|| _obj.selectedValue === "送付内容") {
+               if (_obj.selectedValue === "集計画面") {
       data2 = data
      } else {
        data2 = data.filter((x) => {
