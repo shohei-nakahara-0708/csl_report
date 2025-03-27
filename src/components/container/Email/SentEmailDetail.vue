@@ -8816,11 +8816,7 @@ console.log(state.selectObj);
   }
 }
 
-@media screen and (min-width: 190px) {
-  .call-list10  {
-    width: 215px;
-  }
-}
+
 
 @media screen and (min-width: 1150px) {
   .call-list10  {
