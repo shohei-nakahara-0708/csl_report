@@ -5921,7 +5921,7 @@ console.log(data);
             state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
              creatDatDocter(data, "goScreen");
             } else {
-                 state.testObj["製品"].list = {
+                 state.testObj["医師名"].list = {
               すべて: "すべて",
           };
            state.selectedFilterItems["医師名"] = ["すべて"]  
