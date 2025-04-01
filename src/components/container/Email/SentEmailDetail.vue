@@ -1686,7 +1686,7 @@ export default defineComponent({
 
           
 
-         
+           
         
 
             for (const element in emailList[key][key2][key3]) {
@@ -1709,29 +1709,35 @@ export default defineComponent({
                 }
               }
 
-              let flagmentsflg = false
-
-               let flagmentsSplit = emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-                    for (const element of flagmentsSplit) {
-
-                      if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
-                if (state.selectedFilterItems.フラグメント.includes(element)) { 
-                  flagmentsflg = true
+               if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
+                if (!emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v))) { 
+                  continue
                 }
               }
-              
-                      flagments.push(element)
-                    }
 
-              if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
+              // let flagmentsflg = false
+
+              //  let flagmentsSplit = emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+              //       for (const element of flagmentsSplit) {
+
+              //         if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
+              //   if (state.selectedFilterItems.フラグメント.includes(element)) { 
+              //     flagmentsflg = true
+              //   }
+              // }
+              
+              //         flagments.push(element)
+              //       }
+
+              // if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
                           
-                    if (!flagmentsflg) {
-                      continue
-                    }
+              //       if (!flagmentsflg) {
+              //         continue
+              //       }
   
-              }
+              // }
 
 
               
@@ -1757,6 +1763,12 @@ export default defineComponent({
 
                   Targets.push(emailList[key][key2][key3][element]["Target"])
               dataObj.push(emailList[key][key2][key3][element]);
+
+              for (const f of emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"]) {
+                 flagments.push(f)
+              }
+
+             
              
                       
                       produts.push(emailList[key][key2][key3][element]["prodcut1"])
@@ -1937,6 +1949,10 @@ export default defineComponent({
     return diff;
   }, {});
 };
+console.log("emailList3");
+
+console.log(emailList3);
+
         
 
       for (const element of emailList3) {
@@ -1980,8 +1996,15 @@ export default defineComponent({
                     dataObj2[element["Dr_name"]][sentDate][templateName] = {}
                    }
 
-                    let FragmentsName = element["Email_Fragments_vod__r.Name"]
+                    // let FragmentsName = element["Email_Fragments_vod__r.Name"]
+                    // let flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+                    for (const FragmentsName of  element["Email_Fragments_vod__r.Name"]) {
 
+  
+              
+                      
                       if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName]) {
                     dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName] = {}
                    }
@@ -2037,6 +2060,8 @@ export default defineComponent({
                     // element.MR = "✳️"
                     // dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]
                   }
+                    }
+
 
 
 
@@ -2136,37 +2161,37 @@ export default defineComponent({
               } 
           }
 
-           if (state.sortObj3["フラグメント"] == "default") {
+          //  if (state.sortObj3["フラグメント"] == "default") {
            
-            if (a["Email_Fragments_vod__r.Name"] && b["Email_Fragments_vod__r.Name"]) {
-              const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
+          //   if (a["Email_Fragments_vod__r.Name"] && b["Email_Fragments_vod__r.Name"]) {
+          //     const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
-              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"] !== "NULL") {
-                return firstKeySortResult;
-              } 
+          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"] !== "NULL") {
+          //       return firstKeySortResult;
+          //     } 
 
-            // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
-            // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
-            }
-
-            
+          //   // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
+          //   // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
+          //   }
 
             
 
-          } else if (state.sortObj3["フラグメント"] == "ASC") {
-            const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
+            
 
-              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-                return firstKeySortResult;
-              } 
+          // } else if (state.sortObj3["フラグメント"] == "ASC") {
+          //   const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
-          } else if (state.sortObj3["フラグメント"] == "DESC") {
-            const firstKeySortResult = b["Email_Fragments_vod__r.Name"].localeCompare(a["Email_Fragments_vod__r.Name"], "ja");
+          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+          //       return firstKeySortResult;
+          //     } 
 
-              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-                return firstKeySortResult;
-              } 
-          }
+          // } else if (state.sortObj3["フラグメント"] == "DESC") {
+          //   const firstKeySortResult = b["Email_Fragments_vod__r.Name"].localeCompare(a["Email_Fragments_vod__r.Name"], "ja");
+
+          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+          //       return firstKeySortResult;
+          //     } 
+          // }
 
           if (Object.values(state.sortObj3["セカンド"]).length > 0) {
             if (state.sortObj3["セカンド"]["最終開封日時"] == "ASC") {
@@ -2479,9 +2504,10 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+               return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              // return state.selectedFilterItems.フラグメント.includes(
+              //    x["Email_Fragments_vod__r.Name"]
+              // );
             }
           })
           .filter((x) => {
@@ -2835,7 +2861,9 @@ export default defineComponent({
           const rankObj2 = {};
           const rankObj3 = {};
 
-        let emailList2 = dataCont2.value
+          let emailList2 = dataCont2.value
+      console.log("emailList2");
+        
         console.log(emailList2);
         
 
@@ -2889,6 +2917,15 @@ export default defineComponent({
             }
             })
          .filter((x) => {
+            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+              return true;
+            } else {
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              // return state.selectedFilterItems.フラグメント.includes(
+              //   x["flagments"]
+              // );
+            }
+          }) .filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
               return true;
             } else {
@@ -3299,9 +3336,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.医師名.includes("すべて")) {
@@ -3340,9 +3375,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -3383,9 +3416,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -3781,9 +3812,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           })  
         creatDataProduct(data, false);
@@ -3973,9 +4002,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           })  
         creatDataProduct(data, false);
@@ -3990,9 +4017,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
       }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -4018,9 +4043,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
       }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -5372,9 +5395,7 @@ console.log(data);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -5795,9 +5816,7 @@ console.log(data);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -5874,9 +5893,7 @@ console.log(data);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.医師名.includes("すべて")) {
@@ -5887,6 +5904,8 @@ console.log(data);
               );
             }
           })
+          
+          
 
 
 
@@ -5910,9 +5929,7 @@ console.log(data);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
+            return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -5930,7 +5947,7 @@ console.log(data);
             state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
              creatDatDocter(data, "goScreen");
             } else {
-                 state.testObj["製品"].list = {
+                 state.testObj["医師名"].list = {
               すべて: "すべて",
           };
            state.selectedFilterItems["医師名"] = ["すべて"]  
@@ -5972,6 +5989,8 @@ console.log(data);
             }        }
       
         }
+
+      console.log(state.testObj)
         
       }else if(state.isScreen === "送付先詳細")
       {

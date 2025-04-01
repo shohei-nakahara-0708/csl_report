@@ -541,6 +541,20 @@ export const useAccountStore = defineStore({
         this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
       }
            
+            const flagments = []
+
+           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+                    for (const element2 of flagmentsSplit) {
+
+              
+                      flagments.push(element2)
+                    }
+
+           
+           element["Email_Fragments_vod__r.Name"] = flagments
+           
 
            
 
@@ -644,6 +658,8 @@ export const useAccountStore = defineStore({
           if (!this.EmailAccountList.includes(target)) {
             this.EmailAccountList.push(target)
           }
+           
+           
          
       
 
@@ -666,6 +682,21 @@ export const useAccountStore = defineStore({
       if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
         this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
       }
+           
+            const flagments = []
+
+           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+                    for (const element2 of flagmentsSplit) {
+                      
+
+              
+                      flagments.push(element2)
+                    }
+
+           
+           element["Email_Fragments_vod__r.Name"] = flagments
            
 
            
@@ -739,8 +770,24 @@ export const useAccountStore = defineStore({
             target = "NULL"
            }
 
+           const flagments = []
+
+           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+                    for (const element2 of flagmentsSplit) {
+
+              
+                      flagments.push(element2)
+                    }
+
            
-         element["Total"] = element["Id"]
+           element["Total"] = element["Id"]
+           element["Email_Fragments_vod__r.Name"] = flagments
+
+           
+           element["Total"] = element["Id"]
+           
       
 
       if (!this.EmailListContent[element["営業部"].trim()]) {
@@ -803,8 +850,20 @@ export const useAccountStore = defineStore({
             target = "NULL"
            }
 
+           const flagments = []
+
+           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+                 
+                    
+                    for (const element2 of flagmentsSplit) {
+
+              
+                      flagments.push(element2)
+                    }
+
            
-         element["Total"] = element["Id"]
+           element["Total"] = element["Id"]
+           element["Email_Fragments_vod__r.Name"] = flagments
       
 
       if (!this.EmailListContentNew[element["営業部"].trim()]) {
