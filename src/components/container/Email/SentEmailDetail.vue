@@ -332,12 +332,12 @@
                     <li  @tap="onTapSortVisible('isHoverFlag21')" @mouseover="state.isHoverFlag21 = true" @mouseleave="state.isHoverFlag21 = false" class="call-list12 call-list">
                       分類
                      <template v-if="state.sortObj3.分類 == 'default'">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag21" data-sort="分類">
+                      <div class="sort-button kinds" @tap="onTapSort3" v-if="state.isHoverFlag21" data-sort="分類">
                          <div class="sort-asc2" data-sort="分類"></div>
                       </div>
                     </template>
                       <template v-else>
-                        <div class="sort-button" @tap="onTapSort3" data-sort="分類">
+                        <div class="sort-button kinds" @tap="onTapSort3" data-sort="分類">
                           <template v-if="state.sortObj3.分類 == 'ASC'">
                              <div class="sort-asc" data-sort="分類"></div>
                           </template>
@@ -481,7 +481,7 @@
                 </div>
               </div>
 
-              <div class="call-content-wrap">
+              <div class="call-content-wrap" :class="{ 'call-content-wrap2': state.isScreen === '送付内容' }">
                 <div class="iscroll-wrapperContent">
                   <div class="iscroll__scroller">
                     <div v-show="state.isScreen === '集計画面'">
@@ -650,13 +650,15 @@
                                                 <div class="test" :class="[{ test2: Object.keys(templateName).length > 1 }]">
                                                   <template v-for="(flagment, flagmentValue) in templateName" :key="flagmentValue" >
                                                     <div class="test">
-                                                      <div @mouseover="onHoverItem2_2(flagment, flagmentValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(flagment, flagmentValue, $event)" data-kinds="flagmentName" class="call-list10 call-list-title" :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c']  && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue && state.selectObj['送付内容']['flagmentName']  === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue  }]">
-                                                        <div class="list-wrap"><span>{{ flagment[0]["Email_Fragments_vod__r.Name"] ? flagmentValue: "NULL"  }}</span></div>
-                                                      </div>
+                                                      
 
                                                       <div class="test test2">
                                                         <template v-for="(key, val) in flagment" :key="val">
                                                           <div class="test" :class="getSpareClass(key.dataNumber)">
+
+                                                            <div  @mouseover="onHoverItem2_2(key,  val , $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(key, val, $event)" data-kinds="flagmentName"  class="call-list10 call-list-title" :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c']  && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue && state.selectObj['送付内容']['flagmentName']  === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue && state.selectObj['送付内容']['FragmentId'] === key['FragmentId']  }]">
+                                                              <div class="list-wrap"><span class="data">{{ key["Email_Fragments_vod__r.Name"] ? key["Email_Fragments_vod__r.Name"] : "NULL" }}</span></div>
+                                                            </div>
                                                           
                                                             <div  @mouseover="onHoverItem2_2(key, val, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(key, val, $event)" data-kinds="Last_Open_Date_vod__c" class="call-list11 call-list-title" :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Open_Date_vod__c'] === true }]">
                                                               <div class="list-wrap"><span class="data">{{ key["Last_Open_Date_vod__c"] ? dayjs(key["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL" }}</span></div>
@@ -1051,7 +1053,8 @@ export default defineComponent({
           templateName: "",
           flagmentName: "",
            Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,
+          Last_Open_Date_vod__c: false,
+            FragmentId: "",
         },
       },
       selectObj2: {
@@ -1061,7 +1064,8 @@ export default defineComponent({
           sentDate: "",
           templateName: "",
           flagmentName: "",
-           Id: "",
+          Id: "",
+           FragmentId: "",
         },
       },
       sortObj: {
@@ -1965,9 +1969,7 @@ export default defineComponent({
     return diff;
   }, {});
 };
-console.log("emailList3");
 
-console.log(emailList3);
 
         
 
@@ -1986,12 +1988,17 @@ console.log(emailList3);
                       continue;
                     }
         }
-
-
+        let n = 0
         for (const FragmentsName of element["Email_Fragments_vod__r.Name"]) { 
           let e =  { ...element }
           e["Email_Fragments_vod__r.Name"] = FragmentsName
-          console.log(e);
+          if (e["Email_Fragments_vod__c"]) {
+             let FragmentId = e["Email_Fragments_vod__c"].split(',')[n]
+          e["FragmentId"] = FragmentId
+          } else {
+             e["FragmentId"] = "NULL"
+          }
+         
           
 
             if (state.selectedFilterItems.メール送付月.includes("すべて")) {
@@ -2002,9 +2009,8 @@ console.log(emailList3);
                 if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
                     result3.push(e);
                 }
-              }
-
-              
+            }
+        n++              
         }
 
   
@@ -2106,8 +2112,67 @@ console.log(emailList3);
 
 
       }
+      const a = result3.filter((x) => {
+            if ( state.selectObj[state.isScreen]["docter"]) {
+               return x["Dr_name"]  === state.selectObj[state.isScreen]["docter"]
+            } else {
+            return true  
+            }
           
+          }).filter((x) => {
+            if ( state.selectObj[state.isScreen]["Id"]) {
+               return x["Id"]  === state.selectObj[state.isScreen]["Id"]
+            } else {
+            return true  
+            }
+          
+          }).filter((x) => {
+            if ( state.selectObj[state.isScreen]["FragmentId"]) {
+               return x["FragmentId"]  === state.selectObj[state.isScreen]["FragmentId"]
+            } else {
+            return true  
+            }
+          
+          }).filter((x) => {
+            if ( state.selectObj[state.isScreen]["sentDate"]) {
+               return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
+            } else {
+            return true  
+            }
+          
+          })
+          .filter((x) => {
+            if ( state.selectObj[state.isScreen]["templateName"]) {
+               return x["Approved_Email_Template_vod__r.Name"]  === state.selectObj[state.isScreen]["templateName"]
+            } else {
+            return true  
+            }
+          
+          })
+          .filter((x) => {
+            if ( state.selectObj[state.isScreen]["flagmentName"]) {
+               return x["Email_Fragments_vod__r.Name"]  === state.selectObj[state.isScreen]["flagmentName"]
+            } else {
+            return true  
+            }
+          
+          })
+          // .filter((x) => {
+          //   if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
+          //   return x["Last_Open_Date_vod__c"] ===  _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] ===  _obj.Last_Click_Date_vod__c
+          //   } else {
+          //   return true  
+          //   }
+          
+          // })
 
+          console.log(a);
+
+
+        
+ for (const element of a) {
+   element.isActive = true
+ }
       }
       
 
@@ -5429,6 +5494,7 @@ console.log(data);
         sentDate: "",
        templateName: "",
               flagmentName: "",
+               FragmentId: "",
           Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: false,        
             })
@@ -5673,6 +5739,7 @@ console.log(data);
         sentDate: "",
         templateName: "",
             flagmentName: "",
+             FragmentId: "",
          Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: false,    
            })
@@ -6215,6 +6282,7 @@ console.log(data);
         sentDate: "",
         templateName: "",
               flagmentName: "",
+               FragmentId: "",
   Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: false,      
            })
@@ -6330,15 +6398,28 @@ console.log(data);
          }
         }  
            }else if (evt.target.dataset.kinds === "flagmentName")  {
-         for (const element of _obj) {
-          (state.selectObj[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-               templateName: element["Approved_Email_Template_vod__r.Name"],
-              flagmentName: text,
-                Id: element.Id,
-             })
-         } }else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
+        //  for (const element of _obj) {
+        //   (state.selectObj[state.isScreen] = {
+        //       docter: element.Dr_name,
+        //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+        //        templateName: element["Approved_Email_Template_vod__r.Name"],
+        //       flagmentName: text,
+        //         Id: element.Id,
+        //      })
+             //      }
+
+   (state.selectObj[state.isScreen] = {
+              docter: _obj.Dr_name,
+              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+              templateName: _obj["Approved_Email_Template_vod__r.Name"],
+                flagmentName: _obj["Email_Fragments_vod__r.Name"],
+                Id: _obj.Id,
+          FragmentId: _obj.FragmentId,   
+             })    
+
+               text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
+
+           } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
               (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
@@ -6346,7 +6427,8 @@ console.log(data);
                 flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: true,  
-             Id: _obj.Id,
+                Id: _obj.Id,
+          FragmentId: _obj.FragmentId,   
               })
 
             //  _obj.isActive = true
@@ -6360,7 +6442,8 @@ console.log(data);
                 flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Last_Click_Date_vod__c: true,
             Last_Open_Date_vod__c: false,  
-             Id: _obj.Id,
+                Id: _obj.Id,
+             FragmentId: _obj.FragmentId,
               })
 
             //  _obj.isActive = true
@@ -6376,6 +6459,13 @@ console.log(data);
           }) .filter((x) => {
             if ( state.selectObj[state.isScreen]["Id"]) {
                return x["Id"]  === state.selectObj[state.isScreen]["Id"]
+            } else {
+            return true  
+            }
+          
+          }).filter((x) => {
+            if ( state.selectObj[state.isScreen]["FragmentId"]) {
+               return x["FragmentId"]  === state.selectObj[state.isScreen]["FragmentId"]
             } else {
             return true  
             }
@@ -6692,6 +6782,7 @@ console.log(data);
         sentDate: "",
         templateName: "",
             flagmentName: "",
+              FragmentId: "",
     Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: false,    
            })
@@ -6891,21 +6982,35 @@ console.log(data);
          }
         }  
            }else if (evt.target.dataset.kinds === "flagmentName")  {
-         for (const element of _obj) {
-          (state.selectObj2[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-               templateName: element["Approved_Email_Template_vod__r.Name"],
-              flagmentName: text,
-               Id: element.Id,
-             })
-         } }else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
+        //  for (const element of _obj) {
+        //   (state.selectObj2[state.isScreen] = {
+        //       docter: element.Dr_name,
+        //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+        //        templateName: element["Approved_Email_Template_vod__r.Name"],
+        //       flagmentName: text,
+        //        Id: element.Id,
+        //      })
+        //  } 
+
+         (state.selectObj2[state.isScreen] = {
+              docter: _obj.Dr_name,
+              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+              templateName: _obj["Approved_Email_Template_vod__r.Name"],
+              flagmentName: _obj["Email_Fragments_vod__r.Name"],
+               Id: _obj.Id,
+                FragmentId: _obj.FragmentId,
+              })
+
+                text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
+
+       } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
               (state.selectObj2[state.isScreen] = {
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
               flagmentName: _obj["Email_Fragments_vod__r.Name"],
                Id: _obj.Id,
+                FragmentId: _obj.FragmentId,
               })
 
             //  _obj.isActive = true
@@ -6918,6 +7023,7 @@ console.log(data);
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
                 flagmentName: _obj["Email_Fragments_vod__r.Name"],
              Id: _obj.Id,  
+             FragmentId: _obj.FragmentId,
               })
 
             //  _obj.isActive = true
@@ -6936,6 +7042,13 @@ console.log(data);
           }).filter((x) => {
             if ( state.selectObj2[state.isScreen]["Id"]) {
                return x.Id === state.selectObj2[state.isScreen]["Id"]
+            } else {
+            return true  
+            }
+          
+          }).filter((x) => {
+            if ( state.selectObj2[state.isScreen]["FragmentId"]) {
+               return x.FragmentId === state.selectObj2[state.isScreen]["FragmentId"]
             } else {
             return true  
             }
@@ -8177,7 +8290,7 @@ console.log(state.selectObj);
       height: calc(100vh - 325px);
 
       &2 {
-        height: calc(100vh - 190px);
+        height: calc(100vh - 255px);
       }
     }
   }
@@ -8634,7 +8747,7 @@ console.log(state.selectObj);
 
   &2 {
     .content-footer-left{
-      width: 610px;
+      width: 580px;
     }
   }
 
@@ -8692,6 +8805,10 @@ console.log(state.selectObj);
     &.opt {
       top: 12px;
     }
+
+     &.kinds {
+      top: 2px;
+    }
   &:hover{
     background-color: #fff;
   }
@@ -8726,7 +8843,7 @@ console.log(state.selectObj);
        width: 15px;
     height: 15px;
     top: 5px;
-    left: 90px;
+    left: 100px;
 
        &:hover{
     background-color: #d9d9d9;
