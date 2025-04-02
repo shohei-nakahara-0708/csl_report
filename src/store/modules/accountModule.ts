@@ -689,7 +689,6 @@ export const useAccountStore = defineStore({
                  
                     
                     for (const element2 of flagmentsSplit) {
-                      
 
               
                       flagments.push(element2)

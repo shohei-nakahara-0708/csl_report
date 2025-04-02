@@ -629,23 +629,28 @@
                                            <span>{{ kindValue }}</span>
                                           </div>
 
-                                           <div class="test" :class="[{ test2: Object.keys(kind).length > 1 }]">
-                                      <template v-for="(sentDate, sentDateValue) in kind" :key="sentDateValue">
+
+                                              <div class="test" :class="[{ test2: Object.keys(kind).length > 1 }]">
+                                                 <template v-for="(Id, IdValue) in kind" :key="IdValue">
+                                                  
+
+                                                   <div class="test" :class="[{ test2: Object.keys(Id).length > 1 }]">
+                                      <template v-for="(sentDate, sentDateValue) in Id" :key="sentDateValue">
                                         <div class="test">
-                                          <div  @mouseover="onHoverItem2_2(sentDate, sentDateValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(sentDate, sentDateValue, $event)" data-kinds="sentDate" class="call-list8 call-list-title"  :class="[{ on:  !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue }]">
+                                          <div  @mouseover="onHoverItem2_2(sentDate, sentDateValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(sentDate, sentDateValue, $event)" data-kinds="sentDate" class="call-list8 call-list-title"  :class="[{ on:  !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue  && state.selectObj['送付内容']['Id'] === IdValue}]">
                                            <span>{{ sentDateValue }}</span>
                                           </div>
 
                                           <div class="test" :class="[{ test2: Object.keys(sentDate).length > 1 }]">
                                             <template v-for="(templateName, templateNameValue) in sentDate" :key="templateNameValue">
                                               <div class="test">
-                                                <div  @mouseover="onHoverItem2_2(templateName, templateNameValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(templateName, templateNameValue, $event)" data-kinds="templateName" class="call-list9 call-list-title" :class="[{ on:  !state.selectObj['送付内容']['flagmentName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue }]">
+                                                <div  @mouseover="onHoverItem2_2(templateName, templateNameValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(templateName, templateNameValue, $event)" data-kinds="templateName" class="call-list9 call-list-title" :class="[{ on:  !state.selectObj['送付内容']['flagmentName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue  && state.selectObj['送付内容']['Id'] === IdValue }]">
                                                   <div class="list-wrap"><span>{{ templateNameValue }}</span></div>
                                                 </div>
                                                 <div class="test" :class="[{ test2: Object.keys(templateName).length > 1 }]">
                                                   <template v-for="(flagment, flagmentValue) in templateName" :key="flagmentValue" >
                                                     <div class="test">
-                                                      <div @mouseover="onHoverItem2_2(flagment, flagmentValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(flagment, flagmentValue, $event)" data-kinds="flagmentName" class="call-list10 call-list-title" :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c']  && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue && state.selectObj['送付内容']['flagmentName']  === flagmentValue  }]">
+                                                      <div @mouseover="onHoverItem2_2(flagment, flagmentValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(flagment, flagmentValue, $event)" data-kinds="flagmentName" class="call-list10 call-list-title" :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c']  && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue && state.selectObj['送付内容']['flagmentName']  === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue  }]">
                                                         <div class="list-wrap"><span>{{ flagment[0]["Email_Fragments_vod__r.Name"] ? flagmentValue: "NULL"  }}</span></div>
                                                       </div>
 
@@ -683,6 +688,12 @@
                                       </template>
 
                                            </div>
+
+
+                                                 </template>
+                                              </div>
+
+                                    
 
                                           
                                          </div>
@@ -1035,6 +1046,7 @@ export default defineComponent({
         送付内容: {
           docter: "",
           分類: "",
+          Id: "",
           sentDate: "",
           templateName: "",
           flagmentName: "",
@@ -1049,6 +1061,7 @@ export default defineComponent({
           sentDate: "",
           templateName: "",
           flagmentName: "",
+           Id: "",
         },
       },
       sortObj: {
@@ -1929,10 +1942,13 @@ export default defineComponent({
 
     state.dataCont = computed(() => {
       const result3 = [];
+      // let result3
 
       let dataObj2 = {};
 
       if (state.isScreen === "送付内容") {
+
+        // result3 = emailList3
 
         type GenericObject = { [key: string]: any };
 
@@ -1958,9 +1974,9 @@ console.log(emailList3);
       for (const element of emailList3) {
 
                   
-        if (!element.Dr_name) {
-               element.Dr_name = "NULL"
-              }
+        // if (!element.Dr_name) {
+        //        element.Dr_name = "NULL"
+        //       }
            
         if (Object.values(state.selectObj["送付先詳細"]["Value"]).length > 0) {
           if (element.MR !== state.selectObj["送付先詳細"]["MR"]) {
@@ -1969,98 +1985,120 @@ console.log(emailList3);
                     if (element[state.selectObj["送付先詳細"]["Category"]] !== state.selectObj["送付先詳細"]["Value"]) {
                       continue;
                     }
-                  }
+        }
 
-                   let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
 
-                    if (sentDate === "Invalid Date") {
-                      sentDate = "NULL"
+        for (const FragmentsName of element["Email_Fragments_vod__r.Name"]) { 
+          let e =  { ...element }
+          e["Email_Fragments_vod__r.Name"] = FragmentsName
+          console.log(e);
+          
+
+            if (state.selectedFilterItems.メール送付月.includes("すべて")) {
+                      
+                       result3.push(e);
                     }
+                   else {
+                if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+                    result3.push(e);
+                }
+              }
+
+              
+        }
+
+  
+
+              //      let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
+
+              //       if (sentDate === "Invalid Date") {
+              //         sentDate = "NULL"
+              //       }
 
 
                     
           
-                  if (!dataObj2[element["Dr_name"]]) {
-                    dataObj2[element["Dr_name"]] = {}
-                  }
+              //     if (!dataObj2[element["Dr_name"]]) {
+              //       dataObj2[element["Dr_name"]] = {}
+              //     }
 
 
-                  if (!dataObj2[element["Dr_name"]][sentDate]) {
-                    dataObj2[element["Dr_name"]][sentDate] = {}
-                  }
+              //     if (!dataObj2[element["Dr_name"]][sentDate]) {
+              //       dataObj2[element["Dr_name"]][sentDate] = {}
+              //     }
 
-                  let templateName = element["Approved_Email_Template_vod__r.Name"]
+              //     let templateName = element["Approved_Email_Template_vod__r.Name"]
                   
                   
-                   if (!dataObj2[element["Dr_name"]][sentDate][templateName]) {
-                    dataObj2[element["Dr_name"]][sentDate][templateName] = {}
-                   }
+              //      if (!dataObj2[element["Dr_name"]][sentDate][templateName]) {
+              //       dataObj2[element["Dr_name"]][sentDate][templateName] = {}
+              //      }
 
-                    // let FragmentsName = element["Email_Fragments_vod__r.Name"]
-                    // let flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+              //       // let FragmentsName = element["Email_Fragments_vod__r.Name"]
+              //       // let flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
                  
                     
-                    for (const FragmentsName of  element["Email_Fragments_vod__r.Name"]) {
+              //       for (const FragmentsName of  element["Email_Fragments_vod__r.Name"]) {
 
   
               
                       
-                      if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName]) {
-                    dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName] = {}
-                   }
+              //         if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName]) {
+              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName] = {}
+              //      }
 
 
 
-                  let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
-                  if (Last_Open_Date_vod__c === "Invalid Date") {
-                      Last_Open_Date_vod__c = "NULL"
-                    }
+              //     let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+              //     if (Last_Open_Date_vod__c === "Invalid Date") {
+              //         Last_Open_Date_vod__c = "NULL"
+              //       }
 
-                  if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c]) {
-                    dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c] = {}
-                  }
+              //     if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c]) {
+              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c] = {}
+              //     }
 
-                  let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
-                   if (Last_Click_Date_vod__c === "Invalid Date") {
-                      Last_Click_Date_vod__c = "NULL"
-                    }
+              //     let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+              //      if (Last_Click_Date_vod__c === "Invalid Date") {
+              //         Last_Click_Date_vod__c = "NULL"
+              //       }
                    
 
-                    if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]) {
-                    dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c] = [];
-                   }                  
+              //       if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]) {
+              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c] = [];
+              //      }                  
 
-                  if (dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].length === 0) {
-                     dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].push(element)
-                    if (state.selectedFilterItems.メール送付月.includes("すべて")) {
+              //     if (dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].length === 0) {
+              //        dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].push(element)
+              //       if (state.selectedFilterItems.メール送付月.includes("すべて")) {
                       
-                       result3.push(element);
-                    }
-                   else {
-                if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
-                    result3.push(element);
-                }
-              }
+              //          result3.push(element);
+              //       }
+              //      else {
+              //   if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+              //       result3.push(element);
+              //   }
+              // }
                    
-                  } else {
-                     const diff = getDiff(dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0], element)
-                      // console.log(Object.keys(diff));
-                     for (const element2 of Object.keys(diff)) {
-                      if (element2 === "dataNumber" || element2 === "Id" || element2 === "Account_vod__c" || element2 === "CSLB_National_ID_1__c"|| element2 === "Email_Sent_Date_vod__c"|| element2 === "isClickActive"|| element2 === "isOpenActive"|| element2 === "CreatedDate"|| element2 === "isActive") {
-                        continue
-                      }
+              //     } else {
+              //        const diff = getDiff(dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0], element)
+              //         // console.log(Object.keys(diff));
+              //        for (const element2 of Object.keys(diff)) {
+              //         if (element2 === "dataNumber" || element2 === "Id" || element2 === "Account_vod__c" || element2 === "CSLB_National_ID_1__c"|| element2 === "Email_Sent_Date_vod__c"|| element2 === "isClickActive"|| element2 === "isOpenActive"|| element2 === "CreatedDate"|| element2 === "isActive") {
+              //           continue
+              //         }
                       
-                      // console.log( dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2]);
+              //         // console.log( dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2]);
                       
-                      dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2] = "*"
-                     } 
+              //         dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2] = "*"
+              //        } 
                     
                     
                    
-                    // element.MR = "✳️"
-                    // dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]
-                  }
-                    }
+              //       // element.MR = "✳️"
+              //       // dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]
+              //     }
+              // }
 
 
 
@@ -2106,7 +2144,8 @@ console.log(emailList3);
               );
             }
            })
-          .sort((a, b) => {
+        .sort((a, b) => {
+
           if (state.sortObj3["医師名"] == "default") {
             if (accountList.indexOf(a.Dr_name) > accountList.indexOf(b.Dr_name)) return 1;
             if (accountList.indexOf(a.Dr_name) < accountList.indexOf(b.Dr_name)) return -1;
@@ -2143,6 +2182,8 @@ console.log(emailList3);
             if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return 1;
           }
 
+
+
           if (state.sortObj3["メールテンプレート"] == "default") {
             if (a["Approved_Email_Template_vod__r.Name"] > b["Approved_Email_Template_vod__r.Name"]) return 1;
             if (a["Approved_Email_Template_vod__r.Name"] < b["Approved_Email_Template_vod__r.Name"]) return -1;
@@ -2161,37 +2202,40 @@ console.log(emailList3);
               } 
           }
 
-          //  if (state.sortObj3["フラグメント"] == "default") {
+          if (a.Id > b.Id) return -1;
+  if (a.Id < b.Id) return 1;
+
+           if (state.sortObj3["フラグメント"] == "default") {
            
-          //   if (a["Email_Fragments_vod__r.Name"] && b["Email_Fragments_vod__r.Name"]) {
-          //     const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
+            if (a["Email_Fragments_vod__r.Name"] && b["Email_Fragments_vod__r.Name"]) {
+              const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
-          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"] !== "NULL") {
-          //       return firstKeySortResult;
-          //     } 
+              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"] !== "NULL") {
+                return firstKeySortResult;
+              } 
 
-          //   // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
-          //   // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
-          //   }
-
-            
+            // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
+            // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
+            }
 
             
 
-          // } else if (state.sortObj3["フラグメント"] == "ASC") {
-          //   const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
+            
 
-          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-          //       return firstKeySortResult;
-          //     } 
+          } else if (state.sortObj3["フラグメント"] == "ASC") {
+            const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
-          // } else if (state.sortObj3["フラグメント"] == "DESC") {
-          //   const firstKeySortResult = b["Email_Fragments_vod__r.Name"].localeCompare(a["Email_Fragments_vod__r.Name"], "ja");
+              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+                return firstKeySortResult;
+              } 
 
-          //     if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-          //       return firstKeySortResult;
-          //     } 
-          // }
+          } else if (state.sortObj3["フラグメント"] == "DESC") {
+            const firstKeySortResult = b["Email_Fragments_vod__r.Name"].localeCompare(a["Email_Fragments_vod__r.Name"], "ja");
+
+              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+                return firstKeySortResult;
+              } 
+          }
 
           if (Object.values(state.sortObj3["セカンド"]).length > 0) {
             if (state.sortObj3["セカンド"]["最終開封日時"] == "ASC") {
@@ -3812,7 +3856,9 @@ console.log(emailList3);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+               return state.selectedFilterItems.フラグメント.includes(
+                 x["Email_Fragments_vod__r.Name"]
+              );
             }
           })  
         creatDataProduct(data, false);
@@ -5377,7 +5423,9 @@ console.log(data);
           }
           
             (state.selectObj[state.isScreen] = {
-        docter:"",
+              docter: "",
+              Id: "",
+              分類: "",    
         sentDate: "",
        templateName: "",
               flagmentName: "",
@@ -5395,7 +5443,10 @@ console.log(data);
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+               return state.selectedFilterItems.フラグメント.includes(
+                 x["Email_Fragments_vod__r.Name"]
+              );
+            
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -5465,20 +5516,21 @@ console.log(data);
             rankObj3["data"][element2.Dr_name][element2.分類] = {};
           }
           
-
-         
-
-
-          if (!rankObj3["data"][element2.Dr_name][element2.分類][sentDate]) {
-            rankObj3["data"][element2.Dr_name][element2.分類][sentDate] = {};
+         if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id]) {
+            rankObj3["data"][element2.Dr_name][element2.分類][element2.Id] = {};
           }
 
-          if (!rankObj3["data"][element2.Dr_name][element2.分類][sentDate][element2["Approved_Email_Template_vod__r.Name"]]) {
-            rankObj3["data"][element2.Dr_name][element2.分類][sentDate][element2["Approved_Email_Template_vod__r.Name"]] = {};
+
+          if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate]) {
+            rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate] = {};
           }
 
-          if (!rankObj3["data"][element2.Dr_name][element2.分類][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]]) {
-            rankObj3["data"][element2.Dr_name][element2.分類][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]] = [];
+          if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]]) {
+            rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]] = {};
+          }
+
+          if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]]) {
+            rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]] = [];
           }
 
 
@@ -5494,7 +5546,7 @@ console.log(data);
           }
         
          
-             rankObj3["data"][element2.Dr_name][element2.分類][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]].push(element2);
+             rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]].push(element2);
 
            if (element2.Id === "a1tP6000004g9r0IAA") {
            console.log(element2);
@@ -5615,7 +5667,9 @@ console.log(data);
         
 
           (state.selectObj[state.isScreen] = {
-        docter:"",
+            docter: "",
+            Id: "",
+            分類: "",  
         sentDate: "",
         templateName: "",
             flagmentName: "",
@@ -6156,7 +6210,8 @@ console.log(data);
 
             (state.selectObj[state.isScreen] = {
               docter: "",
-              分類: "",       
+              分類: "",
+              Id: "",      
         sentDate: "",
         templateName: "",
               flagmentName: "",
@@ -6232,13 +6287,17 @@ console.log(data);
         for (const key in _obj) {
           for (const key2 in _obj[key]) {
             for (const key3 in _obj[key][key2]) {
-               for (const element of _obj[key][key2][key3]) {
+              for (const key4 in _obj[key][key2][key3]) { 
+                   for (const element of _obj[key][key2][key3][key4]) {
             
             (state.selectObj[state.isScreen] = {
               docter: element.Dr_name,
               分類: text,
-             })
+            })
+             
           }
+              }
+            
              } 
           
          }
@@ -6253,6 +6312,7 @@ console.log(data);
             (state.selectObj[state.isScreen] = {
               docter: element.Dr_name,
               sentDate: text,
+               Id: element.Id,
              })
           }
          }
@@ -6264,7 +6324,8 @@ console.log(data);
           (state.selectObj[state.isScreen] = {
               docter: element.Dr_name,
               sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-              templateName: text,
+            templateName: text,
+                Id: element.Id,
              })
          }
         }  
@@ -6275,6 +6336,7 @@ console.log(data);
               sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
                templateName: element["Approved_Email_Template_vod__r.Name"],
               flagmentName: text,
+                Id: element.Id,
              })
          } }else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
               (state.selectObj[state.isScreen] = {
@@ -6284,6 +6346,7 @@ console.log(data);
                 flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Last_Click_Date_vod__c: false,
             Last_Open_Date_vod__c: true,  
+             Id: _obj.Id,
               })
 
             //  _obj.isActive = true
@@ -6297,6 +6360,7 @@ console.log(data);
                 flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Last_Click_Date_vod__c: true,
             Last_Open_Date_vod__c: false,  
+             Id: _obj.Id,
               })
 
             //  _obj.isActive = true
@@ -6309,6 +6373,13 @@ console.log(data);
         
           const a = state.dataContentOrg2.filter((x) => {
            return x.Dr_name === state.selectObj[state.isScreen]["docter"]
+          }) .filter((x) => {
+            if ( state.selectObj[state.isScreen]["Id"]) {
+               return x["Id"]  === state.selectObj[state.isScreen]["Id"]
+            } else {
+            return true  
+            }
+          
           }).filter((x) => {
             if ( state.selectObj[state.isScreen]["sentDate"]) {
                return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
@@ -6616,6 +6687,7 @@ console.log(data);
 
           (state.selectObj[state.isScreen] = {
             docter: "",
+            Id: "",  
             分類: "",     
         sentDate: "",
         templateName: "",
@@ -6776,13 +6848,16 @@ console.log(data);
         for (const key in _obj) {
           for (const key2 in _obj[key]) {
             for (const key3 in _obj[key][key2]) {
-               for (const element of _obj[key][key2][key3]) {
+               for (const key4 in _obj[key][key2][key3]) { 
+                   for (const element of _obj[key][key2][key3][key4]) {
             
             (state.selectObj2[state.isScreen] = {
               docter: element.Dr_name,
               分類: text,
-             })
+            })
+             
           }
+              }
              } 
           
          }
@@ -6798,6 +6873,7 @@ console.log(data);
             (state.selectObj2[state.isScreen] = {
               docter: element.Dr_name,
               sentDate: text,
+              Id: element.Id,
              })
           }
          }
@@ -6809,7 +6885,8 @@ console.log(data);
           (state.selectObj2[state.isScreen] = {
               docter: element.Dr_name,
               sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-              templateName: text,
+            templateName: text,
+               Id: element.Id,
              })
          }
         }  
@@ -6820,6 +6897,7 @@ console.log(data);
               sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
                templateName: element["Approved_Email_Template_vod__r.Name"],
               flagmentName: text,
+               Id: element.Id,
              })
          } }else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
               (state.selectObj2[state.isScreen] = {
@@ -6827,6 +6905,7 @@ console.log(data);
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
               flagmentName: _obj["Email_Fragments_vod__r.Name"],
+               Id: _obj.Id,
               })
 
             //  _obj.isActive = true
@@ -6837,7 +6916,8 @@ console.log(data);
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
-              flagmentName: _obj["Email_Fragments_vod__r.Name"],
+                flagmentName: _obj["Email_Fragments_vod__r.Name"],
+             Id: _obj.Id,  
               })
 
             //  _obj.isActive = true
@@ -6853,6 +6933,13 @@ console.log(data);
         
           const a = state.dataContentOrg2.filter((x) => {
            return x.Dr_name === state.selectObj2[state.isScreen]["docter"]
+          }).filter((x) => {
+            if ( state.selectObj2[state.isScreen]["Id"]) {
+               return x.Id === state.selectObj2[state.isScreen]["Id"]
+            } else {
+            return true  
+            }
+          
           }).filter((x) => {
             if ( state.selectObj2[state.isScreen]["sentDate"]) {
                return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj2[state.isScreen]["sentDate"]
