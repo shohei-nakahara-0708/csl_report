@@ -485,7 +485,7 @@
                 </div>
               </div>
 
-              <div class="call-content-wrap">
+              <div class="call-content-wrap" :class="{ 'call-content-wrap2': state.isScreen === '送付内容' }">
                 <div class="iscroll-wrapperContent">
                   <div class="iscroll__scroller">
                     <div v-show="state.isScreen === '集計画面'">
@@ -8095,7 +8095,7 @@ console.log(state.selectObj);
       height: calc(100vh - 325px);
 
       &2 {
-        height: calc(100vh - 190px);
+        height: calc(100vh - 255px);
       }
     }
   }
@@ -8655,7 +8655,7 @@ console.log(state.selectObj);
        width: 15px;
     height: 15px;
     top: 5px;
-    left: 90px;
+    left: 97px;
 
        &:hover{
     background-color: #d9d9d9;
