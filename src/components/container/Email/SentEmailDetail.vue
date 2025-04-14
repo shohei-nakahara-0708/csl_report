@@ -3345,6 +3345,7 @@ export default defineComponent({
         if (state.dataContent.length === 0 && Object.values(state.selectObj["送付先詳細"]["Value"]).length === 0) {
           creatData(state.data,false);
         }
+         data = state.dataOrg
       } else if (_obj.selectedValue === "集計画面") {
         targetData = state.selectedFilterItems
         creatData(state.data, false);
