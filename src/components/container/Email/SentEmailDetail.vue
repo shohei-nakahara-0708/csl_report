@@ -6031,11 +6031,8 @@ console.log(data);
 
 
 
-<<<<<<< HEAD
-            if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-=======
+
             if (!state.selectedFilterItems.製品.includes("すべて")) {
->>>>>>> メール送付実績_メールベースfix
             state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
              creatDataProduct(data, "goScreen");
             } else {
