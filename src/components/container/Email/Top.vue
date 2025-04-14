@@ -250,8 +250,8 @@ ul.list {
         background-size: cover;
 
 
-           &.newData {
-       background: url('~@/assets/images/emailTop/cabnew.png') no-repeat top center;
+           &.oldData {
+       background: url('~@/assets/images/emailTop/cabOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -259,8 +259,8 @@ ul.list {
        background: url('~@/assets/images/emailTop/hem.png') no-repeat top center;
         background-size: cover;
 
-             &.newData {
-       background: url('~@/assets/images/emailTop/hemnew.png') no-repeat top center;
+             &.oldData {
+       background: url('~@/assets/images/emailTop/hemOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -268,8 +268,8 @@ ul.list {
        background: url('~@/assets/images/emailTop/ig.png') no-repeat top center;
         background-size: cover;
 
-             &.newData {
-       background: url('~@/assets/images/emailTop/ignew.png') no-repeat top center;
+             &.oldData {
+       background: url('~@/assets/images/emailTop/igOld.png') no-repeat top center;
         background-size: cover;
      }
      }
@@ -277,8 +277,8 @@ ul.list {
        background: url('~@/assets/images/emailTop/hae.png') no-repeat top center;
         background-size: cover;
 
-             &.newData {
-       background: url('~@/assets/images/emailTop/haenew.png') no-repeat top center;
+             &.oldData {
+       background: url('~@/assets/images/emailTop/haeOld.png') no-repeat top center;
         background-size: cover;
      }
      }

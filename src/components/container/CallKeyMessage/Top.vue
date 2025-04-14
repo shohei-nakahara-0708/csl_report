@@ -249,8 +249,8 @@ ul.list {
         background-size: cover;
 
 
-        &.newData {
-            background: url('~@/assets/images/callKeyMessageTop/screennew.png') no-repeat top center;
+        &.oldData {
+            background: url('~@/assets/images/callKeyMessageTop/screenOld.png') no-repeat top center;
         background-size: cover;
         }
 
