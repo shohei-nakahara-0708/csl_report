@@ -98,7 +98,7 @@ export default defineComponent({
         
       } finally {
         console.log('終わり');
-        
+        ApplicationStore.INITIAL_GOOGLE_ANALYTICS()
         ApplicationStore.isLoadComplete = true
       }
     }

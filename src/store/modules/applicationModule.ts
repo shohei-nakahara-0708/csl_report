@@ -4,8 +4,12 @@ import {
   UPD_ERROR_DETAIL,
   UPD_TOP_PANEL,
   UPD_HELP_POPUP,
-  UPD_EMAIL_SALSES
+  UPD_EMAIL_SALSES,
+  SET_GOOGLE_ANALYTICS,
+  INITIAL_GOOGLE_ANALYTICS,
 } from '@/constants'
+import { GoogleAnalytics } from '@/utils/googleAnalytics'
+import { useUserStore } from '@/store/modules/userModule'
 
 
 interface ApplicationState {
@@ -127,6 +131,27 @@ export const useApplicationStore = defineStore({
       this.selectEmailSalses = flag
     },
 
+    /**
+     * Google Analyticsの設定
+     */
+    [INITIAL_GOOGLE_ANALYTICS]() {
+      this.googleAnalytics = new GoogleAnalytics()
+    },
+
+    /**
+     * Google Analyticsの実行
+     */
+    [SET_GOOGLE_ANALYTICS](payload) {
+      const User = useUserStore()
+      const user = User.userList[User.currentUserId] || {}
+      this.googleAnalytics.postingLogData({
+        uid: user?.EmployeeNumber,
+        ec: payload?.ec || '',
+        ea: payload?.ea || '',
+        el: payload?.el || '',
+        cd2: ''
+      })
+    },
   },
 })
 
