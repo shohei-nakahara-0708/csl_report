@@ -1417,7 +1417,7 @@ state.maxNumber = Math.max(...totalArray);
             }
           }
         } else  {
-          maxIndex80 = maxIndex / 0.85;
+          maxIndex80 = maxIndex / 0.8;
 
           if (numberDigit >= 4) {
             maxIndexCe = maxIndex80;
