@@ -143,13 +143,9 @@ export const useApplicationStore = defineStore({
      */
     [SET_GOOGLE_ANALYTICS](payload) {
       const User = useUserStore()
-      const user = User.userList[User.currentUserId] || {}
       this.googleAnalytics.postingLogData({
-        uid: user?.EmployeeNumber,
-        ec: payload?.ec || '',
-        ea: payload?.ea || '',
-        el: payload?.el || '',
-        cd2: ''
+        userID: User.currentUserId,
+        pageName: payload.pageName,
       })
     },
   },

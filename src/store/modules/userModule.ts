@@ -54,7 +54,6 @@ export const useUserStore = defineStore({
      * カレントユーザーの取得処理
      */
     async [USER__GET_CURRENT_USER](): Promise<void> {
-      this.USER__GET_CURRENT_USER_PROFILE()
       const ret = await user[USER__GET_CURRENT_USER]()
       this.currentUserId = ret
     },

@@ -24,6 +24,7 @@ import emailDataNew from "@/assets/data/email.json";
 import emailDataDetailNew from "@/assets/data/emailDetail.json";
 
 import { useAccountStore } from '@/store/modules/accountModule'
+import { useUserStore } from "@/store/modules/userModule";
 
 
 dayjs.locale('ja')
@@ -43,6 +44,7 @@ export default defineComponent({
 
     const Account = useAccountStore()
 
+    const User = useUserStore();
 
     const root = ref(null)
     const state = reactive<State>({
@@ -95,10 +97,11 @@ export default defineComponent({
         // 
         // await Account.ACCOUNT__GET_WORK_HISTORY()
 
-        
+        await User.USER__GET_CURRENT_USER();
       } finally {
         console.log('終わり');
         ApplicationStore.INITIAL_GOOGLE_ANALYTICS()
+        ApplicationStore.SET_GOOGLE_ANALYTICS({ pageName: 'TOP' })
         ApplicationStore.isLoadComplete = true
       }
     }
