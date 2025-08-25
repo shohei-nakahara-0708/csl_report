@@ -1611,6 +1611,7 @@ export default defineComponent({
       for (const element of optInDetail) {
 
         if (props.id === element["営業部"]) {
+          element["uniqueID"] = element.Dr_name + element.HP_name
           result.push(element)
         }
         
@@ -8012,7 +8013,14 @@ console.log(state.selectObj);
                   if (a.HP_name < b.HP_name) return -1;
                 });
 
-      state.optInDetaildataFilter = result      
+      const uniqueUsers = Array.from(
+  new Map(result.map((user) => [user.uniqueID, user])).values()
+);
+
+console.log(uniqueUsers);
+
+
+      state.optInDetaildataFilter = uniqueUsers      
      }
 
 
