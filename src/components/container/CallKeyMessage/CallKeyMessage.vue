@@ -66,7 +66,8 @@
 
               <div class="call-content-wrap">
                   <div class="title">
-               総使用回数<span>※グラフをクリックして詳細を確認</span>
+               <div>総使用回数<span>※グラフをクリックして詳細を確認</span></div>
+               <div style="font-size: 60%;">数値内訳：総数(TG総数）</div>
               </div>
               
                 <div class="iscroll-wrapperContent">
@@ -3546,6 +3547,7 @@ margin:  0 auto;
     background-color: #1b1061;
     margin: 15px 10px 10px;
     padding: 2px 5px;
+   
 }
 
 // // ヘッダー部分の順番を入れ替え
@@ -3916,6 +3918,10 @@ margin:  0 auto;
     .title {
       background-color: #22538e;
       margin: 0 10px;
+      line-height: inherit;
+       display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 
       span {
         margin-left: 3px;

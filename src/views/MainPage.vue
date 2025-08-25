@@ -19,6 +19,41 @@
         <div class="iscroll-wrapper">
           <div class="iscroll__scroller">
             <div class="date-title">2025年1月〜</div>
+            <ul class="list list2">
+              <li @tap="onTapScreen('CSL_DOCTER_REPORT')">
+                
+                  <div class="tab"><div class="tab2"></div></div>
+                  <div class="img-wrap"></div>
+                  <span class="text">医師別レポート</span>
+   
+              </li>
+            </ul>
+             <div class="date-title">2025年7月〜</div>
+              <ul class="list">
+              <li  @tap="onTapScreen('CSL_CALL_REPORT_2025_2H')">
+             <div class="tab"><div class="tab2"></div></div>
+                  <div class="img-wrap"></div>
+                  <span class="text">事業別Call実績レポート</span>
+ 
+              </li>
+
+              <li  @tap="onTapScreen('CSL_MAIL_REPORT_2025_2H')">
+             <div class="tab"><div class="tab2"></div></div>
+                  <div class="img-wrap"></div>
+                  <span class="text">事業別メール送付実績レポート</span>
+ 
+              </li>
+
+               <li  @tap="onTapScreen('CSL_CONTENTS_REPORT_2025_2H')">
+             <div class="tab"><div class="tab2"></div></div>
+                  <div class="img-wrap"></div>
+                  <span class="text">コンテンツ使用実績レポート</span>
+ 
+              </li>
+
+</ul>
+
+            <div class="date-title">2025年1月〜6月</div>
              <ul class="list">
               <li>
                 <router-link  :to="{
@@ -168,6 +203,34 @@ export default defineComponent({
       }, 500);
     };
 
+    const onTapScreen = async (text) => {
+
+      switch (text) {
+        case "CSL_DOCTER_REPORT":
+          window.com.veeva.clm.gotoSlide(`CSL_DOCTER_REPORT_0.0.zip`, `CSL_DOCTER_REPORT`)
+          break;
+
+            case "CSL_CALL_REPORT_2025_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_CALL_REPORT_2025_2H_0.0.zip`, `CSL_CALL_REPORT_2025_2H`)
+          break;
+
+             case "CSL_MAIL_REPORT_2025_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_MAIL_REPORT_2025_2H_0.0.zip`, `CSL_MAIL_REPORT_2025_2H`)
+          break;
+
+             case "CSL_CONTENTS_REPORT_2025_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_CONTENTS_REPORT_2025_2H_0.0.zip`, `CSL_CONTENTS_REPORT_2025_2H`)
+          break;
+      
+        default:
+          break;
+      }
+      
+     
+
+      // }
+    };
+
     return {
       root,
       state,
@@ -175,6 +238,7 @@ export default defineComponent({
       shouldShowTopPanel,
       shouldShowHelpPopup,
       onTapLink,
+      onTapScreen
     };
   },
 });
@@ -348,6 +412,26 @@ ul.list {
   left: 1px;
 }
 
+.list2 {
+
+  li {
+    cursor:pointer;
+  }
+
+  &:before{
+    content:"";
+    display: block;
+    width:450px;
+    order:1;
+  }
+
+  &:after{
+    content:"";
+    display: block;
+    width:450px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   ul.list {
     flex-wrap: wrap;
@@ -370,5 +454,9 @@ ul.list {
     margin: 0 auto;
     height: 100%;
     font-size: 24px;
+}
+
+.d-no {
+  display: none !important;
 }
 </style>

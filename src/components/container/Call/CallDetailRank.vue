@@ -42,7 +42,14 @@
             <div class="call-content-main">
               <div class="call-content-main-header">
                 <div class="call-content-main-header-title">
-                  <template v-if="state.isScreen === '月別実績'">{{ state.isScreen }}</template><template v-else><span class="mr12">半期実績</span>  <template v-if="state.monthArryOrg.length === 1">{{ dayjs(state.monthArryOrg[0]).format("YYYY.M") }}</template><template v-else> {{ dayjs(state.monthArryOrg[0]).format("YYYY.M") }}~{{ dayjs(state.monthArryOrg[state.monthArryOrg.length - 1]).format("YYYY.M") }}</template></template>
+                  <div>
+                     <template v-if="state.isScreen === '月別実績'">{{ state.isScreen }}</template><template v-else><span class="mr12">半期実績</span>  <template v-if="state.monthArryOrg.length === 1">{{ dayjs(state.monthArryOrg[0]).format("YYYY.M") }}</template><template v-else> {{ dayjs(state.monthArryOrg[0]).format("YYYY.M") }}~{{ dayjs(state.monthArryOrg[state.monthArryOrg.length - 1]).format("YYYY.M") }}</template></template>
+                  </div>
+                  <div style="font-size: 65%;">
+                     <template v-if="state.isScreen === '半期実績'">数値内訳：総数(TG総数）</template>
+                  </div>
+                 
+                
                 </div>
 
                 <div class="call-content-main-header-content" v-if="(state.data.length > 0 && state.isScreen === '月別実績') || (state.isScreen === '半期実績' && state.girdArry.length > 0)">
@@ -3797,9 +3804,10 @@ if (state.selectFiliterCategory[0] === element) {
           font-size: 20px;
           font-weight: bold;
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           padding: 4px;
           margin-bottom: 2px;
+          justify-content: space-between;
         }
 
         &-content {

@@ -1,6 +1,6 @@
 <template>
-  <div ref="root" class="top" >
-    <div class="iscroll-wrapper2">
+  <div ref="root" class="top">
+    <div  class="iscroll-wrapper2">
       <div class="iscroll__scroller2">
         <div>
           <div class="call-header">
@@ -58,9 +58,15 @@
 
              
 
-               <div class="filter-area-text">
-                <template v-if="state.isScreen === '集計画面'">▼MR名 or 棒グラフをクリック後、対象のMRの実績に絞込</template>
+               <div class="filter-area-text" :class="[{ 'filter-area-text2': state.isScreen === '集計画面'},{ 'filter-area-text3': state.isScreen === '送付先詳細'}]">
+                <div>
+                  <template v-if="state.isScreen === '集計画面'">▼MR名 or 棒グラフをクリック後、対象のMRの実績に絞込</template>
                 <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示</template>
+                </div>
+                
+                <div class="filter-area-text-note">
+                  <template v-if="state.isScreen === '集計画面' ||state.isScreen === '送付先詳細' ">数値内訳：総数(TG総数）</template>
+                </div>
                 
                </div>
               </div>
@@ -165,8 +171,11 @@
                       </template>
 
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true" @mouseleave="state.isHoverFlag24 = false" class="call-list4 call-list fwb opt">
+                    <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true" @mouseleave="state.isHoverFlag24 = false" class="call-list2 call-list fwb opt">
                       ユニーク<br>送信数
+                       <div id="question-button" class="q-button" @mouseover="onHoverItemq($event)" @mouseleave="state.isHoverFlag25 = false" @tap="onTapTargetq($event)"  v-click-outside="onTapOutside2">
+                       <div ></div>
+                      </div>
                       <template v-if="!Object.keys(state.sortObj.セカンド).includes('ユニーク')">
                       <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag24" data-sort="ユニーク">
                        <div class="sort-asc2" data-sort="ユニーク"></div>
@@ -521,7 +530,7 @@
                                                     </div>
 
                                                     <div class="test">
-                                                        <div   @mouseover="onHoverItem2_2('', MR.ユニーク, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', MRValue, $event)" class="call-list4 call-list-title" data-kinds="MR" data-kinds2="ユニーク">
+                                                        <div   @mouseover="onHoverItem2_2('', MR.ユニーク, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', MRValue, $event)" class="call-list2 call-list-title" data-kinds="MR" data-kinds2="ユニーク">
                                                       {{ MR.ユニーク  }}
                                                     </div>
 
@@ -817,6 +826,17 @@
             </div>
           </div>
 
+          <div id="stalker2" :class="['pop','speechBubble', { 'pop-no': state.isHoverFlag25 }]">
+            <div id="stalker3" class="speechBubble2"></div>
+            <div class="pop-content">
+                <span class="fwb mb4">ユニーク送信数について</span>
+              ・月単位で換算<br>
+              ・送信実績があれば１、なければ０<br>
+              （例）1月2月送信あり、3月送信無しの場合のユニーク数＝2
+            </div>
+             <div id="stalker4" class="speechBubble3"></div>
+          </div>
+
                <PopupScrollOpt v-if="state.isPopup" :tap-close="onTapClose" :title="'オプトイン状況'">
       <ul class="opt-value" v-for="(obj, index) in state.optInDetaildataFilter" :key="index">
         <li>
@@ -985,6 +1005,7 @@ interface State {
   isHoverFlag22: boolean;
   isHoverFlag23: boolean;
   isHoverFlag24: boolean;
+  isHoverFlag25: boolean;
   popupData: any;
   isScreen: any;
   activeDOM: any;
@@ -1442,6 +1463,7 @@ export default defineComponent({
       isHoverFlag21: false,
       isHoverFlag23: false,
       isHoverFlag24: false,
+      isHoverFlag25: false,
       popupData: {},
       isScreen: "集計画面",
       activeDOM: [],
@@ -2737,7 +2759,8 @@ export default defineComponent({
 
         let girdNumPulus;
 
-        if (windowSize > 1500) {
+        if (state.isScreen === "集計画面") {
+             if (windowSize > 1500) {
           maxIndex80 = maxIndex / 0.9;
 
           if (numberDigit >= 4) {
@@ -2825,6 +2848,176 @@ export default defineComponent({
               girdNumPulus = 5;
             }
 
+           if (maxIndex <= 20) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 5;
+              girdNumPulus = 5;
+            }
+
+
+            if (maxIndex <= 5) {
+              maxIndex80 = maxIndex + 1;
+              maxIndexCe = maxIndex + 1;
+              girdNum = maxIndexCe / 1;
+              girdNumPulus = 1;
+            }
+          }
+        } else  {
+          maxIndex80 = maxIndex / 0.7;
+
+          if (numberDigit >= 4) {
+            maxIndexCe = maxIndex80;
+            
+
+            girdNum = maxIndexCe / 500;
+            girdNumPulus = 500;
+          } else if (numberDigit === 3) {
+            maxIndexCe = maxIndex80;
+            girdNum = maxIndexCe / 200;
+            girdNumPulus = 200;
+            
+            if (maxIndex <= 400) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 100;
+              girdNumPulus = 100;
+            }
+            if (maxIndex <= 200) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 50;
+              girdNumPulus = 50;
+            }
+
+            //  if (maxIndex <= 160) {
+            //   maxIndexCe = maxIndex80;
+            //   girdNum = maxIndexCe / 20;
+            //   girdNumPulus = 20;
+            //  }
+            
+          } else if (numberDigit <= 2) {
+            if (maxIndex <= 100) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 20;
+              girdNumPulus = 20;
+            }
+
+            if (maxIndex <= 80) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 20;
+              girdNumPulus = 20;
+            }
+            if (maxIndex <= 40) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 10;
+              girdNumPulus = 10;
+            }
+
+            if (maxIndex <= 20) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 5;
+              girdNumPulus = 5;
+            }
+
+
+            if (maxIndex <= 5) {
+              maxIndex80 = maxIndex + 1;
+              maxIndexCe = maxIndex + 1;
+              girdNum = maxIndexCe / 1;
+              girdNumPulus = 1;
+            }
+          }
+        } 
+        } else if (state.isScreen === "送付先詳細") {
+             if (windowSize > 1500) {
+          maxIndex80 = maxIndex / 0.9;
+
+          if (numberDigit >= 4) {
+            maxIndexCe = maxIndex80;
+            maxIndexCe = maxIndex80;
+            if (maxIndex >= 2000) {
+              girdNum = maxIndexCe / 500;
+              girdNumPulus = 500;
+            } else {
+              girdNum = maxIndexCe / 100;
+              girdNumPulus = 100;
+            }
+
+            
+          } else if (numberDigit === 3) {
+            maxIndexCe = maxIndex80;
+            girdNum = maxIndexCe / 50;
+            girdNumPulus = 50;
+            if (maxIndex <= 600) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 50;
+              girdNumPulus = 50;
+            }
+            
+          } else if (numberDigit <= 2) {
+            if (maxIndex <= 100) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 10;
+              girdNumPulus = 10;
+            }
+
+            if (maxIndex <= 50) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 5;
+              girdNumPulus = 5;
+            }
+
+
+            if (maxIndex <= 20) {
+              maxIndex80 = maxIndex + 1;
+              maxIndexCe = maxIndex + 1;
+              girdNum = maxIndexCe / 1;
+              girdNumPulus = 1;
+            }
+          }
+        } else if (windowSize > 1100) {
+          maxIndex80 = maxIndex / 0.8;
+
+          if (numberDigit >= 4) {
+            maxIndexCe = maxIndex80;
+            
+
+            if (maxIndex >= 2000) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 500;
+              girdNumPulus = 500;
+            } else {
+              girdNum = maxIndexCe / 200;
+              girdNumPulus = 200;
+            }
+          } else if (numberDigit === 3) {
+            maxIndexCe = maxIndex80;
+            girdNum = maxIndexCe / 100;
+            girdNumPulus = 100;
+            if (maxIndex <= 500) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 50;
+              girdNumPulus = 50;
+            }
+            if (maxIndex <= 200) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 20;
+              girdNumPulus = 20;
+            }
+          } else if (numberDigit <= 2) {
+            if (maxIndex <= 100) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 10;
+              girdNumPulus = 10;
+            }
+
+            if (maxIndex <= 50) {
+              maxIndexCe = maxIndex80;
+              girdNum = maxIndexCe / 5;
+              girdNumPulus = 5;
+            }
+
+      
+
+
             if (maxIndex <= 20) {
               maxIndex80 = maxIndex + 1;
               maxIndexCe = maxIndex + 1;
@@ -2896,6 +3089,9 @@ export default defineComponent({
             }
           }
         } 
+        }
+
+     
 
         if (state.isScreen === "集計画面") {
           state.girdArry = [];
@@ -5670,7 +5866,16 @@ console.log(data);
       }
     };
 
+    const onTapOutside2 = async (evt) => {
+
+      state.isHoverFlag25 = false
+
+    }
+
+
     const onTapOutside = async (evt) => {
+
+   
 
 
 
@@ -5815,7 +6020,10 @@ console.log(data);
 
       const parentElment = evt.target.parentElement;
 
+      let flg = false
+
       if (state.isScreen === "集計画面") {
+        flg = false
         if (evt.target.classList.contains("on")) {
           evt.target.classList.remove("on");
 
@@ -6117,7 +6325,7 @@ console.log(data);
         
       }else if(state.isScreen === "送付先詳細")
       {
-
+        flg = false
          if (evt.target.classList.contains("on")) {
           evt.target.classList.remove("on");
 
@@ -6262,6 +6470,8 @@ console.log(data);
   
 }else if(state.isScreen === "送付内容")
       {
+
+        flg = true
 
          if (evt.target.classList.contains("on")) {
            evt.target.classList.remove("on");
@@ -6578,7 +6788,9 @@ console.log(data);
         
   
 }
-      setPouUp2_2(_obj, text, evt);
+           if (flg === true) {
+setPouUp2_2(_obj, text, evt);
+      }
 
 
       // }
@@ -6673,6 +6885,8 @@ console.log(data);
           
           setPouUp2_3(_obj, index, evt);
       }
+
+       state.isHoverFlag = false;
 
        }else if (state.isScreen === "送付先詳細") {
 
@@ -6772,6 +6986,7 @@ console.log(data);
           setPouUp2_3(_obj, index, evt);
       }
 
+       state.isHoverFlag = false;
       } else if (state.isScreen === "送付内容") {
 
         console.log(_obj);
@@ -7217,6 +7432,80 @@ console.log(data);
       }
 
      
+    };
+
+     const onHoverItemq = (evt) => {
+      state.isHoverFlag25 = true;
+
+      const ua = navigator.userAgent;
+
+      if (state.isHoverFlagCount === 0 && ua.indexOf("iPad") <= 0) {
+        state.isHoverFlag25 = false;
+      } else {
+      setPouUpq(evt)  
+      }
+
+     
+    };
+
+
+    const setPouUpq = async ( evt) => {
+      if (!state.isHoverFlag25) {
+        state.isHoverFlag25 = true;
+      }
+
+      
+
+      const stalker = document.getElementById("stalker2");
+      const button = document.getElementById("question-button");
+      const stalker3 = document.getElementById("stalker3");
+      const stalker4 = document.getElementById("stalker4");
+      let x
+      let x2
+    
+
+      const windowSize = window.innerWidth;
+
+       x = button.getBoundingClientRect().left - 45;
+
+
+      if (windowSize <  x + stalker.clientWidth) {
+        x = window.innerWidth - stalker.clientWidth - 15;
+
+        x2 = button.getBoundingClientRect().left - x - 2
+           stalker3.style.left =  x2 + "px";
+        stalker4.style.left =  x2 + "px";
+      } else {
+        x = button.getBoundingClientRect().left - 45;
+        x2 = 10 
+
+        stalker3.style.left =  x2 + "%";
+        stalker4.style.left =  x2 + "%";
+      }
+
+      const y = button.getBoundingClientRect().top - stalker.offsetHeight - 35;
+
+
+
+  
+   
+      stalker.style.transform = "translate(" + x + "px, " + y + "px)";
+
+ 
+    };
+
+
+     const onTapTargetq = async(evt) => {
+       const ua = navigator.userAgent;
+
+
+
+       
+
+     
+ setPouUpq(evt)  
+
+      
     };
 
     const setPouUp2_2 = async (_obj, text, evt) => {
@@ -7739,6 +8028,7 @@ console.log(state.selectObj);
       onTapClearButton,
       getShareName,
       onTapOutside,
+      onTapOutside2,
       getSpareClass,
       onHoverItem2_2,
       onHoverItem2_2_2,
@@ -7755,7 +8045,9 @@ console.log(state.selectObj);
       getOptin,
       onTapSelectBoxItemOptIn,
       onTapClose,
-      onTapTargetPopup
+      onTapTargetPopup,
+      onHoverItemq,
+      onTapTargetq
     };
   },
 });
@@ -7940,16 +8232,32 @@ console.log(state.selectObj);
   flex-wrap: wrap;
 
   &-text {
-    width: 40%;
+    
     display: flex;
     align-items: flex-end;
     font-size: 16px;
     margin-bottom: 13px;
-    line-height: 23px;
+
     color: rgb(225, 87, 89);
     font-weight: bold;
     font-style: normal;
     text-decoration: none;
+    justify-content: space-between;
+    width: 100%;
+
+    &2{
+      min-width: 965px;
+    }
+    
+    &3{
+      min-width: 810px;
+      max-width: 1265px;
+    }
+
+    &-note {
+      color: rgb(51, 51, 51);
+      font-size: 90%;
+    }
   }
 }
 
@@ -8345,6 +8653,15 @@ console.log(state.selectObj);
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
+
+       &.opt {
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 3px 0;
+        text-align: left;
+        padding-left: 30px;
+      }
+      
     }
     &2-2 {
       width: 80px;
@@ -8352,6 +8669,7 @@ console.log(state.selectObj);
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
+      
     }
     &3 {
       width: 200px;
@@ -8743,7 +9061,7 @@ console.log(state.selectObj);
    padding-right: 5px;
 
   &-left {
-    width: 730px;
+    width: 760px;
     text-align: right;
   }
 
@@ -8796,6 +9114,24 @@ console.log(state.selectObj);
 
 
 }
+
+.q-button {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 20px;
+    top: 9px;
+
+    & div {
+       width: 100%;
+  height: 100%;
+      background: url('~@/assets/images/icon/q.png'); /* 表示する画像 */
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: left top;
+
+    }
+  }
 
 .sort-button {
       position: absolute;
@@ -9115,5 +9451,37 @@ display: flex;
             }
 }
 
+.speechBubble {
+  padding: 10px 20px;
+  font-size: 14px;
+
+  & .pop-content {
+flex-direction: column;
+  }
+  
+}
+
+
+.speechBubble2 {
+
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  border-style: solid;
+  border-width: 20px 10px 0 10px;
+  border-color: #d6d6d6 transparent transparent;
+  translate: -50% 100%;
+}
+
+.speechBubble3 {
+ 
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  border-style: solid;
+  border-width: 17.8px 8.9px 0 8.9px;
+  border-color: #ffffff transparent transparent;
+  translate: -50% 100%;
+}
 
 </style>
