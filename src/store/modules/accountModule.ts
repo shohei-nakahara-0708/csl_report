@@ -354,6 +354,11 @@ export const useAccountStore = defineStore({
       for (const element of callData) {
            
         const target = element["CSLB_Channel_Type__c"]
+
+
+          if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
            
 
            if (!target) {
@@ -420,6 +425,10 @@ export const useAccountStore = defineStore({
            
         const target = element["CSLB_Channel_Type__c"]
            
+
+         if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
 
            if (!target) {
              element["CSLB_Channel_Type__c"] = "NULL"
@@ -492,6 +501,11 @@ export const useAccountStore = defineStore({
            //        }
 
            let target = element["Dr_name"]
+
+            if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
+           
            
 
            if (!target) {
@@ -638,6 +652,12 @@ export const useAccountStore = defineStore({
             target = "NULL"
            }
 
+
+            if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
+           
+
            if (!element["Email_Fragments_vod__r.Name"]) {
             element["Email_Fragments_vod__r.Name"] =  "NULL"
            }
@@ -765,6 +785,11 @@ export const useAccountStore = defineStore({
 
            let target = element["Dr_name"]
 
+            if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
+           
+
            if (!target) {
             target = "NULL"
            }
@@ -845,6 +870,11 @@ export const useAccountStore = defineStore({
 
            let target = element["Dr_name"]
 
+            if (element["Dr_name"].includes("テスト")) {
+            continue
+           }
+           
+
            if (!target) {
             target = "NULL"
            }
@@ -913,7 +943,9 @@ export const useAccountStore = defineStore({
 
 
           ApplicationStore.isLoadComplete = false
-          this.MediaList = mediaData
+          this.MediaList = mediaData.filter((x) => {
+              return !x["Account_vod__r.Name"].includes("テスト")
+          })
  
 
 
@@ -937,7 +969,9 @@ export const useAccountStore = defineStore({
 
 
           ApplicationStore.isLoadComplete = false
-          this.MediaListNew = mediaData
+          this.MediaListNew = mediaData.filter((x) => {
+              return !x["Account_vod__r.Name"].includes("テスト")
+          })
  
 
 
