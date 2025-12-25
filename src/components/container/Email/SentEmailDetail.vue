@@ -1,6 +1,6 @@
 <template>
   <div ref="root" class="top">
-    <div  class="iscroll-wrapper2">
+    <div class="iscroll-wrapper2">
       <div class="iscroll__scroller2">
         <div>
           <div class="call-header">
@@ -10,11 +10,11 @@
               <li>/</li>
               <li>
                 <router-link :to="{
-          name: 'SentEmailTop',
-          query: {
-            date: state.date,
-          },
-        }">事業部別メール送付実績</router-link>
+                  name: 'SentEmailTop',
+                  query: {
+                    date: state.date,
+                  },
+                }">事業部別メール送付実績</router-link>
               </li>
               <li>/</li>
               <li>{{ state.name }}_メール送付実績</li>
@@ -29,85 +29,106 @@
             <div class="filter-contents">
               <div class="filter-area">
                 <div class="filter-screen">
-                   <SelectBox2 :width="'160px'" :category="'画面'" :select-obj="state.screenObj" :selected-value="state.selectedFilterScreenItems.画面" @tap-item="onTapSelectBoxItemScreen" />
+                  <SelectBox2 :width="'160px'" :category="'画面'" :select-obj="state.screenObj"
+                    :selected-value="state.selectedFilterScreenItems.画面" @tap-item="onTapSelectBoxItemScreen" />
                   <div class="filter-screen-text">←前画面に戻る際に選択</div>
                 </div>
-               
-                <div class="pr20" :style="state.isScreen ==='集計画面' ? 'justify-content: space-between;' : '' " style="display: flex;">
-                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'メール送付月'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.メール送付月" />
 
-                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'エリア'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.エリア" v-if="state.isScreen === '集計画面'" />
+                <div class="pr20" :style="state.isScreen === '集計画面' ? 'justify-content: space-between;' : ''"
+                  style="display: flex;">
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'メール送付月'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.メール送付月" />
 
-                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'130px'" :category="'テリトリー名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.テリトリー名" v-if="state.isScreen === '集計画面'" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'エリア'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.エリア"
+                    v-if="state.isScreen === '集計画面'" />
 
-                <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'MR'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.MR" v-if="state.isScreen === '集計画面'" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'130px'" :category="'テリトリー名'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.テリトリー名"
+                    v-if="state.isScreen === '集計画面'" />
 
-                   <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem2" :width="'130px'" :category="'施設名'" :select-obj="state.selectedObj" :selected-value="state.selectedFilterItems3.施設名" v-if="state.isScreen === '送付先詳細'" />
-               <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'医師名'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.医師名"   v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'" />
-                
-               <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'Target'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.Target" v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'"/>
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'MR'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.MR"
+                    v-if="state.isScreen === '集計画面'" />
 
-                 <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'150px'" :category="'フラグメント'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.フラグメント" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem2" :width="'130px'" :category="'施設名'"
+                    :select-obj="state.selectedObj" :selected-value="state.selectedFilterItems3.施設名"
+                    v-if="state.isScreen === '送付先詳細'" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'医師名'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.医師名"
+                    v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'" />
 
-                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'製品'" :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'Target'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.Target"
+                    v-if="state.isScreen === '送付先詳細' || state.isScreen === '集計画面'" />
 
-                   <SelectBox5 class="mb20 mr10" @tap-item="onTapSelectBoxItemOptIn" :width="'90px'" :category="'許諾製品'" :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品"  v-if="state.isScreen === '集計画面'" />
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'150px'" :category="'フラグメント'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.フラグメント" />
+
+                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'製品'"
+                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+
+                  <SelectBox5 class="mb20 mr10" @tap-item="onTapSelectBoxItemOptIn" :width="'90px'" :category="'許諾製品'"
+                    :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品"
+                    v-if="state.isScreen === '集計画面'" />
                 </div>
 
-                
 
-             
 
-               <div class="filter-area-text" :class="[{ 'filter-area-text2': state.isScreen === '集計画面'},{ 'filter-area-text3': state.isScreen === '送付先詳細'}]">
-                <div>
-                  <template v-if="state.isScreen === '集計画面'">▼MR名 or 棒グラフをクリック後、対象のMRの実績に絞込</template>
-                <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示</template>
+
+
+                <div class="filter-area-text"
+                  :class="[{ 'filter-area-text2': state.isScreen === '集計画面' }, { 'filter-area-text3': state.isScreen === '送付先詳細' }]">
+                  <div>
+                    <template v-if="state.isScreen === '集計画面'">▼MR名 or 棒グラフをクリック後、対象のMRの実績に絞込</template>
+                    <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示</template>
+                  </div>
+
+
                 </div>
-                
-                <div class="filter-area-text-note">
-                  <template v-if="state.isScreen === '集計画面' ||state.isScreen === '送付先詳細' ">数値内訳：総数(TG総数）</template>
-                </div>
-                
-               </div>
               </div>
             </div>
           </div>
 
-          <div v-click-outside="onTapOutside" class="call-content" :class="[{ 'call-content2': state.isScreen === '送付先詳細'},{ 'call-content3': state.isScreen === '送付内容'}]">
+          <div v-click-outside="onTapOutside" class="call-content"
+            :class="[{ 'call-content2': state.isScreen === '送付先詳細' }, { 'call-content3': state.isScreen === '送付内容' }]">
             <div class="call-content-main">
               <div class="call-content-main-header">
 
-                <div class="call-content-main-header-content" v-if="Object.values(state.data2).length > 0  && state.isScreen === '集計画面'">
+                <div class="call-content-main-header-content"
+                  v-if="Object.values(state.data2).length > 0 && state.isScreen === '集計画面'">
                   <ul class="call-content-main-header-list">
-                    <li  @tap="onTapSortVisible('isHoverFlag5')" @mouseover="state.isHoverFlag5 = true" @mouseleave="state.isHoverFlag5 = false" class="call-list1 call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag5')" @mouseover="state.isHoverFlag5 = true"
+                      @mouseleave="state.isHoverFlag5 = false" class="call-list1 call-list fwb">
                       営業部
                       <template v-if="state.sortObj.営業部 == 'default'">
-                      <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag5" data-sort="営業部">
-                       <div class="sort-asc2" data-sort="営業部"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag5" data-sort="営業部">
+                          <div class="sort-asc2" data-sort="営業部"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort" data-sort="営業部">
                           <template v-if="state.sortObj.営業部 == 'ASC'">
                             <div class="sort-asc" data-sort="営業部"></div>
                           </template>
                           <template v-if="state.sortObj.営業部 == 'DESC'">
-                         <div class="sort-desc" data-sort="営業部"></div>
+                            <div class="sort-desc" data-sort="営業部"></div>
                           </template>
                         </div>
                       </template>
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag4')" @mouseover="state.isHoverFlag4 = true" @mouseleave="state.isHoverFlag4 = false" class="call-list2 call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag4')" @mouseover="state.isHoverFlag4 = true"
+                      @mouseleave="state.isHoverFlag4 = false" class="call-list2 call-list fwb">
                       エリア
-                    <template v-if="state.sortObj.エリア == 'default'">
-                      <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag4" data-sort="エリア">
-                        <div class="sort-asc2" data-sort="エリア"></div>
-                      </div>
-                    </template>
+                      <template v-if="state.sortObj.エリア == 'default'">
+                        <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag4" data-sort="エリア">
+                          <div class="sort-asc2" data-sort="エリア"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort" data-sort="エリア">
                           <template v-if="state.sortObj.エリア == 'ASC'">
-                             <div class="sort-asc" data-sort="エリア"></div>
+                            <div class="sort-asc" data-sort="エリア"></div>
                           </template>
                           <template v-if="state.sortObj.エリア == 'DESC'">
                             <div class="sort-desc" data-sort="エリア"></div>
@@ -115,17 +136,18 @@
                         </div>
                       </template>
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag2')" @mouseover="state.isHoverFlag2 = true" @mouseleave="state.isHoverFlag2 = false"  class="call-list3 call-list fwb">
-                      テリトリー名 
+                    <li @tap="onTapSortVisible('isHoverFlag2')" @mouseover="state.isHoverFlag2 = true"
+                      @mouseleave="state.isHoverFlag2 = false" class="call-list3 call-list fwb">
+                      テリトリー名
                       <template v-if="!Object.keys(state.sortObj.セカンド).includes('テリトリー名')">
-                      <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag2" data-sort="テリトリー名">
+                        <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag2" data-sort="テリトリー名">
                           <div class="sort-asc2" data-sort="テリトリー名"></div>
-                      </div>
-                    </template>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort" data-sort="テリトリー名">
                           <template v-if="state.sortObj.セカンド.テリトリー名 == 'ASC'">
-                           <div class="sort-asc" data-sort="テリトリー名"></div>
+                            <div class="sort-asc" data-sort="テリトリー名"></div>
                           </template>
                           <template v-if="state.sortObj.セカンド.テリトリー名 == 'DESC'">
                             <div class="sort-desc" data-sort="テリトリー名"></div>
@@ -133,13 +155,14 @@
                         </div>
                       </template>
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag3')" @mouseover="state.isHoverFlag3 = true" @mouseleave="state.isHoverFlag3 = false" class="call-list4 call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag3')" @mouseover="state.isHoverFlag3 = true"
+                      @mouseleave="state.isHoverFlag3 = false" class="call-list4 call-list fwb">
                       MR
                       <template v-if="!Object.keys(state.sortObj.セカンド).includes('MR')">
-                      <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag3" data-sort="MR">
-                       <div class="sort-asc2" data-sort="MR"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button" @tap="onTapSort" v-if="state.isHoverFlag3" data-sort="MR">
+                          <div class="sort-asc2" data-sort="MR"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort" data-sort="MR">
                           <template v-if="state.sortObj.セカンド.MR == 'ASC'">
@@ -152,13 +175,14 @@
                       </template>
 
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag23')" @mouseover="state.isHoverFlag23 = true" @mouseleave="state.isHoverFlag23 = false" class="call-list4 call-list fwb  opt">
+                    <li @tap="onTapSortVisible('isHoverFlag23')" @mouseover="state.isHoverFlag23 = true"
+                      @mouseleave="state.isHoverFlag23 = false" class="call-list4 call-list fwb  opt">
                       オプトイン数/<br>ターゲット数
                       <template v-if="!Object.keys(state.sortObj.セカンド).includes('オプトイン数')">
-                      <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag23" data-sort="オプトイン数">
-                       <div class="sort-asc2" data-sort="オプトイン数"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag23" data-sort="オプトイン数">
+                          <div class="sort-asc2" data-sort="オプトイン数"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button opt" @tap="onTapSort" data-sort="オプトイン数">
                           <template v-if="state.sortObj.セカンド.オプトイン数 == 'ASC'">
@@ -171,16 +195,39 @@
                       </template>
 
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true" @mouseleave="state.isHoverFlag24 = false" class="call-list2 call-list fwb opt">
+                    <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true"
+                      @mouseleave="state.isHoverFlag24 = false" class="call-list4 call-list fwb  opt">
+                      ターゲット<br>送信人数
+                      <template v-if="!Object.keys(state.sortObj.セカンド).includes('オプトイン送信数')">
+                        <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag24" data-sort="オプトイン送信数">
+                          <div class="sort-asc2" data-sort="オプトイン送信数"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button opt" @tap="onTapSort" data-sort="オプトイン送信数">
+                          <template v-if="state.sortObj.セカンド.オプトイン送信数 == 'ASC'">
+                            <div class="sort-asc" data-sort="オプトイン送信数"></div>
+                          </template>
+                          <template v-if="state.sortObj.セカンド.オプトイン送信数 == 'DESC'">
+                            <div class="sort-desc" data-sort="オプトイン送信数"></div>
+                          </template>
+                        </div>
+                      </template>
+
+                    </li>
+                    <!-- <li @tap="onTapSortVisible('isHoverFlag24')" @mouseover="state.isHoverFlag24 = true"
+                      @mouseleave="state.isHoverFlag24 = false" class="call-list2 call-list fwb opt">
                       ユニーク<br>送信数
-                       <div id="question-button" class="q-button" @mouseover="onHoverItemq($event)" @mouseleave="state.isHoverFlag25 = false" @tap="onTapTargetq($event)"  v-click-outside="onTapOutside2">
-                       <div ></div>
+                      <div id="question-button" class="q-button" @mouseover="onHoverItemq($event)"
+                        @mouseleave="state.isHoverFlag25 = false" @tap="onTapTargetq($event)"
+                        v-click-outside="onTapOutside2">
+                        <div></div>
                       </div>
                       <template v-if="!Object.keys(state.sortObj.セカンド).includes('ユニーク')">
-                      <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag24" data-sort="ユニーク">
-                       <div class="sort-asc2" data-sort="ユニーク"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button opt" @tap="onTapSort" v-if="state.isHoverFlag24" data-sort="ユニーク">
+                          <div class="sort-asc2" data-sort="ユニーク"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button opt" @tap="onTapSort" data-sort="ユニーク">
                           <template v-if="state.sortObj.セカンド.ユニーク == 'ASC'">
@@ -192,81 +239,113 @@
                         </div>
                       </template>
 
-                    </li>
+                    </li> -->
                   </ul>
-                    <div @tap="onTapSortVisible('isHoverFlag6')" @mouseover="state.isHoverFlag6 = true" @mouseleave="state.isHoverFlag6 = false" class="call-content-main-header-content-right">
+                  <!-- <div @tap="onTapSortVisible('isHoverFlag6')" @mouseover="state.isHoverFlag6 = true"
+                    @mouseleave="state.isHoverFlag6 = false" class="call-content-main-header-content-right">
 
-                      <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
+                    <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
                       <div class="sort-button-data" @tap="onTapSort" v-if="state.isHoverFlag6" data-sort="DATA">
                         <div class="sort-asc-data" data-sort="DATA"></div>
                       </div>
                     </template>
-                     <template v-else>
+                    <template v-else>
                       <div class="sort-button-data" @tap="onTapSort" data-sort="DATA">
-                          <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
-                            <div v-if="state.isHoverFlag6" class="sort-asc-data" data-sort="DATA"></div>
-                          </template>
-                          <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
-                            <div v-if="state.isHoverFlag6" class="sort-desc-data" data-sort="DATA"></div>
-                          </template>
-                        </div>
-                     </template>
-
-                        
-        
-
-                  </div>
-                </div>
-                <div class="call-content-main-header-content" v-if="Object.values(state.dataDetail).length > 0 && state.isScreen === '送付先詳細'">
-                  <ul class="call-content-main-header-list">
-                    <li @tap="onTapSortVisible('isHoverFlag8')" @mouseover="state.isHoverFlag8 = true" @mouseleave="state.isHoverFlag8 = false" class="call-list2 call-list fwb">
-                      MR
-                       <template v-if="state.sortObj2.MR == 'default'">
-                      <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag8" data-sort="MR">
-                       <div class="sort-asc2" data-sort="MR"></div>
+                        <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
+                          <div v-if="state.isHoverFlag6" class="sort-asc-data" data-sort="DATA"></div>
+                        </template>
+                        <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
+                          <div v-if="state.isHoverFlag6" class="sort-desc-data" data-sort="DATA"></div>
+                        </template>
                       </div>
                     </template>
+                  </div> -->
+
+                  <div @tap="onTapSortVisible('isHoverFlag7')" @mouseover="state.isHoverFlag7 = true"
+                    @mouseleave="state.isHoverFlag7 = false" class="call-content-main-header-content-right">
+                    <div class="call-content-main-header-content-right-text fwb">
+                      メール送付数
+                      <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
+                        <div class="sort-button-data" @tap="onTapSort" v-if="state.isHoverFlag7" data-sort="DATA">
+                          <div class="sort-asc-data" data-sort="DATA"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button-data" @tap="onTapSort" data-sort="DATA">
+                          <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
+                            <div class="sort-asc-data" data-sort="DATA"></div>
+                          </template>
+                          <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
+                            <div class="sort-desc-data" data-sort="DATA"></div>
+                          </template>
+
+
+                        </div>
+
+                      </template>
+                      <div class="filter-area-text-note">
+                        数値内訳：総数(TG総数）
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </div>
+                <div class="call-content-main-header-content"
+                  v-if="Object.values(state.dataDetail).length > 0 && state.isScreen === '送付先詳細'">
+                  <ul class="call-content-main-header-list">
+                    <li @tap="onTapSortVisible('isHoverFlag8')" @mouseover="state.isHoverFlag8 = true"
+                      @mouseleave="state.isHoverFlag8 = false" class="call-list2 call-list fwb">
+                      MR
+                      <template v-if="state.sortObj2.MR == 'default'">
+                        <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag8" data-sort="MR">
+                          <div class="sort-asc2" data-sort="MR"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort2" data-sort="MR">
                           <template v-if="state.sortObj2.MR == 'ASC'">
-                             <div class="sort-asc" data-sort="MR"></div>
+                            <div class="sort-asc" data-sort="MR"></div>
                           </template>
                           <template v-if="state.sortObj2.MR == 'DESC'">
                             <div class="sort-desc" data-sort="MR"></div>
                           </template>
                         </div>
                       </template>
-                    
+
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag9')" @mouseover="state.isHoverFlag9 = true" @mouseleave="state.isHoverFlag9 = false" class="call-list3  call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag9')" @mouseover="state.isHoverFlag9 = true"
+                      @mouseleave="state.isHoverFlag9 = false" class="call-list3  call-list fwb">
                       施設名
 
                       <template v-if="state.sortObj2.施設名 == 'default'">
-                      <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag9" data-sort="施設名">
-                       <div class="sort-asc2" data-sort="施設名"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag9" data-sort="施設名">
+                          <div class="sort-asc2" data-sort="施設名"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort2" data-sort="施設名">
                           <template v-if="state.sortObj2.施設名 == 'ASC'">
-                             <div class="sort-asc" data-sort="施設名"></div>
+                            <div class="sort-asc" data-sort="施設名"></div>
                           </template>
                           <template v-if="state.sortObj2.施設名 == 'DESC'">
                             <div class="sort-desc" data-sort="施設名"></div>
                           </template>
                         </div>
                       </template>
-                    
+
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag10')" @mouseover="state.isHoverFlag10 = true" @mouseleave="state.isHoverFlag10 = false" class="call-list6 call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag10')" @mouseover="state.isHoverFlag10 = true"
+                      @mouseleave="state.isHoverFlag10 = false" class="call-list6 call-list fwb">
                       医師名
                       <template v-if="!Object.keys(state.sortObj2.セカンド).includes('医師名')">
-                      <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag10" data-sort="医師名">
-                        <div class="sort-asc" data-sort="医師名"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button" @tap="onTapSort2" data-sort="医師名">
+                        <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag10" data-sort="医師名">
+                          <div class="sort-asc" data-sort="医師名"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button" @tap="onTapSort2" data-sort="医師名">
                           <template v-if="state.sortObj2.セカンド.医師名 == 'ASC'">
                             <div class="sort-asc" data-sort="医師名"></div>
                           </template>
@@ -274,18 +353,19 @@
                             <div class="sort-desc" data-sort="医師名"></div>
                           </template>
                         </div>
-                     </template>
+                      </template>
                     </li>
 
-                     <li @tap="onTapSortVisible('isHoverFlag22')" @mouseover="state.isHoverFlag22 = true" @mouseleave="state.isHoverFlag22 = false" class="call-list2-2 call-list fwb">
+                    <li @tap="onTapSortVisible('isHoverFlag22')" @mouseover="state.isHoverFlag22 = true"
+                      @mouseleave="state.isHoverFlag22 = false" class="call-list2-2 call-list fwb">
                       分類
                       <template v-if="!Object.keys(state.sortObj2.セカンド).includes('分類')">
-                      <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag22" data-sort="分類">
-                        <div class="sort-asc" data-sort="分類"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button" @tap="onTapSort2" data-sort="分類">
+                        <div class="sort-button" @tap="onTapSort2" v-if="state.isHoverFlag22" data-sort="分類">
+                          <div class="sort-asc" data-sort="分類"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button" @tap="onTapSort2" data-sort="分類">
                           <template v-if="state.sortObj2.セカンド.分類 == 'ASC'">
                             <div class="sort-asc" data-sort="分類"></div>
                           </template>
@@ -293,44 +373,72 @@
                             <div class="sort-desc" data-sort="分類"></div>
                           </template>
                         </div>
-                     </template>
+                      </template>
                     </li>
 
                   </ul>
-                  <div  @tap="onTapSortVisible('isHoverFlag11')" @mouseover="state.isHoverFlag11 = true" @mouseleave="state.isHoverFlag11 = false" class="call-content-main-header-content-right">
+                  <div @tap="onTapSortVisible('isHoverFlag11')" @mouseover="state.isHoverFlag11 = true"
+                    @mouseleave="state.isHoverFlag11 = false" class="call-content-main-header-content-right">
 
 
-                      <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
+                    <!-- <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
                       <div class="sort-button-data" @tap="onTapSort2" v-if="state.isHoverFlag11" data-sort="DATA">
                         <div class="sort-asc-data" data-sort="DATA"></div>
                       </div>
                     </template>
-                     <template v-else>
+                    <template v-else>
                       <div class="sort-button-data" @tap="onTapSort2" data-sort="DATA">
+                        <template v-if="state.sortObj2.セカンド.DATA == 'ASC'">
+                          <div v-if="state.isHoverFlag11" class="sort-asc-data" data-sort="DATA"></div>
+                        </template>
+                        <template v-if="state.sortObj2.セカンド.DATA == 'DESC'">
+                          <div v-if="state.isHoverFlag11" class="sort-desc-data" data-sort="DATA"></div>
+                        </template>
+                      </div>
+                    </template> -->
+                    <div class="call-content-main-header-content-right-text fwb">
+                      メール送付数
+                      <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
+                        <div class="sort-button-data" @tap="onTapSort2" v-if="state.isHoverFlag11" data-sort="DATA">
+                          <div class="sort-asc-data" data-sort="DATA"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button-data" @tap="onTapSort2" data-sort="DATA">
                           <template v-if="state.sortObj2.セカンド.DATA == 'ASC'">
-                            <div v-if="state.isHoverFlag11" class="sort-asc-data" data-sort="DATA"></div>
+                            <div class="sort-asc-data" data-sort="DATA"></div>
                           </template>
                           <template v-if="state.sortObj2.セカンド.DATA == 'DESC'">
-                            <div v-if="state.isHoverFlag11" class="sort-desc-data" data-sort="DATA"></div>
+                            <div class="sort-desc-data" data-sort="DATA"></div>
                           </template>
+
+
                         </div>
-                     </template>
+
+                      </template>
+                      <div class="filter-area-text-note">
+                        数値内訳：総数(TG総数）
+                      </div>
+
+                    </div>
 
                   </div>
                 </div>
-                <div class="call-content-main-header-content" v-show="Object.values(state.dataContent).length > 0 && state.isScreen === '送付内容'">
+                <div class="call-content-main-header-content"
+                  v-show="Object.values(state.dataContent).length > 0 && state.isScreen === '送付内容'">
                   <ul class="call-content-main-header-list">
-                    <li @tap="onTapSortVisible('isHoverFlag13')" @mouseover="state.isHoverFlag13 = true" @mouseleave="state.isHoverFlag13 = false" class="call-list7 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag13')" @mouseover="state.isHoverFlag13 = true"
+                      @mouseleave="state.isHoverFlag13 = false" class="call-list7 call-list">
                       医師名
-                    <template v-if="state.sortObj3.医師名 == 'default'">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag13" data-sort="医師名">
-                        <div class="sort-asc2" data-sort="医師名"></div>
-                      </div>
-                    </template>
+                      <template v-if="state.sortObj3.医師名 == 'default'">
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag13" data-sort="医師名">
+                          <div class="sort-asc2" data-sort="医師名"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort3" data-sort="医師名">
                           <template v-if="state.sortObj3.医師名 == 'ASC'">
-                             <div class="sort-asc" data-sort="医師名"></div>
+                            <div class="sort-asc" data-sort="医師名"></div>
                           </template>
                           <template v-if="state.sortObj3.医師名 == 'DESC'">
                             <div class="sort-desc" data-sort="医師名"></div>
@@ -338,17 +446,18 @@
                         </div>
                       </template>
                     </li>
-                    <li  @tap="onTapSortVisible('isHoverFlag21')" @mouseover="state.isHoverFlag21 = true" @mouseleave="state.isHoverFlag21 = false" class="call-list12 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag21')" @mouseover="state.isHoverFlag21 = true"
+                      @mouseleave="state.isHoverFlag21 = false" class="call-list12 call-list">
                       分類
-                     <template v-if="state.sortObj3.分類 == 'default'">
-                      <div class="sort-button kinds" @tap="onTapSort3" v-if="state.isHoverFlag21" data-sort="分類">
-                         <div class="sort-asc2" data-sort="分類"></div>
-                      </div>
-                    </template>
+                      <template v-if="state.sortObj3.分類 == 'default'">
+                        <div class="sort-button kinds" @tap="onTapSort3" v-if="state.isHoverFlag21" data-sort="分類">
+                          <div class="sort-asc2" data-sort="分類"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button kinds" @tap="onTapSort3" data-sort="分類">
                           <template v-if="state.sortObj3.分類 == 'ASC'">
-                             <div class="sort-asc" data-sort="分類"></div>
+                            <div class="sort-asc" data-sort="分類"></div>
                           </template>
                           <template v-if="state.sortObj3.分類 == 'DESC'">
                             <div class="sort-desc" data-sort="分類"></div>
@@ -356,17 +465,18 @@
                         </div>
                       </template>
                     </li>
-                    <li  @tap="onTapSortVisible('isHoverFlag14')" @mouseover="state.isHoverFlag14 = true" @mouseleave="state.isHoverFlag14 = false" class="call-list8 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag14')" @mouseover="state.isHoverFlag14 = true"
+                      @mouseleave="state.isHoverFlag14 = false" class="call-list8 call-list">
                       メール送付日
-                     <template v-if="state.sortObj3.メール送付日 == 'default'">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag14" data-sort="メール送付日">
-                         <div class="sort-asc2" data-sort="メール送付日"></div>
-                      </div>
-                    </template>
+                      <template v-if="state.sortObj3.メール送付日 == 'default'">
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag14" data-sort="メール送付日">
+                          <div class="sort-asc2" data-sort="メール送付日"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort3" data-sort="メール送付日">
                           <template v-if="state.sortObj3.メール送付日 == 'ASC'">
-                             <div class="sort-asc" data-sort="メール送付日"></div>
+                            <div class="sort-asc" data-sort="メール送付日"></div>
                           </template>
                           <template v-if="state.sortObj3.メール送付日 == 'DESC'">
                             <div class="sort-desc" data-sort="メール送付日"></div>
@@ -374,17 +484,18 @@
                         </div>
                       </template>
                     </li>
-                    <li  @tap="onTapSortVisible('isHoverFlag15')" @mouseover="state.isHoverFlag15 = true" @mouseleave="state.isHoverFlag15 = false" class="call-list9 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag15')" @mouseover="state.isHoverFlag15 = true"
+                      @mouseleave="state.isHoverFlag15 = false" class="call-list9 call-list">
                       メールテンプレート
-                     <template v-if="state.sortObj3.メールテンプレート == 'default'">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag15" data-sort="メールテンプレート">
-                       <div class="sort-asc2" data-sort="メールテンプレート"></div>
-                      </div>
-                    </template>
+                      <template v-if="state.sortObj3.メールテンプレート == 'default'">
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag15" data-sort="メールテンプレート">
+                          <div class="sort-asc2" data-sort="メールテンプレート"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort3" data-sort="メールテンプレート">
                           <template v-if="state.sortObj3.メールテンプレート == 'ASC'">
-                             <div class="sort-asc" data-sort="メールテンプレート"></div>
+                            <div class="sort-asc" data-sort="メールテンプレート"></div>
                           </template>
                           <template v-if="state.sortObj3.メールテンプレート == 'DESC'">
                             <div class="sort-desc" data-sort="メールテンプレート"></div>
@@ -392,17 +503,18 @@
                         </div>
                       </template>
                     </li>
-                    <li  @tap="onTapSortVisible('isHoverFlag16')" @mouseover="state.isHoverFlag16 = true" @mouseleave="state.isHoverFlag16 = false" class="call-list10 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag16')" @mouseover="state.isHoverFlag16 = true"
+                      @mouseleave="state.isHoverFlag16 = false" class="call-list10 call-list">
                       フラグメント
                       <template v-if="state.sortObj3.フラグメント == 'default'">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag16" data-sort="フラグメント">
-                         <div class="sort-asc2" data-sort="フラグメント"></div>
-                      </div>
-                    </template>
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag16" data-sort="フラグメント">
+                          <div class="sort-asc2" data-sort="フラグメント"></div>
+                        </div>
+                      </template>
                       <template v-else>
                         <div class="sort-button" @tap="onTapSort3" data-sort="フラグメント">
                           <template v-if="state.sortObj3.フラグメント == 'ASC'">
-                             <div class="sort-asc" data-sort="フラグメント"></div>
+                            <div class="sort-asc" data-sort="フラグメント"></div>
                           </template>
                           <template v-if="state.sortObj3.フラグメント == 'DESC'">
                             <div class="sort-desc" data-sort="フラグメント"></div>
@@ -410,15 +522,16 @@
                         </div>
                       </template>
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag17')" @mouseover="state.isHoverFlag17 = true" @mouseleave="state.isHoverFlag17 = false" class="call-list11 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag17')" @mouseover="state.isHoverFlag17 = true"
+                      @mouseleave="state.isHoverFlag17 = false" class="call-list11 call-list">
                       最終開封日時
                       <template v-if="!Object.keys(state.sortObj3.セカンド).includes('最終開封日時')">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag17" data-sort="最終開封日時">
-                        <div class="sort-asc2" data-sort="最終開封日時"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button" @tap="onTapSort3" data-sort="最終開封日時">
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag17" data-sort="最終開封日時">
+                          <div class="sort-asc2" data-sort="最終開封日時"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button" @tap="onTapSort3" data-sort="最終開封日時">
                           <template v-if="state.sortObj3.セカンド.最終開封日時 == 'ASC'">
                             <div class="sort-asc" data-sort="最終開封日時"></div>
                           </template>
@@ -426,17 +539,18 @@
                             <div class="sort-desc" data-sort="最終開封日時"></div>
                           </template>
                         </div>
-                     </template>
+                      </template>
                     </li>
-                    <li @tap="onTapSortVisible('isHoverFlag18')"  @mouseover="state.isHoverFlag18 = true" @mouseleave="state.isHoverFlag18 = false" class="call-list11 call-list">
+                    <li @tap="onTapSortVisible('isHoverFlag18')" @mouseover="state.isHoverFlag18 = true"
+                      @mouseleave="state.isHoverFlag18 = false" class="call-list11 call-list">
                       最終クリック日時
-                     <template v-if="!Object.keys(state.sortObj3.セカンド).includes('最終クリック日時')">
-                      <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag18" data-sort="最終クリック日時">
-                        <div class="sort-asc" data-sort="最終クリック日時"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button" @tap="onTapSort3" data-sort="最終クリック日時">
+                      <template v-if="!Object.keys(state.sortObj3.セカンド).includes('最終クリック日時')">
+                        <div class="sort-button" @tap="onTapSort3" v-if="state.isHoverFlag18" data-sort="最終クリック日時">
+                          <div class="sort-asc" data-sort="最終クリック日時"></div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="sort-button" @tap="onTapSort3" data-sort="最終クリック日時">
                           <template v-if="state.sortObj3.セカンド.最終クリック日時 == 'ASC'">
                             <div class="sort-asc" data-sort="最終クリック日時"></div>
                           </template>
@@ -444,48 +558,52 @@
                             <div class="sort-desc" data-sort="最終クリック日時"></div>
                           </template>
                         </div>
-                     </template>
+                      </template>
                     </li>
                   </ul>
                   <div class="call-content-main-header-content-right">
-                      <ul class="call-content-main-header-list">
-                    <li @tap="onTapDataHeader('isHoverFlag19',$event)" @mouseover="onHoverItem2_2_2('', 'クリック回数', $event)" @mouseleave="[state.isHoverFlag19 = false,state.isHoverFlag = false]" class="fwb title-wrap">
-                      クリック回数
-                       <template v-if="!Object.keys(state.sortObj3.セカンド).includes('クリック回数')">
-                      <div class="sort-button3" @tap="onTapSort3" v-if="state.isHoverFlag19" data-sort="クリック回数">
-                        <div class="sort-asc-data3" data-sort="クリック回数"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button3" @tap="onTapSort3" data-sort="クリック回数">
-                          <template v-if="state.sortObj3.セカンド.クリック回数 == 'ASC'">
+                    <ul class="call-content-main-header-list">
+                      <li @tap="onTapDataHeader('isHoverFlag19', $event)"
+                        @mouseover="onHoverItem2_2_2('', 'クリック回数', $event)"
+                        @mouseleave="[state.isHoverFlag19 = false, state.isHoverFlag = false]" class="fwb title-wrap">
+                        クリック回数
+                        <template v-if="!Object.keys(state.sortObj3.セカンド).includes('クリック回数')">
+                          <div class="sort-button3" @tap="onTapSort3" v-if="state.isHoverFlag19" data-sort="クリック回数">
                             <div class="sort-asc-data3" data-sort="クリック回数"></div>
-                          </template>
-                          <template v-if="state.sortObj3.セカンド.クリック回数 == 'DESC'">
-                            <div class="sort-desc-data3" data-sort="クリック回数"></div>
-                          </template>
-                        </div>
-                     </template>
-                    </li>
-                    <li  @tap="onTapDataHeader('isHoverFlag20',$event)"  @mouseover="onHoverItem2_2_2('', '開封回数', $event)" @mouseleave="[state.isHoverFlag20 = false,state.isHoverFlag = false]" class="fwb title-wrap">
-                      開封回数
-                      <template v-if="!Object.keys(state.sortObj3.セカンド).includes('開封回数')">
-                      <div class="sort-button3" @tap="onTapSort3" v-if="state.isHoverFlag20" data-sort="開封回数">
-                        <div class="sort-asc-data3" data-sort="開封回数"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button3" @tap="onTapSort3" data-sort="開封回数">
-                          <template v-if="state.sortObj3.セカンド.開封回数 == 'ASC'">
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div class="sort-button3" @tap="onTapSort3" data-sort="クリック回数">
+                            <template v-if="state.sortObj3.セカンド.クリック回数 == 'ASC'">
+                              <div class="sort-asc-data3" data-sort="クリック回数"></div>
+                            </template>
+                            <template v-if="state.sortObj3.セカンド.クリック回数 == 'DESC'">
+                              <div class="sort-desc-data3" data-sort="クリック回数"></div>
+                            </template>
+                          </div>
+                        </template>
+                      </li>
+                      <li @tap="onTapDataHeader('isHoverFlag20', $event)"
+                        @mouseover="onHoverItem2_2_2('', '開封回数', $event)"
+                        @mouseleave="[state.isHoverFlag20 = false, state.isHoverFlag = false]" class="fwb title-wrap">
+                        開封回数
+                        <template v-if="!Object.keys(state.sortObj3.セカンド).includes('開封回数')">
+                          <div class="sort-button3" @tap="onTapSort3" v-if="state.isHoverFlag20" data-sort="開封回数">
                             <div class="sort-asc-data3" data-sort="開封回数"></div>
-                          </template>
-                          <template v-if="state.sortObj3.セカンド.開封回数 == 'DESC'">
-                            <div class="sort-desc-data3" data-sort="開封回数"></div>
-                          </template>
-                        </div>
-                     </template>
-                    </li>
-                  </ul>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div class="sort-button3" @tap="onTapSort3" data-sort="開封回数">
+                            <template v-if="state.sortObj3.セカンド.開封回数 == 'ASC'">
+                              <div class="sort-asc-data3" data-sort="開封回数"></div>
+                            </template>
+                            <template v-if="state.sortObj3.セカンド.開封回数 == 'DESC'">
+                              <div class="sort-desc-data3" data-sort="開封回数"></div>
+                            </template>
+                          </div>
+                        </template>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -495,57 +613,85 @@
                   <div class="iscroll__scroller">
                     <div v-show="state.isScreen === '集計画面'">
                       <div id="my-chart">
-                        <div class="charts-css bar show-labels show-primary-axis show-6-secondary-axes show-data-axes data-spacing-2 data-outside">
+                        <div
+                          class="charts-css bar show-labels show-primary-axis show-6-secondary-axes show-data-axes data-spacing-2 data-outside">
                           <template v-for="(obj, index) in state.data2" :key="index">
                             <div class="tbody call-list-item" style="flex-direction: row; padding: 0 5px">
                               <div class="test">
                                 <template v-for="(sales, salesValue) in obj['data']" :key="salesValue">
-                                  <div  @mouseover="onHoverItem2_2('', salesValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', salesValue, $event)" class="call-list1 call-list-title" data-kinds="営業部">
+                                  <div @mouseover="onHoverItem2_2('', salesValue, $event)"
+                                    @mouseleave="state.isHoverFlag = false"
+                                    @tap="onTapTarget2_2('', salesValue, $event)" class="call-list1 call-list-title"
+                                    data-kinds="営業部">
                                     {{ salesValue }}
                                   </div>
                                   <div class="test" :class="[{ test2: Object.keys(sales).length > 1 }]">
                                     <template v-for="(area, areaValue) in sales" :key="areaValue">
                                       <div class="test">
-                                        <div  @mouseover="onHoverItem2_2('', areaValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', areaValue, $event)" class="call-list2 call-list-title" data-kinds="エリア">
+                                        <div @mouseover="onHoverItem2_2('', areaValue, $event)"
+                                          @mouseleave="state.isHoverFlag = false"
+                                          @tap="onTapTarget2_2('', areaValue, $event)"
+                                          class="call-list2 call-list-title" data-kinds="エリア">
                                           {{ areaValue }}
                                         </div>
 
                                         <div class="test" :class="[{ test2: Object.keys(area).length > 1 }]">
                                           <template v-for="(territory, territoryValue) in area" :key="territoryValue">
                                             <div class="test">
-                                              <div  @mouseover="onHoverItem2_2('', territoryValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', territoryValue, $event)" class="call-list3 call-list-title" data-kinds="テリトリー名">
+                                              <div @mouseover="onHoverItem2_2('', territoryValue, $event)"
+                                                @mouseleave="state.isHoverFlag = false"
+                                                @tap="onTapTarget2_2('', territoryValue, $event)"
+                                                class="call-list3 call-list-title" data-kinds="テリトリー名">
                                                 {{ territoryValue }}
                                               </div>
 
                                               <div class="test" :class="[{ test2: Object.keys(territory).length > 1 }]">
                                                 <template v-for="(MR, MRValue) in territory" :key="MRValue">
                                                   <div class="test">
-                                                    <div  @mouseover="onHoverItem2_2('', MRValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', MRValue, $event)" class="call-list4 call-list-title" data-kinds="MR">
+                                                    <div @mouseover="onHoverItem2_2('', MRValue, $event)"
+                                                      @mouseleave="state.isHoverFlag = false"
+                                                      @tap="onTapTarget2_2('', MRValue, $event)"
+                                                      class="call-list4 call-list-title" data-kinds="MR">
                                                       {{ MRValue }}
                                                     </div>
 
-                                                      <div class="test">
-                                                        <div  @tap="onTapTargetPopup(MRValue, $event)" class="call-list4 call-list-title" data-kinds="MR">
-                                                      {{ getOptin(MRValue) }}
-                                                    </div>
-
                                                     <div class="test">
-                                                        <div   @mouseover="onHoverItem2_2('', MR.ユニーク, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2('', MRValue, $event)" class="call-list2 call-list-title" data-kinds="MR" data-kinds2="ユニーク">
-                                                      {{ MR.ユニーク  }}
-                                                    </div>
+                                                      <div @tap="onTapTargetPopup(MRValue, $event)"
+                                                        class="call-list4 call-list-title" data-kinds="MR">
+                                                        {{ getOptin(MRValue) }}
+                                                      </div>
 
-                                                    
+                                                      <div class="test">
+                                                        <div class="call-list4 call-list-title" data-kinds="MR"
+                                                          style="cursor: default;">
+                                                          <template v-if="getOptin(MRValue)">
+                                                            {{ MR.オプトイン送信数 }}/{{ MR.オプトイン数 }}
+                                                          </template>
+                                                        </div>
+                                                        <!-- <div @mouseover="onHoverItem2_2('', MR.ユニーク, $event)"
+                                                          @mouseleave="state.isHoverFlag = false"
+                                                          @tap="onTapTarget2_2('', MRValue, $event)"
+                                                          class="call-list2 call-list-title" data-kinds="MR"
+                                                          data-kinds2="ユニーク">
+                                                          {{ MR.ユニーク }}
+                                                        </div> -->
 
-                                                    <div class="call-list-data tr" :style="MR.ratio">
-                                                      <div @mouseover="onHoverItem2_3(MR, MRValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(MR, MRValue, $event)" class="call-list-data-item td" data-kinds="MR">
-                                                        <span class="data">{{ MR.Total }}<span style="font-size:100%;">({{ MR.ターゲット数 }})</span></span>
+
+
+                                                        <div class="call-list-data tr" :style="MR.ratio">
+                                                          <div @mouseover="onHoverItem2_3(MR, MRValue, $event)"
+                                                            @mouseleave="state.isHoverFlag = false"
+                                                            @tap="onTapTarget2_3(MR, MRValue, $event)"
+                                                            class="call-list-data-item td" data-kinds="MR">
+                                                            <span class="data">{{ MR.Total }}<span
+                                                                style="font-size:100%;">({{ MR.ターゲット数 }})</span></span>
+                                                          </div>
+                                                        </div>
                                                       </div>
                                                     </div>
-                                                     </div>
-                                                      </div>
-                                                    
 
-                                                    
+
+
                                                   </div>
                                                 </template>
                                               </div>
@@ -565,46 +711,62 @@
 
                     <div v-show="state.isScreen === '送付先詳細'">
                       <div id="my-chart2">
-                        <div class="charts-css bar show-labels show-primary-axis show-6-secondary-axes show-data-axes data-spacing-2 data-outside">
+                        <div
+                          class="charts-css bar show-labels show-primary-axis show-6-secondary-axes show-data-axes data-spacing-2 data-outside">
                           <template v-for="(obj, index) in state.dataDetail" :key="index">
                             <div class="tbody call-list-item" style="flex-direction: row; padding: 0 5px">
                               <div style="width: 100%">
                                 <template v-for="(MR, MRValue) in obj['data']" :key="MRValue">
                                   <div class="test">
-                                    <div   @mouseover="onHoverItem2_2(MR, MRValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(MR, MRValue, $event)" class="call-list2 call-list-title" data-kinds="MR">
+                                    <div @mouseover="onHoverItem2_2(MR, MRValue, $event)"
+                                      @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(MR, MRValue, $event)"
+                                      class="call-list2 call-list-title" data-kinds="MR">
                                       {{ MRValue }}
                                     </div>
                                     <div class="test" :class="[{ test2: Object.keys(MR).length > 1 }]">
                                       <template v-for="(area, areaValue) in MR" :key="areaValue">
                                         <div class="test">
-                                          <div   @mouseover="onHoverItem2_2(area, areaValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(area, areaValue, $event)" data-kinds="HP_name" class="call-list3 call-list3_2 call-list-title">
+                                          <div @mouseover="onHoverItem2_2(area, areaValue, $event)"
+                                            @mouseleave="state.isHoverFlag = false"
+                                            @tap="onTapTarget2_2(area, areaValue, $event)" data-kinds="HP_name"
+                                            class="call-list3 call-list3_2 call-list-title">
                                             {{ areaValue }}
                                           </div>
 
-                                          <div class="test" :class="[{ test2: Object.keys(area).length > 1 },{ test6: Object.keys(area).length > 1 }]">
+                                          <div class="test"
+                                            :class="[{ test2: Object.keys(area).length > 1 }, { test6: Object.keys(area).length > 1 }]">
                                             <template v-for="(docter, docterValue) in area" :key="docterValue">
                                               <div class="test">
-                                                <div   @mouseover="onHoverItem2_2(docter, docterValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(docter, docterValue, $event)" data-kinds="Dr_name" class="call-list6 call-list-title">
+                                                <div @mouseover="onHoverItem2_2(docter, docterValue, $event)"
+                                                  @mouseleave="state.isHoverFlag = false"
+                                                  @tap="onTapTarget2_2(docter, docterValue, $event)"
+                                                  data-kinds="Dr_name" class="call-list6 call-list-title">
                                                   {{ docterValue }}
                                                 </div>
                                                 <div class="test">
-                                                         <div   @mouseover="onHoverItem2_2(docter, docterValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(docter, docterValue, $event)" data-kinds="Dr_name" class="call-list2-2 call-list-title">
-                                                  {{ docter.分類 }}
-                                                </div>
-
-                                                 <div   class="call-list-data tr" :style="docter.ratio">
-                                                  <div @mouseover="onHoverItem2_3(docter, docterValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(docter, docterValue, $event)"  data-kinds="Dr_name" class="call-list-data-item td">
-                                                    <span class="data">{{ docter.Total }}({{ docter.ターゲット数 }})</span>
+                                                  <div @mouseover="onHoverItem2_2(docter, docterValue, $event)"
+                                                    @mouseleave="state.isHoverFlag = false"
+                                                    @tap="onTapTarget2_2(docter, docterValue, $event)"
+                                                    data-kinds="Dr_name" class="call-list2-2 call-list-title">
+                                                    {{ docter.分類 }}
                                                   </div>
+
+                                                  <div class="call-list-data tr" :style="docter.ratio">
+                                                    <div @mouseover="onHoverItem2_3(docter, docterValue, $event)"
+                                                      @mouseleave="state.isHoverFlag = false"
+                                                      @tap="onTapTarget2_3(docter, docterValue, $event)"
+                                                      data-kinds="Dr_name" class="call-list-data-item td">
+                                                      <span class="data">{{ docter.Total }}({{ docter.ターゲット数 }})</span>
+                                                    </div>
+                                                  </div>
+
                                                 </div>
 
-                                              </div>
 
-                                             
 
-                    
 
-                                               
+
+
                                               </div>
                                             </template>
                                           </div>
@@ -628,86 +790,149 @@
                               <div style="width: 100%">
                                 <template v-for="(docter, docterValue) in obj['data']" :key="docterValue">
                                   <div class="test">
-                                    <div  @mouseover="onHoverItem2_2(docter, docterValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(docter, docterValue, $event)" class="call-list7 call-list-title" data-kinds="docter" :class="[{ on: !state.selectObj['送付内容']['sentDate'] && state.selectObj['送付内容']['docter'] === docterValue && !state.selectObj['送付内容']['分類']}]">
+                                    <div @mouseover="onHoverItem2_2(docter, docterValue, $event)"
+                                      @mouseleave="state.isHoverFlag = false"
+                                      @tap="onTapTarget2_2(docter, docterValue, $event)"
+                                      class="call-list7 call-list-title" data-kinds="docter"
+                                      :class="[{ on: !state.selectObj['送付内容']['sentDate'] && state.selectObj['送付内容']['docter'] === docterValue && !state.selectObj['送付内容']['分類'] }]">
                                       <span> {{ docterValue }}</span>
                                     </div>
                                     <div class="test" :class="[{ test2: Object.keys(docter).length > 1 }]">
                                       <template v-for="(kind, kindValue) in docter" :key="kindValue">
-                                         <div class="test">
-                                           <div  @mouseover="onHoverItem2_2(kind, kindValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(kind, kindValue, $event)" data-kinds="kind" class="call-list12 call-list-title"  :class="[{ on:  !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['分類'] === kindValue }]">
-                                           <span>{{ kindValue }}</span>
-                                          </div>
-
-
-                                              <div class="test" :class="[{ test2: Object.keys(kind).length > 1 }]">
-                                                 <template v-for="(Id, IdValue) in kind" :key="IdValue">
-                                                  
-
-                                                   <div class="test" :class="[{ test2: Object.keys(Id).length > 1 }]">
-                                      <template v-for="(sentDate, sentDateValue) in Id" :key="sentDateValue">
                                         <div class="test">
-                                          <div  @mouseover="onHoverItem2_2(sentDate, sentDateValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(sentDate, sentDateValue, $event)" data-kinds="sentDate" class="call-list8 call-list-title"  :class="[{ on:  !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue  && state.selectObj['送付内容']['Id'] === IdValue}]">
-                                           <span>{{ sentDateValue }}</span>
+                                          <div @mouseover="onHoverItem2_2(kind, kindValue, $event)"
+                                            @mouseleave="state.isHoverFlag = false"
+                                            @tap="onTapTarget2_2(kind, kindValue, $event)" data-kinds="kind"
+                                            class="call-list12 call-list-title"
+                                            :class="[{ on: !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['分類'] === kindValue }]">
+                                            <span>{{ kindValue }}</span>
                                           </div>
 
-                                          <div class="test" :class="[{ test2: Object.keys(sentDate).length > 1 }]">
-                                            <template v-for="(templateName, templateNameValue) in sentDate" :key="templateNameValue">
-                                              <div class="test">
-                                                <div  @mouseover="onHoverItem2_2(templateName, templateNameValue, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(templateName, templateNameValue, $event)" data-kinds="templateName" class="call-list9 call-list-title" :class="[{ on:  !state.selectObj['送付内容']['flagmentName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue  && state.selectObj['送付内容']['Id'] === IdValue }]">
-                                                  <div class="list-wrap"><span>{{ templateNameValue }}</span></div>
-                                                </div>
-                                                <div class="test" :class="[{ test2: Object.keys(templateName).length > 1 }]">
-                                                  <template v-for="(flagment, flagmentValue) in templateName" :key="flagmentValue" >
-                                                    <div class="test">
-                                                      
 
-                                                      <div class="test test2">
-                                                        <template v-for="(key, val) in flagment" :key="val">
-                                                          <div class="test" :class="getSpareClass(key.dataNumber)">
+                                          <div class="test" :class="[{ test2: Object.keys(kind).length > 1 }]">
+                                            <template v-for="(Id, IdValue) in kind" :key="IdValue">
 
-                                                            <div  @mouseover="onHoverItem2_2(key,  val , $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(key, val, $event)" data-kinds="flagmentName"  class="call-list10 call-list-title" :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c']  && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName']  === templateNameValue && state.selectObj['送付内容']['flagmentName']  === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue && state.selectObj['送付内容']['FragmentId'] === key['FragmentId']  }]">
-                                                              <div class="list-wrap"><span class="data">{{ key["Email_Fragments_vod__r.Name"] ? key["Email_Fragments_vod__r.Name"] : "NULL" }}</span></div>
-                                                            </div>
-                                                          
-                                                            <div  @mouseover="onHoverItem2_2(key, val, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(key, val, $event)" data-kinds="Last_Open_Date_vod__c" class="call-list11 call-list-title" :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Open_Date_vod__c'] === true }]">
-                                                              <div class="list-wrap"><span class="data">{{ key["Last_Open_Date_vod__c"] ? dayjs(key["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL" }}</span></div>
-                                                            </div>
 
-                                                            <div @mouseover="onHoverItem2_2(key, val, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_2(key, val, $event)" data-kinds="Last_Click_Date_vod__c" class="call-list11 call-list-title call-list-back" :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Click_Date_vod__c'] === true }]">
-                                                              <div  class="list-wrap"><span class="data">{{ key["Last_Click_Date_vod__c"] ? dayjs(key["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL" }}</span></div>
-                                                            </div>
+                                              <div class="test" :class="[{ test2: Object.keys(Id).length > 1 }]">
+                                                <template v-for="(sentDate, sentDateValue) in Id" :key="sentDateValue">
+                                                  <div class="test">
+                                                    <div @mouseover="onHoverItem2_2(sentDate, sentDateValue, $event)"
+                                                      @mouseleave="state.isHoverFlag = false"
+                                                      @tap="onTapTarget2_2(sentDate, sentDateValue, $event)"
+                                                      data-kinds="sentDate" class="call-list8 call-list-title"
+                                                      :class="[{ on: !state.selectObj['送付内容']['templateName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['Id'] === IdValue }]">
+                                                      <span>{{ sentDateValue }}</span>
+                                                    </div>
 
-                                                            <div class="call-list-data">
-                                                              <div  @mouseover="onHoverItem2_3(key, val, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(key, val, $event)" class="call-list-data-item call-list-back" data-kinds="クリック回数" :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0 },{ on: key.isClickActive === true},{ 'no-active': key.isOpenActive === true}]">
-                                                                <span class="data">{{ key["Click_Count_vod__c"] }}</span>
-                                                              </div>
-
-                                                              <div  @mouseover="onHoverItem2_3(key, val, $event)" @mouseleave="state.isHoverFlag = false" @tap="onTapTarget2_3(key, val, $event)" class="call-list-data-item call-list-back" data-kinds="開封回数"  :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0},{'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0},{ 'no-active': key.isClickActive === true},{ on: key.isOpenActive === true}]">
-                                                                <span class="data">{{ key["Open_Count_vod__c"] }}</span>
-                                                              </div>
+                                                    <div class="test"
+                                                      :class="[{ test2: Object.keys(sentDate).length > 1 }]">
+                                                      <template v-for="(templateName, templateNameValue) in sentDate"
+                                                        :key="templateNameValue">
+                                                        <div class="test">
+                                                          <div
+                                                            @mouseover="onHoverItem2_2(templateName, templateNameValue, $event)"
+                                                            @mouseleave="state.isHoverFlag = false"
+                                                            @tap="onTapTarget2_2(templateName, templateNameValue, $event)"
+                                                            data-kinds="templateName" class="call-list9 call-list-title"
+                                                            :class="[{ on: !state.selectObj['送付内容']['flagmentName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName'] === templateNameValue && state.selectObj['送付内容']['Id'] === IdValue }]">
+                                                            <div class="list-wrap"><span>{{ templateNameValue }}</span>
                                                             </div>
                                                           </div>
-                                                        </template>
-                                                      </div>
+                                                          <div class="test"
+                                                            :class="[{ test2: Object.keys(templateName).length > 1 }]">
+                                                            <template v-for="(flagment, flagmentValue) in templateName"
+                                                              :key="flagmentValue">
+                                                              <div class="test">
+
+
+                                                                <div class="test test2">
+                                                                  <template v-for="(key, val) in flagment" :key="val">
+                                                                    <div class="test"
+                                                                      :class="getSpareClass(key.dataNumber)">
+
+                                                                      <div @mouseover="onHoverItem2_2(key, val, $event)"
+                                                                        @mouseleave="state.isHoverFlag = false"
+                                                                        @tap="onTapTarget2_2(key, val, $event)"
+                                                                        data-kinds="flagmentName"
+                                                                        class="call-list10 call-list-title"
+                                                                        :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c'] && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName'] === templateNameValue && state.selectObj['送付内容']['flagmentName'] === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue && state.selectObj['送付内容']['FragmentId'] === key['FragmentId'] }]">
+                                                                        <div class="list-wrap"><span class="data">{{
+                                                                          key["Email_Fragments_vod__r.Name"] ?
+                                                                            key["Email_Fragments_vod__r.Name"] : "NULL"
+                                                                            }}</span></div>
+                                                                      </div>
+
+                                                                      <div @mouseover="onHoverItem2_2(key, val, $event)"
+                                                                        @mouseleave="state.isHoverFlag = false"
+                                                                        @tap="onTapTarget2_2(key, val, $event)"
+                                                                        data-kinds="Last_Open_Date_vod__c"
+                                                                        class="call-list11 call-list-title"
+                                                                        :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Open_Date_vod__c'] === true }]">
+                                                                        <div class="list-wrap"><span class="data">{{
+                                                                          key["Last_Open_Date_vod__c"] ?
+                                                                            dayjs(key["Last_Open_Date_vod__c"]).subtract(9,
+                                                                              "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+                                                                            }}</span></div>
+                                                                      </div>
+
+                                                                      <div @mouseover="onHoverItem2_2(key, val, $event)"
+                                                                        @mouseleave="state.isHoverFlag = false"
+                                                                        @tap="onTapTarget2_2(key, val, $event)"
+                                                                        data-kinds="Last_Click_Date_vod__c"
+                                                                        class="call-list11 call-list-title call-list-back"
+                                                                        :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Click_Date_vod__c'] === true }]">
+                                                                        <div class="list-wrap"><span class="data">{{
+                                                                          key["Last_Click_Date_vod__c"] ?
+                                                                            dayjs(key["Last_Click_Date_vod__c"]).subtract(9,
+                                                                              "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+                                                                            }}</span></div>
+                                                                      </div>
+
+                                                                      <div class="call-list-data">
+                                                                        <div
+                                                                          @mouseover="onHoverItem2_3(key, val, $event)"
+                                                                          @mouseleave="state.isHoverFlag = false"
+                                                                          @tap="onTapTarget2_3(key, val, $event)"
+                                                                          class="call-list-data-item call-list-back"
+                                                                          data-kinds="クリック回数"
+                                                                          :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { on: key.isClickActive === true }, { 'no-active': key.isOpenActive === true }]">
+                                                                          <span class="data">{{
+                                                                            key["Click_Count_vod__c"] }}</span>
+                                                                        </div>
+
+                                                                        <div
+                                                                          @mouseover="onHoverItem2_3(key, val, $event)"
+                                                                          @mouseleave="state.isHoverFlag = false"
+                                                                          @tap="onTapTarget2_3(key, val, $event)"
+                                                                          class="call-list-data-item call-list-back"
+                                                                          data-kinds="開封回数"
+                                                                          :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': key.isClickActive === true }, { on: key.isOpenActive === true }]">
+                                                                          <span class="data">{{ key["Open_Count_vod__c"]
+                                                                          }}</span>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </template>
+                                                                </div>
+                                                              </div>
+                                                            </template>
+                                                          </div>
+                                                        </div>
+                                                      </template>
                                                     </div>
-                                                  </template>
-                                                </div>
+                                                  </div>
+                                                </template>
+
                                               </div>
+
+
                                             </template>
                                           </div>
+
+
+
+
                                         </div>
-                                      </template>
-
-                                           </div>
-
-
-                                                 </template>
-                                              </div>
-
-                                    
-
-                                          
-                                         </div>
                                       </template>
 
                                     </div>
@@ -722,75 +947,80 @@
                   </div>
                 </div>
                 <template v-if="state.isScreen === '集計画面'">
-                  <div @tap="onTapSortVisible('isHoverFlag7')" @mouseover="state.isHoverFlag7 = true" @mouseleave="state.isHoverFlag7 = false" class="content-footer" v-if="state.girdArry.length > 0">
-                    <div class="content-footer-left"></div>
+                  <div @tap="onTapSortVisible('isHoverFlag7')" @mouseover="state.isHoverFlag7 = true"
+                    @mouseleave="state.isHoverFlag7 = false" class="content-footer" v-if="state.girdArry.length > 0">
+                    <div class="content-footer-left">
+                    </div>
 
                     <div class="content-footer-right">
                       <div id="gridMemory" class="test3" style="display: flex; flex: 1; text-align: right">
-                        <template v-for="(obj, index) in state.girdArry" :key="index"
-                          ><div :style="state.style">
-                            <span style="display: inline-flex"
-                              ><span style="margin-left: 50%">{{ obj }}</span></span
-                            >
-                          </div></template>
+                        <template v-for="(obj, index) in state.girdArry" :key="index">
+                          <div :style="state.style">
+                            <span style="display: inline-flex"><span style="margin-left: 50%">{{ obj }}</span></span>
+                          </div>
+                        </template>
                       </div>
 
-                      <div class="content-footer-text">
+                      <!-- <div class="content-footer-text">
                         <div class="content-footer-text2">
                           メール送付数
-                             <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
-                      <div class="sort-button-data2" @tap="onTapSort" v-if="state.isHoverFlag7" data-sort="DATA">
-                        <div class="sort-asc-data2" data-sort="DATA"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button-data2" @tap="onTapSort" data-sort="DATA">
-                          <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
-                            <div class="sort-asc-data2" data-sort="DATA"></div>
+                          <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
+                            <div class="sort-button-data2" @tap="onTapSort" v-if="state.isHoverFlag7" data-sort="DATA">
+                              <div class="sort-asc-data2" data-sort="DATA"></div>
+                            </div>
                           </template>
-                          <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
-                            <div class="sort-desc-data2" data-sort="DATA"></div>
+                          <template v-else>
+                            <div class="sort-button-data2" @tap="onTapSort" data-sort="DATA">
+                              <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
+                                <div class="sort-asc-data2" data-sort="DATA"></div>
+                              </template>
+                              <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
+                                <div class="sort-desc-data2" data-sort="DATA"></div>
+                              </template>
+                            </div>
                           </template>
                         </div>
-                     </template>
-                        </div>
-                     
-                      </div>
+
+                      </div> -->
                     </div>
                   </div>
                 </template>
                 <template v-if="state.isScreen === '送付先詳細'">
-                  <div  @tap="onTapSortVisible('isHoverFlag12')" @mouseover="state.isHoverFlag12 = true" @mouseleave="state.isHoverFlag12 = false" class="content-footer content-footer2" v-if="state.girdArry2.length > 0">
+                  <div @tap="onTapSortVisible('isHoverFlag12')" @mouseover="state.isHoverFlag12 = true"
+                    @mouseleave="state.isHoverFlag12 = false" class="content-footer content-footer2"
+                    v-if="state.girdArry2.length > 0">
                     <div class="content-footer-left"></div>
 
                     <div class="content-footer-right">
                       <div id="gridMemory" class="test3" style="display: flex; flex: 1; text-align: right">
-                        <template v-for="(obj, index) in state.girdArry2" :key="index"
-                          ><div :style="state.style2">
-                            <span style="display: inline-flex"
-                              ><span style="margin-left: 50%">{{ obj }}</span></span
-                            >
-                          </div></template>
+                        <template v-for="(obj, index) in state.girdArry2" :key="index">
+                          <div :style="state.style2">
+                            <span style="display: inline-flex"><span style="margin-left: 50%">{{ obj }}</span></span>
+                          </div>
+                        </template>
                       </div>
 
-                      <div class="content-footer-text"><div class="content-footer-text2">
+                      <!-- <div class="content-footer-text">
+                        <div class="content-footer-text2">
                           メール送付数
-                             <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
-                      <div class="sort-button-data2" @tap="onTapSort2" v-if="state.isHoverFlag12" data-sort="DATA">
-                        <div class="sort-asc-data2" data-sort="DATA"></div>
-                      </div>
-                    </template>
-                     <template v-else>
-                      <div class="sort-button-data2" @tap="onTapSort2" data-sort="DATA">
-                          <template v-if="state.sortObj2.セカンド.DATA == 'ASC'">
-                            <div class="sort-asc-data2" data-sort="DATA"></div>
+                          <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
+                            <div class="sort-button-data2" @tap="onTapSort2" v-if="state.isHoverFlag12"
+                              data-sort="DATA">
+                              <div class="sort-asc-data2" data-sort="DATA"></div>
+                            </div>
                           </template>
-                          <template v-if="state.sortObj2.セカンド.DATA == 'DESC'">
-                            <div class="sort-desc-data2" data-sort="DATA"></div>
+                          <template v-else>
+                            <div class="sort-button-data2" @tap="onTapSort2" data-sort="DATA">
+                              <template v-if="state.sortObj2.セカンド.DATA == 'ASC'">
+                                <div class="sort-asc-data2" data-sort="DATA"></div>
+                              </template>
+                              <template v-if="state.sortObj2.セカンド.DATA == 'DESC'">
+                                <div class="sort-desc-data2" data-sort="DATA"></div>
+                              </template>
+                            </div>
                           </template>
                         </div>
-                     </template>
-                        </div></div>
+                      </div> -->
                     </div>
                   </div>
                 </template>
@@ -798,7 +1028,8 @@
             </div>
           </div>
 
-          <div id="stalker" v-show="Object.keys(state.popupData).length > 0" :class="['pop', { 'pop-no': state.isHoverFlag }]">
+          <div id="stalker" v-show="Object.keys(state.popupData).length > 0"
+            :class="['pop', { 'pop-no': state.isHoverFlag }]">
             <div class="pop-content">
               <template v-if="Object.keys(state.popupData).includes('タイトル')">
                 <div style="width: 100%">
@@ -822,37 +1053,38 @@
                   <template v-for="(obj2, index2) in state.popupData" :key="index2">
                     <div class="pop-content-text fwb">{{ obj2 }}</div>
                   </template>
-                </div></template>
+                </div>
+              </template>
             </div>
           </div>
 
-          <div id="stalker2" :class="['pop','speechBubble', { 'pop-no': state.isHoverFlag25 }]">
+          <div id="stalker2" :class="['pop', 'speechBubble', { 'pop-no': state.isHoverFlag25 }]">
             <div id="stalker3" class="speechBubble2"></div>
             <div class="pop-content">
-                <span class="fwb mb4">ユニーク送信数について</span>
+              <span class="fwb mb4">ユニーク送信数について</span>
               ・月単位で換算<br>
               ・送信実績があれば１、なければ０<br>
               （例）1月2月送信あり、3月送信無しの場合のユニーク数＝2
             </div>
-             <div id="stalker4" class="speechBubble3"></div>
+            <div id="stalker4" class="speechBubble3"></div>
           </div>
 
-               <PopupScrollOpt v-if="state.isPopup" :tap-close="onTapClose" :title="'オプトイン状況'">
-      <ul class="opt-value" v-for="(obj, index) in state.optInDetaildataFilter" :key="index">
-        <li>
-          {{ obj.HP_name }}
-        </li>
-        <li>
-          {{ obj.Dr_name }}
-        </li>
-        <li>
-          {{ obj.PersonEmail }}
-        </li>
-        <li>
-          {{ obj.許諾 ? "○": "×" }}
-        </li>
-      </ul>
-      </PopupScrollOpt>
+          <PopupScrollOpt v-if="state.isPopup" :tap-close="onTapClose" :title="'オプトイン状況'">
+            <ul class="opt-value" v-for="(obj, index) in state.optInDetaildataFilter" :key="index">
+              <li>
+                {{ obj.HP_name }}
+              </li>
+              <li>
+                {{ obj.Dr_name }}
+              </li>
+              <li>
+                {{ obj.PersonEmail }}
+              </li>
+              <li>
+                {{ obj.許諾 ? "○" : "×" }}
+              </li>
+            </ul>
+          </PopupScrollOpt>
 
         </div>
       </div>
@@ -865,7 +1097,7 @@
 import { defineComponent, ref, computed, reactive, onMounted, onUpdated, onUnmounted, watch, nextTick } from "vue";
 // import IScroll from "iscroll";
 import IScroll from "iscroll/build/iscroll-probe.js";
-import { SelectBox, SelectBox3, Loading,SelectBox5,PopupScrollOpt } from "@/components/presentational/organisms";
+import { SelectBox, SelectBox3, Loading, SelectBox5, PopupScrollOpt } from "@/components/presentational/organisms";
 import { SelectBox2 } from "@/components/presentational/organisms";
 import dayjs from "dayjs";
 import { sleep } from "@/utils/sleep";
@@ -893,31 +1125,31 @@ interface State {
     エリア?: any;
     Target?: any;
     フラグメント?: any;
-     製品?: any;
-       医師名?: any;
+    製品?: any;
+    医師名?: any;
   };
-    selectedFilterItemsBK: {
+  selectedFilterItemsBK: {
     メール送付月?: any;
     テリトリー名?: any;
     MR?: any;
     チャネル?: any;
-      エリア?: any;
-   Target?: any;
-      フラグメント?: any;
- 製品?: any;
-  医師名?: any;   
-    };
-    selectedFilterItemsBK2: {
+    エリア?: any;
+    Target?: any;
+    フラグメント?: any;
+    製品?: any;
+    医師名?: any;
+  };
+  selectedFilterItemsBK2: {
     メール送付月?: any;
     テリトリー名?: any;
     MR?: any;
     チャネル?: any;
-      エリア?: any;
-   Target?: any;
-   フラグメント?: any;
-      製品?: any;
-   医師名?: any;  
-  };  
+    エリア?: any;
+    Target?: any;
+    フラグメント?: any;
+    製品?: any;
+    医師名?: any;
+  };
   selectedFilterItems2: {
     メール送付月?: any;
     テリトリー名?: any;
@@ -927,7 +1159,7 @@ interface State {
     Target?: any;
     フラグメント?: any;
     製品?: any;
-      医師名?: any;
+    医師名?: any;
   };
   selectedFilterItems3: {
     医師名?: any;
@@ -958,7 +1190,7 @@ interface State {
   dataContent: any;
   dataContentOrg: any;
   dataContentOrg2: any;
-   dataContentOrg3: any;
+  dataContentOrg3: any;
   data3: any;
   options: any;
   loaded: boolean;
@@ -1022,11 +1254,12 @@ interface State {
   optIndata: any;
   optInObj: any;
   selectedFilterItemsOptIn: {
-     許諾製品?: any;
+    許諾製品?: any;
   };
   isPopup,
   optInDetaildata: any;
   optInDetaildataFilter: any;
+  uniqueCountTotal: number
 }
 
 export default defineComponent({
@@ -1064,7 +1297,7 @@ export default defineComponent({
         送付先詳細: {
           Category: "",
           Value: "",
-          MR:"",
+          MR: "",
         },
         送付内容: {
           docter: "",
@@ -1073,9 +1306,9 @@ export default defineComponent({
           sentDate: "",
           templateName: "",
           flagmentName: "",
-           Last_Click_Date_vod__c: false,
+          Last_Click_Date_vod__c: false,
           Last_Open_Date_vod__c: false,
-            FragmentId: "",
+          FragmentId: "",
         },
       },
       selectObj2: {
@@ -1086,7 +1319,7 @@ export default defineComponent({
           templateName: "",
           flagmentName: "",
           Id: "",
-           FragmentId: "",
+          FragmentId: "",
         },
       },
       sortObj: {
@@ -1098,7 +1331,7 @@ export default defineComponent({
       },
       sortObj2: {
         MR: "default",
-         施設名: "ASC",
+        施設名: "ASC",
         セカンド: {
         },
       },
@@ -1141,7 +1374,7 @@ export default defineComponent({
       optInObj: {
         許諾製品: {
           name: "許諾製品",
-          list:  ["デフォルトに戻す"],
+          list: ["デフォルトに戻す"],
         },
       },
 
@@ -1185,14 +1418,14 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
-         Target: {
+        Target: {
           name: "Target",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
         },
-         フラグメント: {
+        フラグメント: {
           name: "フラグメント",
           list: {
             すべて: "すべて",
@@ -1206,7 +1439,7 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
-         医師名: {
+        医師名: {
           name: "医師名",
           list: {
             すべて: "すべて",
@@ -1214,7 +1447,7 @@ export default defineComponent({
           listOrg: ["すべて"],
         },
       },
-       testObjBK: {
+      testObjBK: {
         メール送付月: {
           name: "メール送付月",
           list: {
@@ -1250,34 +1483,34 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
-         Target: {
+        Target: {
           name: "Target",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
-         },
+        },
         フラグメント: {
           name: "フラグメント",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
-        }, 
+        },
         製品: {
           name: "製品",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
-         },
+        },
         医師名: {
           name: "医師名",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
-        }, 
+        },
       },
       testObj2: {
         メール送付月: {
@@ -1315,14 +1548,14 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
-         Target: {
+        Target: {
           name: "Target",
           list: {
             すべて: "すべて",
           },
           listOrg: ["すべて"],
         },
-         フラグメント: {
+        フラグメント: {
           name: "フラグメント",
           list: {
             すべて: "すべて",
@@ -1336,7 +1569,7 @@ export default defineComponent({
           },
           listOrg: ["すべて"],
         },
-         医師名: {
+        医師名: {
           name: "医師名",
           list: {
             すべて: "すべて",
@@ -1352,8 +1585,8 @@ export default defineComponent({
         エリア: ["すべて"],
         Target: ["すべて"],
         フラグメント: ["すべて"],
-         製品: ["すべて"],
-          医師名: ["すべて"],
+        製品: ["すべて"],
+        医師名: ["すべて"],
       },
       selectedFilterItemsBK: {
         メール送付月: [],
@@ -1363,19 +1596,19 @@ export default defineComponent({
         エリア: [],
         Target: [],
         フラグメント: [],
-          製品: [],
-           医師名: [],
+        製品: [],
+        医師名: [],
       },
-       selectedFilterItemsBK2: {
+      selectedFilterItemsBK2: {
         メール送付月: [],
         テリトリー名: [],
         MR: [],
         チャネル: [],
         エリア: [],
-         Target: [],
-         フラグメント: [],
-            製品: [],
-             医師名: [],
+        Target: [],
+        フラグメント: [],
+        製品: [],
+        医師名: [],
       },
       selectedFilterItems2: {
         メール送付月: ["すべて"],
@@ -1384,9 +1617,9 @@ export default defineComponent({
         チャネル: ["すべて"],
         エリア: ["すべて"],
         Target: ["すべて"],
-          フラグメント: ["すべて"],
+        フラグメント: ["すべて"],
         製品: ["すべて"],
-          医師名: ["すべて"],
+        医師名: ["すべて"],
       },
       selectedFilterScreenItems: {
         画面: "集計画面",
@@ -1472,10 +1705,11 @@ export default defineComponent({
       isLoadComplete: true,
       dataNumber: 0,
       date: null,
-      optIndata: [], 
+      optIndata: [],
       isPopup: false,
-      optInDetaildata: [], 
- optInDetaildataFilter: [], 
+      optInDetaildata: [],
+      optInDetaildataFilter: [],
+      uniqueCountTotal: 0
     });
 
     const isLoadComplete = computed(() => ApplicationStore.isLoadComplete);
@@ -1546,35 +1780,35 @@ export default defineComponent({
     let optIn
     let optInDetail
 
-   
-
-    
-    
 
 
 
-    
+
+
+
+
+
 
     if (state.date === "newData") {
       emailList2 = Account.getsentEmailListByKeyNew(props.id);
-    emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
+      emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
 
-    optIn = JSON.stringify(optInData);
-    optInDetail = JSON.stringify(optInDetailData);
-     
-    
+      optIn = JSON.stringify(optInData);
+      optInDetail = JSON.stringify(optInDetailData);
+
+
     } else {
       emailList2 = Account.getsentEmailListByKey(props.id);
       emailList3 = Account.getsentEmailList2ByKey(props.id);
 
-     optIn = JSON.stringify(optInDataOld);
-    optInDetail = JSON.stringify(optInDetailDataOld);
+      optIn = JSON.stringify(optInDataOld);
+      optInDetail = JSON.stringify(optInDetailDataOld);
     }
 
     optIn = JSON.parse(optIn);
-     optInDetail = JSON.parse(optInDetail);
+    optInDetail = JSON.parse(optInDetail);
 
-    
+
 
     const accountList = Account.getsentEmailAccountList;
 
@@ -1598,7 +1832,7 @@ export default defineComponent({
         if (props.id === element["営業部"]) {
           result.push(element)
         }
-        
+
       }
 
       return result
@@ -1614,7 +1848,7 @@ export default defineComponent({
           element["uniqueID"] = element.Dr_name + element.HP_name
           result.push(element)
         }
-        
+
       }
 
       return result
@@ -1630,9 +1864,9 @@ export default defineComponent({
         return null
       }
       let result = state.optIndata.filter((x) => {
-            return name === x.MR;
+        return name === x.MR;
       }).filter((x) => {
-            return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
       })
 
       let str
@@ -1642,96 +1876,117 @@ export default defineComponent({
         str = `${result[0]["オプトイン数"]}/${result[0]["ターゲット数"]}`
       }
 
-     return  str
+      return str
     };
-    
+
+    const getOptin2 = (name) => {
+      let result = state.optInDetaildata.filter((x) => {
+        return name === x.MR;
+      }).filter((x) => {
+        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+      })
+        .filter((x) => {
+          return x.許諾 === true;
+        })
+
+      const uniqueUsers = Array.from(
+        new Map(result.map((user) => [user.uniqueID, user])).values()
+      );
+
+      return uniqueUsers
+    };
+
+
+
 
     state.data = computed(() => {
       const result = [];
       const result3 = [];
 
-      
+      let uniqueTotal = 0;
+
+
 
       const emailList = { ...emailList2 };
       console.log('emailList');
-      
+
       console.log(emailList);
-      
+
 
       for (const key in emailList2) {
 
-            if (state.selectFiliterCategory.includes('エリア')) {
-               if (!state.selectedFilterItemsBK2.エリア.includes(key)) {
-              continue
-            }
+        if (state.selectFiliterCategory.includes('エリア')) {
+          if (!state.selectedFilterItemsBK2.エリア.includes(key)) {
+            continue
+          }
         } else {
-            
-            if (!state.selectedFilterItems.エリア.includes("すべて")) {
+
+          if (!state.selectedFilterItems.エリア.includes("すべて")) {
             if (!state.selectedFilterItems.エリア.includes(key)) {
               continue
             }
-        } 
-            }
- 
-          
+          }
+        }
+
+
         for (const key2 in emailList[key]) {
 
-                  if (state.selectFiliterCategory.includes('テリトリー名')) {
-               if (!state.selectedFilterItemsBK2.テリトリー名.includes(key2)) {
+          if (state.selectFiliterCategory.includes('テリトリー名')) {
+            if (!state.selectedFilterItemsBK2.テリトリー名.includes(key2)) {
               continue
             }
-        } else {
-            
-                if (!state.selectedFilterItems.テリトリー名.includes("すべて")) {
-            if (!state.selectedFilterItems.テリトリー名.includes(key2)) {
-              continue
+          } else {
+
+            if (!state.selectedFilterItems.テリトリー名.includes("すべて")) {
+              if (!state.selectedFilterItems.テリトリー名.includes(key2)) {
+                continue
+              }
             }
-        }  
-            }
+          }
 
 
-   
 
-        
+
+
 
           for (const key3 in emailList[key][key2]) {
-            
+
             let obj = {};
             let dataObj = [];
             let dataObj2 = {};
             let dataObj3 = [];
             let Targets = []
             let flagments = []
-             let produts = []
-             let unique = {}
-             let uniqueCount = 0
+            let produts = []
+            let unique = {}
+            let uniqueCount = 0
             let targetCount = 0
-              let docters = []
+            let docters = []
 
-         if (state.selectFiliterCategory.includes('MR')) {
-               if (!state.selectedFilterItemsBK2.MR.includes(key3)) {
-              continue
-            }
-        } else {
-            
-          if (!state.selectedFilterItems.MR.includes("すべて")) {
-            if (!state.selectedFilterItems.MR.includes(key3)) {
-              continue
-            }
+            if (state.selectFiliterCategory.includes('MR')) {
+              if (!state.selectedFilterItemsBK2.MR.includes(key3)) {
+                continue
+              }
+            } else {
+
+              if (!state.selectedFilterItems.MR.includes("すべて")) {
+                if (!state.selectedFilterItems.MR.includes(key3)) {
+                  continue
+                }
               }
             }
-             
 
-     
 
-          
 
-           
-        
+
+
+
+
+
 
             for (const element in emailList[key][key2][key3]) {
 
-                        
+
 
               if (!emailList[key][key2][key3][element].Dr_name) {
                 emailList[key][key2][key3][element].Dr_name = "NULL"
@@ -1741,16 +1996,16 @@ export default defineComponent({
                 if (!state.selectedFilterItems.メール送付月.includes(dayjs(emailList[key][key2][key3][element].Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
                   continue
                 }
-               }
+              }
 
               if (!state.selectedFilterItems.Target.includes("すべて")) {
-                if (!state.selectedFilterItems.Target.includes(emailList[key][key2][key3][element]["Target"])) { 
+                if (!state.selectedFilterItems.Target.includes(emailList[key][key2][key3][element]["Target"])) {
                   continue
                 }
               }
 
-               if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-                if (!emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v))) { 
+              if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
+                if (!emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v))) {
                   continue
                 }
               }
@@ -1758,8 +2013,8 @@ export default defineComponent({
               // let flagmentsflg = false
 
               //  let flagmentsSplit = emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
+
+
               //       for (const element of flagmentsSplit) {
 
               //         if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
@@ -1767,66 +2022,66 @@ export default defineComponent({
               //     flagmentsflg = true
               //   }
               // }
-              
+
               //         flagments.push(element)
               //       }
 
               // if (!state.selectedFilterItems.フラグメント.includes("すべて")) { 
-                          
+
               //       if (!flagmentsflg) {
               //         continue
               //       }
-  
+
               // }
 
 
-              
-              
+
+
 
               if (!state.selectedFilterItems.製品.includes("すべて")) {
-                 if (!state.selectedFilterItems.製品.includes(emailList[key][key2][key3][element]["prodcut1"])) {
+                if (!state.selectedFilterItems.製品.includes(emailList[key][key2][key3][element]["prodcut1"])) {
                   continue
                 }
 
-               }
+              }
 
-  
-                if (!state.selectedFilterItems.医師名.includes("すべて")) {
-         
-                
-                 if (!state.selectedFilterItems.医師名.includes(emailList[key][key2][key3][element]["Dr_name"])) {
+
+              if (!state.selectedFilterItems.医師名.includes("すべて")) {
+
+
+                if (!state.selectedFilterItems.医師名.includes(emailList[key][key2][key3][element]["Dr_name"])) {
                   continue
                 }
 
-                }
-               
+              }
 
-                  Targets.push(emailList[key][key2][key3][element]["Target"])
+
+              Targets.push(emailList[key][key2][key3][element]["Target"])
               dataObj.push(emailList[key][key2][key3][element]);
 
               for (const f of emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"]) {
-                 flagments.push(f)
+                flagments.push(f)
               }
 
-             
-             
-                      
-                      produts.push(emailList[key][key2][key3][element]["prodcut1"])
-                      docters.push(emailList[key][key2][key3][element]["Dr_name"])
-                       const e2 = dayjs(emailList[key][key2][key3][element]["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")
-                      if (!unique[e2]) {
-                        unique[e2] = {}
-                      }
-                      if (!unique[e2][emailList[key][key2][key3][element]["Dr_name"]]) {
-                        unique[e2][emailList[key][key2][key3][element]["Dr_name"]] = []
-                        uniqueCount += 1
-                      }
 
-                    if (emailList[key][key2][key3][element]["Target"] === "Target") {
-                      targetCount += 1
-                    }            
 
-     
+
+              produts.push(emailList[key][key2][key3][element]["prodcut1"])
+              docters.push(emailList[key][key2][key3][element]["Dr_name"])
+              const e2 = dayjs(emailList[key][key2][key3][element]["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")
+              if (!unique[e2]) {
+                unique[e2] = {}
+              }
+              if (!unique[e2][emailList[key][key2][key3][element]["Dr_name"]]) {
+                unique[e2][emailList[key][key2][key3][element]["Dr_name"]] = []
+                uniqueCount += 1
+              }
+
+              if (emailList[key][key2][key3][element]["Target"] === "Target") {
+                targetCount += 1
+              }
+
+
 
               //       if (state.selectedFilterItems.メール送付月.includes("すべて")) {
               //   if (emailList[key][key2][key3][element]["Dr_DCF"] || emailList[key][key2][key3][element]["Dr_Target_Status"]) {
@@ -1844,18 +2099,29 @@ export default defineComponent({
 
             Targets = [...new Set(Targets)];
             flagments = [...new Set(flagments)];
-             produts = [...new Set(produts)];
-             
+            produts = [...new Set(produts)];
+
             let optNumberStr = getOptin(key3)
 
             let optNumber
+            let optNumberCount = 0
 
             if (optNumberStr) {
               optNumber = optNumberStr.split("/")[0]
+
+              let optInList = getOptin2(key3)
+
+              const drNameSet = new Set(dataObj.map(item => item.Dr_name));
+
+              const matchCount = (optInList as any[]).filter(item =>
+                drNameSet.has(item.Dr_name)
+              ).length
+
+              optNumberCount = matchCount
             } else {
               optNumber = 0
             }
-            
+
 
             const rec = {
               営業部: props.id,
@@ -1868,24 +2134,32 @@ export default defineComponent({
               dataDetail2: dataObj3,
               Total: dataObj.length,
               Target: Targets,
-              "Email_Fragments_vod__r.Name": flagments, 
+              "Email_Fragments_vod__r.Name": flagments,
               "prodcut1": produts,
               ユニーク: uniqueCount,
-              ターゲット数:  targetCount,
+              ターゲット数: targetCount,
               オプトイン数: Number(optNumber),
-              オプトイン数_ターゲット数:optNumberStr,
-              Dr_name:  docters
+              オプトイン送信数: Number(optNumberCount),
+              オプトイン数_ターゲット数: optNumberStr,
+              Dr_name: docters
             };
+
+            uniqueTotal += uniqueCount
+
             if (Targets.length > 0) {
-               result3.push(rec);
+              result3.push(rec);
             }
-           
+
           }
         }
       }
 
+      console.log("result3");
+
       console.log(result3);
-      
+
+
+
 
       return result3
 
@@ -1926,8 +2200,8 @@ export default defineComponent({
                 if (a.MR > b.MR) return -1;
                 if (a.MR < b.MR) return 1;
               }
-              
-                if (state.sortObj["セカンド"]["オプトイン数"] == "ASC") {
+
+              if (state.sortObj["セカンド"]["オプトイン数"] == "ASC") {
                 if (a.オプトイン数 > b.オプトイン数) return 1;
                 if (a.オプトイン数 < b.オプトイン数) return -1;
               } else if (state.sortObj["セカンド"]["オプトイン数"] == "DESC") {
@@ -1935,7 +2209,15 @@ export default defineComponent({
                 if (a.オプトイン数 < b.オプトイン数) return 1;
               }
 
-                  if (state.sortObj["セカンド"]["ユニーク"] == "ASC") {
+              if (state.sortObj["セカンド"]["オプトイン送信数"] == "ASC") {
+                if (a.オプトイン送信数 > b.オプトイン送信数) return 1;
+                if (a.オプトイン送信数 < b.オプトイン送信数) return -1;
+              } else if (state.sortObj["セカンド"]["オプトイン送信数"] == "DESC") {
+                if (a.オプトイン送信数 > b.オプトイン送信数) return -1;
+                if (a.オプトイン送信数 < b.オプトイン送信数) return 1;
+              }
+
+              if (state.sortObj["セカンド"]["ユニーク"] == "ASC") {
                 if (a.ユニーク > b.ユニーク) return 1;
                 if (a.ユニーク < b.ユニーク) return -1;
               } else if (state.sortObj["セカンド"]["ユニーク"] == "DESC") {
@@ -1960,10 +2242,10 @@ export default defineComponent({
 
     let dataCont2
 
-     if (state.date === "newData") {
+    if (state.date === "newData") {
       dataCont2 = computed(() => Account.getsentEmailListContentByKeyNew(props.id))
     } else {
-    dataCont2 = computed(() => Account.getsentEmailListContentByKey(props.id))
+      dataCont2 = computed(() => Account.getsentEmailListContentByKey(props.id))
     }
 
 
@@ -1980,258 +2262,258 @@ export default defineComponent({
         type GenericObject = { [key: string]: any };
 
         const getDiff = (
-  before: GenericObject,
-  after: GenericObject,
-): GenericObject => {
-  const allKeys = new Set([...Object.keys(before), ...Object.keys(after)]);
+          before: GenericObject,
+          after: GenericObject,
+        ): GenericObject => {
+          const allKeys = new Set([...Object.keys(before), ...Object.keys(after)]);
 
-  return Array.from(allKeys).reduce<GenericObject>((diff, key) => {
-    if (before[key] !== after[key]) {
-      diff[key] =  key in after ? after[key] : before[key];
-    }
-    return diff;
-  }, {});
-};
+          return Array.from(allKeys).reduce<GenericObject>((diff, key) => {
+            if (before[key] !== after[key]) {
+              diff[key] = key in after ? after[key] : before[key];
+            }
+            return diff;
+          }, {});
+        };
 
 
-        
 
-      for (const element of emailList3) {
 
-                  
-        // if (!element.Dr_name) {
-        //        element.Dr_name = "NULL"
-        //       }
-           
-        if (Object.values(state.selectObj["送付先詳細"]["Value"]).length > 0) {
-          if (element.MR !== state.selectObj["送付先詳細"]["MR"]) {
-            continue
+        for (const element of emailList3) {
+
+
+          // if (!element.Dr_name) {
+          //        element.Dr_name = "NULL"
+          //       }
+
+          if (Object.values(state.selectObj["送付先詳細"]["Value"]).length > 0) {
+            if (element.MR !== state.selectObj["送付先詳細"]["MR"]) {
+              continue
+            }
+            if (element[state.selectObj["送付先詳細"]["Category"]] !== state.selectObj["送付先詳細"]["Value"]) {
+              continue;
+            }
           }
-                    if (element[state.selectObj["送付先詳細"]["Category"]] !== state.selectObj["送付先詳細"]["Value"]) {
-                      continue;
-                    }
-        }
-        let n = 0
-        for (const FragmentsName of element["Email_Fragments_vod__r.Name"]) { 
-          let e =  { ...element }
-          e["Email_Fragments_vod__r.Name"] = FragmentsName
-          if (e["Email_Fragments_vod__c"]) {
-             let FragmentId = e["Email_Fragments_vod__c"].split(',')[n]
-          e["FragmentId"] = FragmentId
-          } else {
-             e["FragmentId"] = "NULL"
-          }
-         
-          
+          let n = 0
+          for (const FragmentsName of element["Email_Fragments_vod__r.Name"]) {
+            let e = { ...element }
+            e["Email_Fragments_vod__r.Name"] = FragmentsName
+            if (e["Email_Fragments_vod__c"]) {
+              let FragmentId = e["Email_Fragments_vod__c"].split(',')[n]
+              e["FragmentId"] = FragmentId
+            } else {
+              e["FragmentId"] = "NULL"
+            }
+
+
 
             if (state.selectedFilterItems.メール送付月.includes("すべて")) {
-                      
-                       result3.push(e);
-                    }
-                   else {
-                if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
-                    result3.push(e);
-                }
+
+              result3.push(e);
             }
-        n++              
-        }
-
-  
-
-              //      let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
-
-              //       if (sentDate === "Invalid Date") {
-              //         sentDate = "NULL"
-              //       }
-
-
-                    
-          
-              //     if (!dataObj2[element["Dr_name"]]) {
-              //       dataObj2[element["Dr_name"]] = {}
-              //     }
-
-
-              //     if (!dataObj2[element["Dr_name"]][sentDate]) {
-              //       dataObj2[element["Dr_name"]][sentDate] = {}
-              //     }
-
-              //     let templateName = element["Approved_Email_Template_vod__r.Name"]
-                  
-                  
-              //      if (!dataObj2[element["Dr_name"]][sentDate][templateName]) {
-              //       dataObj2[element["Dr_name"]][sentDate][templateName] = {}
-              //      }
-
-              //       // let FragmentsName = element["Email_Fragments_vod__r.Name"]
-              //       // let flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-              //       for (const FragmentsName of  element["Email_Fragments_vod__r.Name"]) {
-
-  
-              
-                      
-              //         if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName]) {
-              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName] = {}
-              //      }
-
-
-
-              //     let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
-              //     if (Last_Open_Date_vod__c === "Invalid Date") {
-              //         Last_Open_Date_vod__c = "NULL"
-              //       }
-
-              //     if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c]) {
-              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c] = {}
-              //     }
-
-              //     let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
-              //      if (Last_Click_Date_vod__c === "Invalid Date") {
-              //         Last_Click_Date_vod__c = "NULL"
-              //       }
-                   
-
-              //       if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]) {
-              //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c] = [];
-              //      }                  
-
-              //     if (dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].length === 0) {
-              //        dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].push(element)
-              //       if (state.selectedFilterItems.メール送付月.includes("すべて")) {
-                      
-              //          result3.push(element);
-              //       }
-              //      else {
-              //   if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
-              //       result3.push(element);
-              //   }
-              // }
-                   
-              //     } else {
-              //        const diff = getDiff(dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0], element)
-              //         // console.log(Object.keys(diff));
-              //        for (const element2 of Object.keys(diff)) {
-              //         if (element2 === "dataNumber" || element2 === "Id" || element2 === "Account_vod__c" || element2 === "CSLB_National_ID_1__c"|| element2 === "Email_Sent_Date_vod__c"|| element2 === "isClickActive"|| element2 === "isOpenActive"|| element2 === "CreatedDate"|| element2 === "isActive") {
-              //           continue
-              //         }
-                      
-              //         // console.log( dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2]);
-                      
-              //         dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2] = "*"
-              //        } 
-                    
-                    
-                   
-              //       // element.MR = "✳️"
-              //       // dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]
-              //     }
-              // }
-
-
-
-
-
-
-      }
-      const a = result3.filter((x) => {
-            if ( state.selectObj[state.isScreen]["docter"]) {
-               return x["Dr_name"]  === state.selectObj[state.isScreen]["docter"]
-            } else {
-            return true  
+            else {
+              if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+                result3.push(e);
+              }
             }
-          
-          }).filter((x) => {
-            if ( state.selectObj[state.isScreen]["Id"]) {
-               return x["Id"]  === state.selectObj[state.isScreen]["Id"]
-            } else {
-            return true  
-            }
-          
-          }).filter((x) => {
-            if ( state.selectObj[state.isScreen]["FragmentId"]) {
-               return x["FragmentId"]  === state.selectObj[state.isScreen]["FragmentId"]
-            } else {
-            return true  
-            }
-          
-          }).filter((x) => {
-            if ( state.selectObj[state.isScreen]["sentDate"]) {
-               return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
-            } else {
-            return true  
-            }
-          
-          })
-          .filter((x) => {
-            if ( state.selectObj[state.isScreen]["templateName"]) {
-               return x["Approved_Email_Template_vod__r.Name"]  === state.selectObj[state.isScreen]["templateName"]
-            } else {
-            return true  
-            }
-          
-          })
-          .filter((x) => {
-            if ( state.selectObj[state.isScreen]["flagmentName"]) {
-               return x["Email_Fragments_vod__r.Name"]  === state.selectObj[state.isScreen]["flagmentName"]
-            } else {
-            return true  
-            }
-          
-          })
-          // .filter((x) => {
-          //   if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
-          //   return x["Last_Open_Date_vod__c"] ===  _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] ===  _obj.Last_Click_Date_vod__c
-          //   } else {
-          //   return true  
+            n++
+          }
+
+
+
+          //      let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
+
+          //       if (sentDate === "Invalid Date") {
+          //         sentDate = "NULL"
+          //       }
+
+
+
+
+          //     if (!dataObj2[element["Dr_name"]]) {
+          //       dataObj2[element["Dr_name"]] = {}
+          //     }
+
+
+          //     if (!dataObj2[element["Dr_name"]][sentDate]) {
+          //       dataObj2[element["Dr_name"]][sentDate] = {}
+          //     }
+
+          //     let templateName = element["Approved_Email_Template_vod__r.Name"]
+
+
+          //      if (!dataObj2[element["Dr_name"]][sentDate][templateName]) {
+          //       dataObj2[element["Dr_name"]][sentDate][templateName] = {}
+          //      }
+
+          //       // let FragmentsName = element["Email_Fragments_vod__r.Name"]
+          //       // let flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
+
+
+          //       for (const FragmentsName of  element["Email_Fragments_vod__r.Name"]) {
+
+
+
+
+          //         if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName]) {
+          //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName] = {}
+          //      }
+
+
+
+          //     let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+          //     if (Last_Open_Date_vod__c === "Invalid Date") {
+          //         Last_Open_Date_vod__c = "NULL"
+          //       }
+
+          //     if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c]) {
+          //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c] = {}
+          //     }
+
+          //     let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+          //      if (Last_Click_Date_vod__c === "Invalid Date") {
+          //         Last_Click_Date_vod__c = "NULL"
+          //       }
+
+
+          //       if (!dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]) {
+          //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c] = [];
+          //      }                  
+
+          //     if (dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].length === 0) {
+          //        dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c].push(element)
+          //       if (state.selectedFilterItems.メール送付月.includes("すべて")) {
+
+          //          result3.push(element);
+          //       }
+          //      else {
+          //   if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+          //       result3.push(element);
           //   }
-          
-          // })
+          // }
 
-          console.log(a);
+          //     } else {
+          //        const diff = getDiff(dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0], element)
+          //         // console.log(Object.keys(diff));
+          //        for (const element2 of Object.keys(diff)) {
+          //         if (element2 === "dataNumber" || element2 === "Id" || element2 === "Account_vod__c" || element2 === "CSLB_National_ID_1__c"|| element2 === "Email_Sent_Date_vod__c"|| element2 === "isClickActive"|| element2 === "isOpenActive"|| element2 === "CreatedDate"|| element2 === "isActive") {
+          //           continue
+          //         }
+
+          //         // console.log( dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2]);
+
+          //         dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c][0][element2] = "*"
+          //        } 
 
 
-        
- for (const element of a) {
-   element.isActive = true
- }
+
+          //       // element.MR = "✳️"
+          //       // dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c][Last_Click_Date_vod__c]
+          //     }
+          // }
+
+
+
+
+
+
+        }
+        const a = result3.filter((x) => {
+          if (state.selectObj[state.isScreen]["docter"]) {
+            return x["Dr_name"] === state.selectObj[state.isScreen]["docter"]
+          } else {
+            return true
+          }
+
+        }).filter((x) => {
+          if (state.selectObj[state.isScreen]["Id"]) {
+            return x["Id"] === state.selectObj[state.isScreen]["Id"]
+          } else {
+            return true
+          }
+
+        }).filter((x) => {
+          if (state.selectObj[state.isScreen]["FragmentId"]) {
+            return x["FragmentId"] === state.selectObj[state.isScreen]["FragmentId"]
+          } else {
+            return true
+          }
+
+        }).filter((x) => {
+          if (state.selectObj[state.isScreen]["sentDate"]) {
+            return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
+          } else {
+            return true
+          }
+
+        })
+          .filter((x) => {
+            if (state.selectObj[state.isScreen]["templateName"]) {
+              return x["Approved_Email_Template_vod__r.Name"] === state.selectObj[state.isScreen]["templateName"]
+            } else {
+              return true
+            }
+
+          })
+          .filter((x) => {
+            if (state.selectObj[state.isScreen]["flagmentName"]) {
+              return x["Email_Fragments_vod__r.Name"] === state.selectObj[state.isScreen]["flagmentName"]
+            } else {
+              return true
+            }
+
+          })
+        // .filter((x) => {
+        //   if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
+        //   return x["Last_Open_Date_vod__c"] ===  _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] ===  _obj.Last_Click_Date_vod__c
+        //   } else {
+        //   return true  
+        //   }
+
+        // })
+
+        console.log(a);
+
+
+
+        for (const element of a) {
+          element.isActive = true
+        }
       }
-      
 
-    
+
+
 
       return result3
-       .filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(x.Dr_name);
-            }
-          })
-          .filter((x) => {
-            if (state.selectedFilterItems3.施設名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems3.施設名.includes(x.HP_name);
-            }
-          })
-           .filter((x) => {
-            if (state.selectedFilterItems3.分類.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems3.分類.includes(x.分類);
-            }
-          })
-           .filter((x) => {
-            if (state.selectedFilterItems.Target.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.Target.includes(
-                x.Target
-              );
-            }
-           })
+        .filter((x) => {
+          if (state.selectedFilterItems.医師名.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.医師名.includes(x.Dr_name);
+          }
+        })
+        .filter((x) => {
+          if (state.selectedFilterItems3.施設名.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems3.施設名.includes(x.HP_name);
+          }
+        })
+        .filter((x) => {
+          if (state.selectedFilterItems3.分類.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems3.分類.includes(x.分類);
+          }
+        })
+        .filter((x) => {
+          if (state.selectedFilterItems.Target.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.Target.includes(
+              x.Target
+            );
+          }
+        })
         .sort((a, b) => {
 
           if (state.sortObj3["医師名"] == "default") {
@@ -2276,143 +2558,143 @@ export default defineComponent({
             if (a["Approved_Email_Template_vod__r.Name"] > b["Approved_Email_Template_vod__r.Name"]) return 1;
             if (a["Approved_Email_Template_vod__r.Name"] < b["Approved_Email_Template_vod__r.Name"]) return -1;
           } else if (state.sortObj3["メールテンプレート"] == "ASC") {
-           const firstKeySortResult = a["Approved_Email_Template_vod__r.Name"].localeCompare(b["Approved_Email_Template_vod__r.Name"], "ja");
+            const firstKeySortResult = a["Approved_Email_Template_vod__r.Name"].localeCompare(b["Approved_Email_Template_vod__r.Name"], "ja");
 
-              if (firstKeySortResult !== 0) {
-                return firstKeySortResult;
-              } 
+            if (firstKeySortResult !== 0) {
+              return firstKeySortResult;
+            }
 
           } else if (state.sortObj3["メールテンプレート"] == "DESC") {
-             const firstKeySortResult = b["Approved_Email_Template_vod__r.Name"].localeCompare(a["Approved_Email_Template_vod__r.Name"], "ja");
+            const firstKeySortResult = b["Approved_Email_Template_vod__r.Name"].localeCompare(a["Approved_Email_Template_vod__r.Name"], "ja");
 
-              if (firstKeySortResult !== 0) {
-                return firstKeySortResult;
-              } 
+            if (firstKeySortResult !== 0) {
+              return firstKeySortResult;
+            }
           }
 
           if (a.Id > b.Id) return -1;
-  if (a.Id < b.Id) return 1;
+          if (a.Id < b.Id) return 1;
 
-           if (state.sortObj3["フラグメント"] == "default") {
-           
+          if (state.sortObj3["フラグメント"] == "default") {
+
             if (a["Email_Fragments_vod__r.Name"] && b["Email_Fragments_vod__r.Name"]) {
               const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
               if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"] !== "NULL") {
                 return firstKeySortResult;
-              } 
+              }
 
-            // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
-            // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
+              // if (a["Email_Fragments_vod__r.Name"] == "NULL") return -1;
+              // if (b["Email_Fragments_vod__r.Name"] == "NULL") return 1;
             }
 
-            
 
-            
+
+
 
           } else if (state.sortObj3["フラグメント"] == "ASC") {
             const firstKeySortResult = a["Email_Fragments_vod__r.Name"].localeCompare(b["Email_Fragments_vod__r.Name"], "ja");
 
-              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-                return firstKeySortResult;
-              } 
+            if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+              return firstKeySortResult;
+            }
 
           } else if (state.sortObj3["フラグメント"] == "DESC") {
             const firstKeySortResult = b["Email_Fragments_vod__r.Name"].localeCompare(a["Email_Fragments_vod__r.Name"], "ja");
 
-              if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
-                return firstKeySortResult;
-              } 
+            if (firstKeySortResult !== 0 && a["Email_Fragments_vod__r.Name"]) {
+              return firstKeySortResult;
+            }
           }
 
           if (Object.values(state.sortObj3["セカンド"]).length > 0) {
             if (state.sortObj3["セカンド"]["最終開封日時"] == "ASC") {
-              
-            if (!a.Last_Open_Date_vod__c) return 1;
-            if (!b.Last_Open_Date_vod__c) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
 
-            } else if (state.sortObj3["セカンド"]["最終開封日時"] == "DESC") { 
-               if (!a.Last_Open_Date_vod__c) return -1;
-            if (!b.Last_Open_Date_vod__c) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (!a.Last_Open_Date_vod__c) return 1;
+              if (!b.Last_Open_Date_vod__c) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+
+            } else if (state.sortObj3["セカンド"]["最終開封日時"] == "DESC") {
+              if (!a.Last_Open_Date_vod__c) return -1;
+              if (!b.Last_Open_Date_vod__c) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
             }
 
-             if (state.sortObj3["セカンド"]["最終クリック日時"] == "ASC") {
-              
-            
-            
-            if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;   
-            
-            
-            } else if (state.sortObj3["セカンド"]["最終クリック日時"] == "DESC") { 
-              
-         
-            if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-            if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;   
-           
-             
-               
-          
+            if (state.sortObj3["セカンド"]["最終クリック日時"] == "ASC") {
+
+
+
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+
+
+            } else if (state.sortObj3["セカンド"]["最終クリック日時"] == "DESC") {
+
+
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+
+
+
+
             }
 
-              if (state.sortObj3["セカンド"]["クリック回数"] == "ASC") {
-              
-            
-            
-            if (a.Click_Count_vod__c > b.Click_Count_vod__c ) return -1;
-            if (a.Click_Count_vod__c < b.Click_Count_vod__c) return 1;
-             if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;   
-            
-            
-            } else if (state.sortObj3["セカンド"]["クリック回数"] == "DESC") { 
-              
-         
-            if (a.Click_Count_vod__c > b.Click_Count_vod__c ) return 1;
-            if (a.Click_Count_vod__c < b.Click_Count_vod__c) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;     
-           
-             
-               
-          
+            if (state.sortObj3["セカンド"]["クリック回数"] == "ASC") {
+
+
+
+              if (a.Click_Count_vod__c > b.Click_Count_vod__c) return -1;
+              if (a.Click_Count_vod__c < b.Click_Count_vod__c) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+
+
+            } else if (state.sortObj3["セカンド"]["クリック回数"] == "DESC") {
+
+
+              if (a.Click_Count_vod__c > b.Click_Count_vod__c) return 1;
+              if (a.Click_Count_vod__c < b.Click_Count_vod__c) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+
+
+
+
             }
 
-             if (state.sortObj3["セカンド"]["開封回数"] == "ASC") {
-              
-            
-            
-            if (a.Open_Count_vod__c > b.Open_Count_vod__c ) return -1;
-            if (a.Open_Count_vod__c < b.Open_Count_vod__c) return 1;
-             if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;   
-            
-            
-            } else if (state.sortObj3["セカンド"]["開封回数"] == "DESC") { 
-              
-         
-            if (a.Open_Count_vod__c > b.Open_Count_vod__c ) return 1;
-            if (a.Open_Count_vod__c < b.Open_Count_vod__c) return -1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;     
-           
-             
-               
-          
+            if (state.sortObj3["セカンド"]["開封回数"] == "ASC") {
+
+
+
+              if (a.Open_Count_vod__c > b.Open_Count_vod__c) return -1;
+              if (a.Open_Count_vod__c < b.Open_Count_vod__c) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+
+
+            } else if (state.sortObj3["セカンド"]["開封回数"] == "DESC") {
+
+
+              if (a.Open_Count_vod__c > b.Open_Count_vod__c) return 1;
+              if (a.Open_Count_vod__c < b.Open_Count_vod__c) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+
+
+
+
             }
 
 
-           
+
           } else {
-                                     
+
             if (!a.Last_Open_Date_vod__c) return -1;
             if (!b.Last_Open_Date_vod__c) return 1;
             if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
@@ -2421,19 +2703,19 @@ export default defineComponent({
 
           return 0;
         });
-          
+
     })
 
 
 
     console.log(state.data);
     // console.log(state.dataCont);
-     watch(
+    watch(
       () => state.data,
-      async() => {
+      async () => {
         ApplicationStore.isLoadComplete = false;
         await nextTick();
-         ApplicationStore.isLoadComplete = true;
+        ApplicationStore.isLoadComplete = true;
       }
     )
 
@@ -2442,7 +2724,7 @@ export default defineComponent({
 
     onMounted(async () => {
 
-      
+
       state.iScrollObj = new IScroll(root.value.querySelector(".iscroll-wrapperContent"), {
         scrollX: false,
         scrollY: true,
@@ -2470,28 +2752,28 @@ export default defineComponent({
         for (const item of items3) {
           item.classList.remove("gridnone");
         }
-      if (itemParent) {
-         const items = itemParent.children;
-      const item = itemParent.lastElementChild;
-        const itemChild = item.lastElementChild;
-    
-      
+        if (itemParent) {
+          const items = itemParent.children;
+          const item = itemParent.lastElementChild;
+          const itemChild = item.lastElementChild;
 
-      const childWidth = item.clientWidth * items.length
-        console.log(itemParent.clientWidth);
-    console.log(childWidth);
-      
-      
-      const itemPostion = childWidth + (itemChild.clientWidth / 2) 
-      console.log(itemPostion);
 
-      if (itemParent.clientWidth < itemPostion ) {
-         itemChild.lastElementChild.classList.add('gridnone')
-      } else {
-         itemChild.lastElementChild.classList.remove('gridnone')
-      }
 
-      }
+          const childWidth = item.clientWidth * items.length
+          console.log(itemParent.clientWidth);
+          console.log(childWidth);
+
+
+          const itemPostion = childWidth + (itemChild.clientWidth / 2)
+          console.log(itemPostion);
+
+          if (itemParent.clientWidth < itemPostion) {
+            itemChild.lastElementChild.classList.add('gridnone')
+          } else {
+            itemChild.lastElementChild.classList.remove('gridnone')
+          }
+
+        }
       }
 
 
@@ -2508,7 +2790,7 @@ export default defineComponent({
             ApplicationStore.isLoadComplete = false;
 
             setTimeout(async () => {
-              creatData(state.data,true);
+              creatData(state.data, true);
             }, 1);
 
             // ApplicationStore.isLoadComplete = false
@@ -2526,35 +2808,35 @@ export default defineComponent({
         for (const item of items3) {
           item.classList.remove("gridnone");
         }
-      if (itemParent) {
-         const items = itemParent.children;
-      const item = itemParent.lastElementChild;
-        const itemChild = item.lastElementChild;
-    
-      
+        if (itemParent) {
+          const items = itemParent.children;
+          const item = itemParent.lastElementChild;
+          const itemChild = item.lastElementChild;
 
-      const childWidth = item.clientWidth * items.length
-        console.log(itemParent.clientWidth);
-    console.log(childWidth);
-      
-      
-      const itemPostion = childWidth + (itemChild.clientWidth / 2) 
-      console.log(itemPostion);
 
-      if (itemParent.clientWidth < itemPostion ) {
-         itemChild.lastElementChild.classList.add('gridnone')
-      } else {
-         itemChild.lastElementChild.classList.remove('gridnone')
+
+          const childWidth = item.clientWidth * items.length
+          console.log(itemParent.clientWidth);
+          console.log(childWidth);
+
+
+          const itemPostion = childWidth + (itemChild.clientWidth / 2)
+          console.log(itemPostion);
+
+          if (itemParent.clientWidth < itemPostion) {
+            itemChild.lastElementChild.classList.add('gridnone')
+          } else {
+            itemChild.lastElementChild.classList.remove('gridnone')
+          }
+
+        }
       }
 
-      }
-      }
-      
       console.log("onUpdated");
 
       await nextTick();
-       ApplicationStore.isLoadComplete = true;
-      
+      ApplicationStore.isLoadComplete = true;
+
 
       // state.isLoadComplete = false
       setTimeout(() => {
@@ -2562,7 +2844,7 @@ export default defineComponent({
           state.iScrollObj.enable();
           state.iScrollObj.refresh();
         }
-       
+
       }, 500);
     });
 
@@ -2574,20 +2856,19 @@ export default defineComponent({
       const windowSize = window.innerWidth;
 
       let totalArray = [];
-      
 
-      if (state.isScreen === "集計画面") 
-      {
+
+      if (state.isScreen === "集計画面") {
         totalArray = state.data.map((p) => p["Total"]).filter((v) => v);
       } else if (state.isScreen === "送付先詳細") {
 
         let emailList2 = dataCont2.value
         console.log(emailList2);
-        
+
         const totalArray2 = emailList2
           .flat(2)
           .filter((x) => {
-           if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
+            if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
               if (x[state.selectObj["集計画面"]["Category"]] === state.selectObj["集計画面"]["Value"]) {
                 return true
               }
@@ -2595,12 +2876,12 @@ export default defineComponent({
           })
           .filter((x) => {
             if (state.selectedFilterItems.メール送付月.includes("すべて")) {
-                return true
-              } else {
-               return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
-             }
+              return true
+            } else {
+              return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
+            }
           })
-           .filter((x) => {
+          .filter((x) => {
             if (state.selectedFilterItems.MR.includes("すべて")) {
               return true;
             } else {
@@ -2636,7 +2917,7 @@ export default defineComponent({
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-               return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
               // return state.selectedFilterItems.フラグメント.includes(
               //    x["Email_Fragments_vod__r.Name"]
               // );
@@ -2647,7 +2928,7 @@ export default defineComponent({
               return true;
             } else {
               return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
+                x["prodcut1"]
               );
             }
           })
@@ -2658,7 +2939,7 @@ export default defineComponent({
               return state.selectedFilterItems.医師名.includes(x.Dr_name);
             }
           })
-           .filter((x) => {
+          .filter((x) => {
             if (state.selectedFilterItems3.分類.includes("すべて")) {
               return true;
             } else {
@@ -2676,70 +2957,71 @@ export default defineComponent({
         for (const element of totalArray2) {
 
           if (!dataObj2[element["MR"].trim()]) {
-              dataObj2[element["MR"].trim()] = {}
-            }
+            dataObj2[element["MR"].trim()] = {}
+          }
 
           if (!dataObj2[element["MR"].trim()][element["HP_name"].trim()]) {
-              dataObj2[element["MR"].trim()][element["HP_name"].trim()] = {}
+            dataObj2[element["MR"].trim()][element["HP_name"].trim()] = {}
           }
-            
-            if (!dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
-              dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()] = []
-            }
 
-            dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()].push(element);  
+          if (!dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
+            dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()] = []
+          }
+
+          dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()].push(element);
 
 
-           
+
 
           // if (dataObj2[element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
-         
-          
-          
-          
-           
+
+
+
+
+
           // }
 
-          
 
-         
-            
+
+
+
         }
 
-         const totalArray3 = [];
+        const totalArray3 = [];
 
         for (const key in dataObj2) {
-         for (const key2 in dataObj2[key]) {
-           for (const key3 in dataObj2[key][key2]) {
+          for (const key2 in dataObj2[key]) {
+            for (const key3 in dataObj2[key][key2]) {
 
-            console.log(dataObj2[key][key2][key3]);
-            
+              console.log(dataObj2[key][key2][key3]);
 
-             const totals = dataObj2[key][key2][key3].map((p) => p["Id"])
-      
-             
-             const sum = totals.reduce((sum, num) => Number(sum) + Number(num), 0);
-             for (const element of dataObj2[key][key2][key3]) {
 
-      // if (element.Dr_name === "NULL") {
-      //       continue;
-      // }
-              
-         element.Total = sum
+              const totals = dataObj2[key][key2][key3].map((p) => p["Id"])
 
-        
-      totalArray3.push(element.Total);  }   
-          
-         }
-         }
+
+              const sum = totals.reduce((sum, num) => Number(sum) + Number(num), 0);
+              for (const element of dataObj2[key][key2][key3]) {
+
+                // if (element.Dr_name === "NULL") {
+                //       continue;
+                // }
+
+                element.Total = sum
+
+
+                totalArray3.push(element.Total);
+              }
+
+            }
+          }
         }
 
-        
 
 
 
-        console.log([state.selectObj["集計画面"]["Category"]] );
-        
+
+        console.log([state.selectObj["集計画面"]["Category"]]);
+
 
         totalArray = totalArray3;
       }
@@ -2761,338 +3043,338 @@ export default defineComponent({
         let girdNumPulus;
 
         if (state.isScreen === "集計画面") {
-             if (windowSize > 1500) {
-          maxIndex80 = maxIndex / 0.9;
+          if (windowSize > 1500) {
+            maxIndex80 = maxIndex / 0.9;
 
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            maxIndexCe = maxIndex80;
-            if (maxIndex >= 2000) {
-              girdNum = maxIndexCe / 500;
-              girdNumPulus = 500;
-            } else {
-              girdNum = maxIndexCe / 100;
-              girdNumPulus = 100;
-            }
+            if (numberDigit >= 4) {
+              maxIndexCe = maxIndex80;
+              maxIndexCe = maxIndex80;
+              if (maxIndex >= 2000) {
+                girdNum = maxIndexCe / 500;
+                girdNumPulus = 500;
+              } else {
+                girdNum = maxIndexCe / 100;
+                girdNumPulus = 100;
+              }
 
-            
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 50;
-            girdNumPulus = 50;
-            if (maxIndex <= 600) {
+
+            } else if (numberDigit === 3) {
               maxIndexCe = maxIndex80;
               girdNum = maxIndexCe / 50;
               girdNumPulus = 50;
+              if (maxIndex <= 600) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
+
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 50) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
+
+
+              if (maxIndex <= 20) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
-            
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
+          } else if (windowSize > 1100) {
+            maxIndex80 = maxIndex / 0.8;
+
+            if (numberDigit >= 4) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
 
-            if (maxIndex <= 50) {
+
+              if (maxIndex >= 2000) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 500;
+                girdNumPulus = 500;
+              } else {
+                girdNum = maxIndexCe / 200;
+                girdNumPulus = 200;
+              }
+            } else if (numberDigit === 3) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
+              girdNum = maxIndexCe / 100;
+              girdNumPulus = 100;
+              if (maxIndex <= 500) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
+              if (maxIndex <= 200) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 50) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
+
+              if (maxIndex <= 20) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
+
+
+              if (maxIndex <= 5) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
+          } else {
+            maxIndex80 = maxIndex / 0.7;
 
-
-            if (maxIndex <= 20) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
-            }
-          }
-        } else if (windowSize > 1100) {
-          maxIndex80 = maxIndex / 0.8;
-
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            
-
-            if (maxIndex >= 2000) {
+            if (numberDigit >= 4) {
               maxIndexCe = maxIndex80;
+
+
               girdNum = maxIndexCe / 500;
               girdNumPulus = 500;
-            } else {
+            } else if (numberDigit === 3) {
+              maxIndexCe = maxIndex80;
               girdNum = maxIndexCe / 200;
               girdNumPulus = 200;
-            }
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 100;
-            girdNumPulus = 100;
-            if (maxIndex <= 500) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 50;
-              girdNumPulus = 50;
-            }
-            if (maxIndex <= 200) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
 
-            if (maxIndex <= 50) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
-            }
+              if (maxIndex <= 400) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 100;
+                girdNumPulus = 100;
+              }
+              if (maxIndex <= 200) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
 
-           if (maxIndex <= 20) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
-            }
+              //  if (maxIndex <= 160) {
+              //   maxIndexCe = maxIndex80;
+              //   girdNum = maxIndexCe / 20;
+              //   girdNumPulus = 20;
+              //  }
+
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+
+              if (maxIndex <= 80) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+              if (maxIndex <= 40) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 20) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
 
 
-            if (maxIndex <= 5) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
+              if (maxIndex <= 5) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
           }
-        } else  {
-          maxIndex80 = maxIndex / 0.7;
-
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            
-
-            girdNum = maxIndexCe / 500;
-            girdNumPulus = 500;
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 200;
-            girdNumPulus = 200;
-            
-            if (maxIndex <= 400) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 100;
-              girdNumPulus = 100;
-            }
-            if (maxIndex <= 200) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 50;
-              girdNumPulus = 50;
-            }
-
-            //  if (maxIndex <= 160) {
-            //   maxIndexCe = maxIndex80;
-            //   girdNum = maxIndexCe / 20;
-            //   girdNumPulus = 20;
-            //  }
-            
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-
-            if (maxIndex <= 80) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-            if (maxIndex <= 40) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
-
-            if (maxIndex <= 20) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
-            }
-
-
-            if (maxIndex <= 5) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
-            }
-          }
-        } 
         } else if (state.isScreen === "送付先詳細") {
-             if (windowSize > 1500) {
-          maxIndex80 = maxIndex / 0.9;
+          if (windowSize > 1500) {
+            maxIndex80 = maxIndex / 0.9;
 
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            maxIndexCe = maxIndex80;
-            if (maxIndex >= 2000) {
-              girdNum = maxIndexCe / 500;
-              girdNumPulus = 500;
-            } else {
-              girdNum = maxIndexCe / 100;
-              girdNumPulus = 100;
-            }
+            if (numberDigit >= 4) {
+              maxIndexCe = maxIndex80;
+              maxIndexCe = maxIndex80;
+              if (maxIndex >= 2000) {
+                girdNum = maxIndexCe / 500;
+                girdNumPulus = 500;
+              } else {
+                girdNum = maxIndexCe / 100;
+                girdNumPulus = 100;
+              }
 
-            
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 50;
-            girdNumPulus = 50;
-            if (maxIndex <= 600) {
+
+            } else if (numberDigit === 3) {
               maxIndexCe = maxIndex80;
               girdNum = maxIndexCe / 50;
               girdNumPulus = 50;
+              if (maxIndex <= 600) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
+
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 50) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
+
+
+              if (maxIndex <= 20) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
-            
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
+          } else if (windowSize > 1100) {
+            maxIndex80 = maxIndex / 0.8;
+
+            if (numberDigit >= 4) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
 
-            if (maxIndex <= 50) {
+
+              if (maxIndex >= 2000) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 500;
+                girdNumPulus = 500;
+              } else {
+                girdNum = maxIndexCe / 200;
+                girdNumPulus = 200;
+              }
+            } else if (numberDigit === 3) {
               maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
+              girdNum = maxIndexCe / 100;
+              girdNumPulus = 100;
+              if (maxIndex <= 500) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
+              if (maxIndex <= 200) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 50) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
+
+
+
+
+              if (maxIndex <= 20) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
+          } else {
+            maxIndex80 = maxIndex / 0.7;
 
-
-            if (maxIndex <= 20) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
-            }
-          }
-        } else if (windowSize > 1100) {
-          maxIndex80 = maxIndex / 0.8;
-
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            
-
-            if (maxIndex >= 2000) {
+            if (numberDigit >= 4) {
               maxIndexCe = maxIndex80;
+
+
               girdNum = maxIndexCe / 500;
               girdNumPulus = 500;
-            } else {
+            } else if (numberDigit === 3) {
+              maxIndexCe = maxIndex80;
               girdNum = maxIndexCe / 200;
               girdNumPulus = 200;
-            }
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 100;
-            girdNumPulus = 100;
-            if (maxIndex <= 500) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 50;
-              girdNumPulus = 50;
-            }
-            if (maxIndex <= 200) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
 
-            if (maxIndex <= 50) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
-            }
+              if (maxIndex <= 400) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 100;
+                girdNumPulus = 100;
+              }
+              if (maxIndex <= 200) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 50;
+                girdNumPulus = 50;
+              }
 
-      
+              //  if (maxIndex <= 160) {
+              //   maxIndexCe = maxIndex80;
+              //   girdNum = maxIndexCe / 20;
+              //   girdNumPulus = 20;
+              //  }
+
+            } else if (numberDigit <= 2) {
+              if (maxIndex <= 100) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+
+              if (maxIndex <= 80) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 20;
+                girdNumPulus = 20;
+              }
+              if (maxIndex <= 40) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 10;
+                girdNumPulus = 10;
+              }
+
+              if (maxIndex <= 20) {
+                maxIndexCe = maxIndex80;
+                girdNum = maxIndexCe / 5;
+                girdNumPulus = 5;
+              }
 
 
-            if (maxIndex <= 20) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
+              if (maxIndex <= 10) {
+                maxIndex80 = maxIndex + 1;
+                maxIndexCe = maxIndex + 1;
+                girdNum = maxIndexCe / 1;
+                girdNumPulus = 1;
+              }
             }
           }
-        } else  {
-          maxIndex80 = maxIndex / 0.7;
-
-          if (numberDigit >= 4) {
-            maxIndexCe = maxIndex80;
-            
-
-            girdNum = maxIndexCe / 500;
-            girdNumPulus = 500;
-          } else if (numberDigit === 3) {
-            maxIndexCe = maxIndex80;
-            girdNum = maxIndexCe / 200;
-            girdNumPulus = 200;
-            
-            if (maxIndex <= 400) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 100;
-              girdNumPulus = 100;
-            }
-            if (maxIndex <= 200) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 50;
-              girdNumPulus = 50;
-            }
-
-            //  if (maxIndex <= 160) {
-            //   maxIndexCe = maxIndex80;
-            //   girdNum = maxIndexCe / 20;
-            //   girdNumPulus = 20;
-            //  }
-            
-          } else if (numberDigit <= 2) {
-            if (maxIndex <= 100) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-
-            if (maxIndex <= 80) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 20;
-              girdNumPulus = 20;
-            }
-            if (maxIndex <= 40) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 10;
-              girdNumPulus = 10;
-            }
-
-            if (maxIndex <= 20) {
-              maxIndexCe = maxIndex80;
-              girdNum = maxIndexCe / 5;
-              girdNumPulus = 5;
-            }
-
-
-            if (maxIndex <= 10) {
-              maxIndex80 = maxIndex + 1;
-              maxIndexCe = maxIndex + 1;
-              girdNum = maxIndexCe / 1;
-              girdNumPulus = 1;
-            }
-          }
-        } 
         }
 
-     
+
 
         if (state.isScreen === "集計画面") {
           state.girdArry = [];
@@ -3106,7 +3388,7 @@ export default defineComponent({
           };
 
           const targetList = [...state.data];
-          
+
 
           const rankObj = {};
           for (const element of targetList) {
@@ -3168,78 +3450,78 @@ export default defineComponent({
           const rankObj3 = {};
 
           let emailList2 = dataCont2.value
-      console.log("emailList2");
-        
-        console.log(emailList2);
-        
+          console.log("emailList2");
+
+          console.log(emailList2);
+
 
           let totalArray2 = emailList2
-          
+
             .flat(2)
             .filter((x) => {
-           if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
-              if (x[state.selectObj["集計画面"]["Category"]] === state.selectObj["集計画面"]["Value"]) {
-                return true
+              if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
+                if (x[state.selectObj["集計画面"]["Category"]] === state.selectObj["集計画面"]["Value"]) {
+                  return true
+                }
               }
-            }
             })
-         .filter((x) => {
-            if (state.selectedFilterItems.メール送付月.includes("すべて")) {
+            .filter((x) => {
+              if (state.selectedFilterItems.メール送付月.includes("すべて")) {
                 return true
               } else {
-               return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
-             }
-          })
-           .filter((x) => {
-            if (state.selectedFilterItems.MR.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.MR.includes(x.MR);
-            }
-          })
-          .filter((x) => {
-            if (state.selectedFilterItems.エリア.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.エリア.includes(x.エリア);
-            }
-          })
-          .filter((x) => {
-            if (state.selectedFilterItems.テリトリー名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.テリトリー名.includes(
-                x.テリトリー名
-              );
-            }
-          })
-            .filter((x) => {
-            if (state.selectedFilterItems.Target.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.Target.includes(
-                x.Target
-              );
-            }
+                return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
+              }
             })
-         .filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-              // return state.selectedFilterItems.フラグメント.includes(
-              //   x["flagments"]
-              // );
-            }
-          }) .filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                x["prodcut1"]
-              );
-            }
-          })  
+            .filter((x) => {
+              if (state.selectedFilterItems.MR.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.MR.includes(x.MR);
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.エリア.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.エリア.includes(x.エリア);
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.テリトリー名.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.テリトリー名.includes(
+                  x.テリトリー名
+                );
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.Target.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.Target.includes(
+                  x.Target
+                );
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+                return true;
+              } else {
+                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+                // return state.selectedFilterItems.フラグメント.includes(
+                //   x["flagments"]
+                // );
+              }
+            }).filter((x) => {
+              if (state.selectedFilterItems.製品.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.製品.includes(
+                  x["prodcut1"]
+                );
+              }
+            })
             .filter((x) => {
               if (state.selectedFilterItems.医師名.includes("すべて")) {
                 return true;
@@ -3247,13 +3529,13 @@ export default defineComponent({
                 return state.selectedFilterItems.医師名.includes(x.Dr_name);
               }
             })
-             .filter((x) => {
-            if (state.selectedFilterItems3.分類.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems3.分類.includes(x.分類);
-            }
-          })
+            .filter((x) => {
+              if (state.selectedFilterItems3.分類.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems3.分類.includes(x.分類);
+              }
+            })
             .filter((x) => {
               if (state.selectedFilterItems3.施設名.includes("すべて")) {
                 return true;
@@ -3283,14 +3565,14 @@ export default defineComponent({
                   return firstKeySortResult;
                 }
               } else if (state.sortObj2["施設名"] == "ASC") {
-               if (a["HP_name"] > b["HP_name"]) return 1;
+                if (a["HP_name"] > b["HP_name"]) return 1;
                 if (a["HP_name"] < b["HP_name"]) return -1;
               } else if (state.sortObj2["施設名"] == "DESC") {
                 if (a["HP_name"] > b["HP_name"]) return -1;
-                if (a["HP_name"] < b["HP_name"]) return 1;  
+                if (a["HP_name"] < b["HP_name"]) return 1;
               }
 
-           
+
 
               // if (state.sortObj["セカンド"]["DATA"] == "ASC") {
               //   if (a.Total > b.Total) return -1;
@@ -3334,19 +3616,19 @@ export default defineComponent({
                 if (firstKeySortResult !== 0) {
                   return firstKeySortResult;
                 }
-                
+
 
 
               }
 
-             
+
               return 0;
             });
-            console.log("totalArray2");
-            
-            console.log(totalArray2);
-            
-            
+          console.log("totalArray2");
+
+          console.log(totalArray2);
+
+
 
           for (const element2 of totalArray2) {
             // if (element2.Dr_name === "NULL") {
@@ -3373,7 +3655,7 @@ export default defineComponent({
               MR: element2.MR,
               HP_name: element2.HP_name,
               Dr_name: element2.Dr_name,
-              分類:element2.分類,
+              分類: element2.分類,
               Total: element2.Total,
               Target: element2.Target,
               ターゲット数: element2.Target == "Target" ? element2.Total : 0,
@@ -3386,54 +3668,54 @@ export default defineComponent({
           }
 
 
-           let totalArray3 = emailList2
-          
+          let totalArray3 = emailList2
+
             .flat(2)
             .filter((x) => {
-           if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
-              if (x[state.selectObj["集計画面"]["Category"]] === state.selectObj["集計画面"]["Value"]) {
-                return true
+              if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
+                if (x[state.selectObj["集計画面"]["Category"]] === state.selectObj["集計画面"]["Value"]) {
+                  return true
+                }
               }
-            }
             })
-         .filter((x) => {
-            if (state.selectedFilterItems.メール送付月.includes("すべて")) {
+            .filter((x) => {
+              if (state.selectedFilterItems.メール送付月.includes("すべて")) {
                 return true
               } else {
-               return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
-             }
-          })
-           .filter((x) => {
-            if (state.selectedFilterItems.MR.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.MR.includes(x.MR);
-            }
-          })
-          .filter((x) => {
-            if (state.selectedFilterItems.エリア.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.エリア.includes(x.エリア);
-            }
-          })
-          .filter((x) => {
-            if (state.selectedFilterItems.テリトリー名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.テリトリー名.includes(
-                x.テリトリー名
-              );
-            }
-          })
+                return state.selectedFilterItems.メール送付月.includes(dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M"))
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.MR.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.MR.includes(x.MR);
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.エリア.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.エリア.includes(x.エリア);
+              }
+            })
+            .filter((x) => {
+              if (state.selectedFilterItems.テリトリー名.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.テリトリー名.includes(
+                  x.テリトリー名
+                );
+              }
+            })
 
-             .filter((x) => {
-            if (state.selectedFilterItems3.分類.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems3.分類.includes(x.分類);
-            }
-          })
+            .filter((x) => {
+              if (state.selectedFilterItems3.分類.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems3.分類.includes(x.分類);
+              }
+            })
             .filter((x) => {
               if (state.selectedFilterItems3.施設名.includes("すべて")) {
                 return true;
@@ -3448,18 +3730,18 @@ export default defineComponent({
             .map(([key, value]) => ({ [key]: value }))
             .reverse();
 
-       
+
 
           creatDataFacility(totalArray2);
           creatDataKinds(totalArray2);
 
-         
+
           console.log('state.dataDetail');
-          
+
           console.log(state.dataDetail);
           console.log(state.dataDetailOrg);
-          
-          
+
+
         }
       }
     };
@@ -3487,7 +3769,7 @@ export default defineComponent({
 
 
       state.selectedFilterItemsOptIn[_obj.category] = _obj.selectedValue !== "デフォルトに戻す" ? _obj.selectedValue : null;
-
+      creatData(state.data, false);
     }
 
     const onTapSelectBoxItemScreen = async (_obj) => {
@@ -3503,46 +3785,46 @@ export default defineComponent({
 
       if (_obj.selectedValue === "送付先詳細") {
         if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
-          creatData(state.data,false);
+          creatData(state.data, false);
         }
         await nextTick()
         const item2 = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
         const items3 = document.querySelector("#my-chart2 .call-list-data-item.on");
         const items = document.querySelector("#my-chart .call-list-title.on");
-        
+
         if (!items3 && item2.length > 0) {
-         for (const item of item2) {
+          for (const item of item2) {
             item.classList.remove("no-active");
           }
         }
 
         if (items) {
-        
-          
+
+
           const item = items.parentElement.querySelectorAll(".call-list-data-item");
-         
-          
+
+
           for (const e of item) {
             if (!e.classList.contains('on')) {
               e.classList.add("on");
             }
-            
+
           }
 
-       
-  
+
+
         }
 
-   data = state.dataDetailOrg
+        data = state.dataDetailOrg
 
- 
 
-        
+
+
       } else if (_obj.selectedValue === "送付内容") {
         if (state.dataContent.length === 0 && Object.values(state.selectObj["送付先詳細"]["Value"]).length === 0) {
-          creatData(state.data,false);
+          creatData(state.data, false);
         }
-         data = state.dataOrg
+        data = state.dataOrg
       } else if (_obj.selectedValue === "集計画面") {
         targetData = state.selectedFilterItems
         creatData(state.data, false);
@@ -3552,264 +3834,264 @@ export default defineComponent({
         const items = document.querySelector("#my-chart .call-list-title.on");
 
         if (!items3 && item2.length > 0) {
-         for (const item of item2) {
+          for (const item of item2) {
             item.classList.remove("no-active");
           }
 
- 
+
         }
-        
+
 
 
         if (items) {
-        
-          
+
+
           const item = items.parentElement.querySelectorAll(".call-list-data-item");
-         
-          
+
+
           for (const e of item) {
             if (!e.classList.contains('on')) {
               e.classList.add("on");
             }
-            
+
           }
 
-                   const item4 = document.querySelectorAll("#my-chart .call-list-data-item");
+          const item4 = document.querySelectorAll("#my-chart .call-list-data-item");
           console.log("item4");
-          
+
           console.log(item4);
-          
-             for (const e of item4) {
-               if (!e.classList.contains('on') && !e.classList.contains('no-active')) {
-           console.log(e);
-              
+
+          for (const e of item4) {
+            if (!e.classList.contains('on') && !e.classList.contains('no-active')) {
+              console.log(e);
+
               e.classList.add("no-active");
             }
-            
+
           }
 
-  
 
-  
+
+
         }
 
         data = state.dataOrg
-        
+
       }
 
-      console.log( state.selectedFilterItems["フラグメント"]);
+      console.log(state.selectedFilterItems["フラグメント"]);
 
       let data2
 
-       if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
-      data2 = data
-     } else {
-     data2 = data.filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-      }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
-              );
-            }
-          })
-     }
-          
-         state.testObj["フラグメント"].list = {
-              すべて: "すべて",
-          };
-
-
-          if (state.selectFiliterCategory.includes("フラグメント")) {
-            state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-             creatDataFlagment(data2, "goScreen");
+      if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
+        data2 = data
+      } else {
+        data2 = data.filter((x) => {
+          if (state.selectedFilterItems.製品.includes("すべて")) {
+            return true;
           } else {
-             state.selectedFilterItems["フラグメント"] = ["すべて"]
-            creatDataFlagment(data2, false);
+            return state.selectedFilterItems.製品.includes(
+              x["prodcut1"]
+            );
           }
-
-               if (_obj.selectedValue === "集計画面"|| _obj.selectedValue === "送付内容") {
-      data2 = data
-     } else {
-       data2 = data.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
-              );
-            }
-          })
-     }
-
-          
-
-
-          
-
-           state.testObj["製品"].list = {
-              すべて: "すべて",
-          };
-
-
-          if (state.selectFiliterCategory.includes("製品")) {
-            state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
-             creatDataProduct(data2, "goScreen");
+        }).filter((x) => {
+          if (state.selectedFilterItems.医師名.includes("すべて")) {
+            return true;
           } else {
-             state.selectedFilterItems["製品"] = ["すべて"]
-            creatDataProduct(data2, false);
+            return state.selectedFilterItems.医師名.includes(
+              x["Dr_name"]
+            );
           }
+        })
+      }
+
+      state.testObj["フラグメント"].list = {
+        すべて: "すべて",
+      };
 
 
-                    if (_obj.selectedValue === "集計画面") {
-      data2 = data
-     } else {
-       data2 = data.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-      })
-     }
+      if (state.selectFiliterCategory.includes("フラグメント")) {
+        state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+        creatDataFlagment(data2, "goScreen");
+      } else {
+        state.selectedFilterItems["フラグメント"] = ["すべて"]
+        creatDataFlagment(data2, false);
+      }
 
-          
-
-
-          
-
-           state.testObj["医師名"].list = {
-              すべて: "すべて",
-          };
-
-
-          if (state.selectFiliterCategory.includes("医師名")) {
-            state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
-             creatDatDocter(data2, "goScreen");
+      if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
+        data2 = data
+      } else {
+        data2 = data.filter((x) => {
+          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+            return true;
           } else {
-             state.selectedFilterItems["医師名"] = ["すべて"]
-            creatDatDocter(data2, false);
+            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
           }
-
-
-
-
-                   if (_obj.selectedValue === "集計画面") {
-      data2 = data
-     } else {
-       data2 = data.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-      }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
-              );
-            }
-          })
-     }
-
-          
-
-
-          
-
-           state.testObj["Target"].list = {
-              すべて: "すべて",
-          };
-
-
-          if (state.selectFiliterCategory.includes("Target")) {
-            state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-             creatDataTarget(data2, "goScreen");
+        }).filter((x) => {
+          if (state.selectedFilterItems.医師名.includes("すべて")) {
+            return true;
           } else {
-             state.selectedFilterItems["Target"] = ["すべて"]
-            creatDataTarget(data2, false);
+            return state.selectedFilterItems.医師名.includes(
+              x["Dr_name"]
+            );
           }
+        })
+      }
 
-          
-        
-     
+
+
+
+
+
+      state.testObj["製品"].list = {
+        すべて: "すべて",
+      };
+
+
+      if (state.selectFiliterCategory.includes("製品")) {
+        state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
+        creatDataProduct(data2, "goScreen");
+      } else {
+        state.selectedFilterItems["製品"] = ["すべて"]
+        creatDataProduct(data2, false);
+      }
+
+
+      if (_obj.selectedValue === "集計画面") {
+        data2 = data
+      } else {
+        data2 = data.filter((x) => {
+          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+            return true;
+          } else {
+            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+          }
+        }).filter((x) => {
+          if (state.selectedFilterItems.製品.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.製品.includes(
+              x["prodcut1"]
+            );
+          }
+        })
+      }
+
+
+
+
+
+
+      state.testObj["医師名"].list = {
+        すべて: "すべて",
+      };
+
+
+      if (state.selectFiliterCategory.includes("医師名")) {
+        state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
+        creatDatDocter(data2, "goScreen");
+      } else {
+        state.selectedFilterItems["医師名"] = ["すべて"]
+        creatDatDocter(data2, false);
+      }
+
+
+
+
+      if (_obj.selectedValue === "集計画面") {
+        data2 = data
+      } else {
+        data2 = data.filter((x) => {
+          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+            return true;
+          } else {
+            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+          }
+        }).filter((x) => {
+          if (state.selectedFilterItems.製品.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.製品.includes(
+              x["prodcut1"]
+            );
+          }
+        }).filter((x) => {
+          if (state.selectedFilterItems.医師名.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.医師名.includes(
+              x["Dr_name"]
+            );
+          }
+        })
+      }
+
+
+
+
+
+
+      state.testObj["Target"].list = {
+        すべて: "すべて",
+      };
+
+
+      if (state.selectFiliterCategory.includes("Target")) {
+        state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
+        creatDataTarget(data2, "goScreen");
+      } else {
+        state.selectedFilterItems["Target"] = ["すべて"]
+        creatDataTarget(data2, false);
+      }
+
+
+
+
       console.log(state.selectedFilterItems);
       console.log(state.selectedFilterItems2);
-        
-          
 
-  //     for (const element in state.selectedFilterItems) {
-  //         if (element === "チャネル" || element === "メール送付月" ) {
-  //           continue;
-  //         }
 
-  //         // if (state.selectedFilterItems[element].length === 0) {
-  //         //   continue
-  //         // }
 
-  //         if (state.selectedFilterItems[element].includes("すべて")) {
-  //           state.selectedFilterItems[element] = ["すべて"];
-  //           state.selectedFilterItems2[element] = ["すべて"];
-  //           state.testObj[element].list = {
-  //             すべて: "すべて",
-  //           };
-  //         } else {
-  //           state.testObj[element].list = {
-  //             すべて: "すべて",
-  //           };
-  //           state.selectedFilterItems2[element] = state.selectedFilterItems[element];
-  //           state.selectedFilterItems[element] = ["すべて"];
-  //         }
+      //     for (const element in state.selectedFilterItems) {
+      //         if (element === "チャネル" || element === "メール送付月" ) {
+      //           continue;
+      //         }
 
-          
-  // }
+      //         // if (state.selectedFilterItems[element].length === 0) {
+      //         //   continue
+      //         // }
 
-  // creatDataMR(state.data, "メール送付月");
-  //       creatDataTerritory(state.data, "メール送付月");
-  //       creatDataArea(state.data, "メール送付月");
+      //         if (state.selectedFilterItems[element].includes("すべて")) {
+      //           state.selectedFilterItems[element] = ["すべて"];
+      //           state.selectedFilterItems2[element] = ["すべて"];
+      //           state.testObj[element].list = {
+      //             すべて: "すべて",
+      //           };
+      //         } else {
+      //           state.testObj[element].list = {
+      //             すべて: "すべて",
+      //           };
+      //           state.selectedFilterItems2[element] = state.selectedFilterItems[element];
+      //           state.selectedFilterItems[element] = ["すべて"];
+      //         }
 
-  //              if (data.length > 0) {
-  //          creatDataTarget(data,  "メール送付月");
-  //       }
-            
+
+      // }
+
+      // creatDataMR(state.data, "メール送付月");
+      //       creatDataTerritory(state.data, "メール送付月");
+      //       creatDataArea(state.data, "メール送付月");
+
+      //              if (data.length > 0) {
+      //          creatDataTarget(data,  "メール送付月");
+      //       }
+
 
       // creatDataMR(state.data, false);
       // creatDataTerritory(state.data, false);
       //   creatDataArea(state.data, false);
-    
-        
+
+
 
     };
 
@@ -3817,52 +4099,52 @@ export default defineComponent({
       onTapClearButton();
       state.selectedFilterItems[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
       // state.selectedFilterItems['MR'] = ["すべて"];
-     
 
 
-          for (const element in state.selectedFilterItems) {
-          if (element === "チャネル" || element === "メール送付月") {
-            continue;
-          }
 
-          if (state.selectFiliterCategory[0] === element) {
-            continue
-          }
+      for (const element in state.selectedFilterItems) {
+        if (element === "チャネル" || element === "メール送付月") {
+          continue;
+        }
 
-          
+        if (state.selectFiliterCategory[0] === element) {
+          continue
+        }
 
-          if (state.selectedFilterItems[element].includes("すべて")) {
-            state.selectedFilterItems[element] = ["すべて"];
-            state.selectedFilterItems2[element] = ["すべて"];
-            state.testObj[element].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj[element].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2[element] = state.selectedFilterItems[element];
-            state.selectedFilterItems[element] = ["すべて"];
-          }
-  }
-      
+
+
+        if (state.selectedFilterItems[element].includes("すべて")) {
+          state.selectedFilterItems[element] = ["すべて"];
+          state.selectedFilterItems2[element] = ["すべて"];
+          state.testObj[element].list = {
+            すべて: "すべて",
+          };
+        } else {
+          state.testObj[element].list = {
+            すべて: "すべて",
+          };
+          state.selectedFilterItems2[element] = state.selectedFilterItems[element];
+          state.selectedFilterItems[element] = ["すべて"];
+        }
+      }
+
 
 
 
       state.selectedObj.施設名.list = {
-          すべて: "すべて",
+        すべて: "すべて",
       };
 
       if (!state.selectedFilterItems3.施設名.includes('すべて')) {
-         state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名
+        state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名
       }
-        
-        state.selectedFilterItems3.施設名 = ["すべて"];
+
+      state.selectedFilterItems3.施設名 = ["すべて"];
 
       creatData(state.data, false);
       await nextTick()
-   
-      
+
+
       if (
         state.selectFiliterCategory[0] === "チャネル") {
         for (const element in state.selectedFilterItems) {
@@ -3872,8 +4154,8 @@ export default defineComponent({
 
           console.log(element);
           console.log(state.selectedFilterItems[element]);
-          
-          
+
+
 
           if (state.selectedFilterItems[element].includes("すべて")) {
             state.selectedFilterItems[element] = ["すべて"];
@@ -3909,7 +4191,7 @@ export default defineComponent({
           }
 
           // state.selectedFilterItems[element] = state.selectedFilterItems2[element];
-           
+
           if (element === "MR") {
             creatDataMR(target2, target);
           } else if (element === "テリトリー名") {
@@ -3919,7 +4201,7 @@ export default defineComponent({
           }
         }
 
-         creatData(state.data, false);
+        creatData(state.data, false);
 
         if (!state.selectFiliterCategory.includes("MR")) {
           creatDataMR(state.data, false);
@@ -3932,27 +4214,27 @@ export default defineComponent({
         }
 
         if (state.isScreen === '集計画面') {
-           creatDataTarget(state.data, "メール送付月");
+          creatDataTarget(state.data, "メール送付月");
         } else {
-           creatDataTarget(state.dataDetailOrg, "メール送付月");
+          creatDataTarget(state.dataDetailOrg, "メール送付月");
         }
 
         if (state.isScreen === '集計画面') {
-           creatDataFlagment(state.data, "メール送付月");
+          creatDataFlagment(state.data, "メール送付月");
         } else {
-           creatDataFlagment(state.dataDetailOrg, "メール送付月");
+          creatDataFlagment(state.dataDetailOrg, "メール送付月");
         }
 
         if (state.isScreen === '集計画面') {
-           creatDataProduct(state.data, "メール送付月");
+          creatDataProduct(state.data, "メール送付月");
         } else {
-           creatDataProduct(state.dataDetailOrg, "メール送付月");
+          creatDataProduct(state.dataDetailOrg, "メール送付月");
         }
 
-        
-        
 
-       
+
+
+
       }
     };
 
@@ -3971,89 +4253,89 @@ export default defineComponent({
 
 
 
-      
+
 
       await onResize();
 
 
       if (_obj.category === "施設名") {
-        state.selectedFilterItems3.施設名BK =  state.selectedFilterItems3.施設名 
+        state.selectedFilterItems3.施設名BK = state.selectedFilterItems3.施設名
       }
 
-    
-       if (state.selectedFilterItems["Target"].includes("すべて")) {
-            state.selectedFilterItems["Target"] = ["すべて"];
-            state.selectedFilterItems2["Target"] = ["すべて"];
-            
-            state.testObj["Target"].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj["Target"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-            state.selectedFilterItems["Target"] = ["すべて"];
-       }
 
-       if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
-            state.selectedFilterItems["フラグメント"] = ["すべて"];
-            state.selectedFilterItems2["フラグメント"] = ["すべて"];
-            
-            state.testObj["フラグメント"].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj["フラグメント"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-            state.selectedFilterItems["フラグメント"] = ["すべて"];
-       }
+      if (state.selectedFilterItems["Target"].includes("すべて")) {
+        state.selectedFilterItems["Target"] = ["すべて"];
+        state.selectedFilterItems2["Target"] = ["すべて"];
 
-         if (state.selectedFilterItems["医師名"].includes("すべて")) {
-            state.selectedFilterItems["医師名"] = ["すべて"];
-            state.selectedFilterItems2["医師名"] = ["すべて"];
-            
-            state.testObj["医師名"].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj["医師名"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
-            state.selectedFilterItems["医師名"] = ["すべて"];
-       }
+        state.testObj["Target"].list = {
+          すべて: "すべて",
+        };
+      } else {
+        state.testObj["Target"].list = {
+          すべて: "すべて",
+        };
+        state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
+        state.selectedFilterItems["Target"] = ["すべて"];
+      }
 
-         if (state.selectedFilterItems["製品"].includes("すべて")) {
-            state.selectedFilterItems["製品"] = ["すべて"];
-            state.selectedFilterItems2["製品"] = ["すべて"];
-            
-            state.testObj["製品"].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj["製品"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
-            state.selectedFilterItems["製品"] = ["すべて"];
-       }
+      if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
+        state.selectedFilterItems["フラグメント"] = ["すべて"];
+        state.selectedFilterItems2["フラグメント"] = ["すべて"];
+
+        state.testObj["フラグメント"].list = {
+          すべて: "すべて",
+        };
+      } else {
+        state.testObj["フラグメント"].list = {
+          すべて: "すべて",
+        };
+        state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+        state.selectedFilterItems["フラグメント"] = ["すべて"];
+      }
+
+      if (state.selectedFilterItems["医師名"].includes("すべて")) {
+        state.selectedFilterItems["医師名"] = ["すべて"];
+        state.selectedFilterItems2["医師名"] = ["すべて"];
+
+        state.testObj["医師名"].list = {
+          すべて: "すべて",
+        };
+      } else {
+        state.testObj["医師名"].list = {
+          すべて: "すべて",
+        };
+        state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
+        state.selectedFilterItems["医師名"] = ["すべて"];
+      }
+
+      if (state.selectedFilterItems["製品"].includes("すべて")) {
+        state.selectedFilterItems["製品"] = ["すべて"];
+        state.selectedFilterItems2["製品"] = ["すべて"];
+
+        state.testObj["製品"].list = {
+          すべて: "すべて",
+        };
+      } else {
+        state.testObj["製品"].list = {
+          すべて: "すべて",
+        };
+        state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
+        state.selectedFilterItems["製品"] = ["すべて"];
+      }
 
 
-       console.log("tate.selectedFilterItems2");
-       
-       console.log(state.selectedFilterItems2);
-       
+      console.log("tate.selectedFilterItems2");
+
+      console.log(state.selectedFilterItems2);
+
 
       creatDataTarget(state.dataDetailOrg, "メール送付月");
-        creatDataFlagment(state.dataDetailOrg, "メール送付月");
-         creatDataProduct(state.dataDetailOrg, "メール送付月");
-            creatDatDocter(state.dataDetailOrg, "メール送付月");
-        
-     
-      
+      creatDataFlagment(state.dataDetailOrg, "メール送付月");
+      creatDataProduct(state.dataDetailOrg, "メール送付月");
+      creatDatDocter(state.dataDetailOrg, "メール送付月");
+
+
+
     };
 
     const onTapSelectBoxItem = async (_obj) => {
@@ -4061,156 +4343,156 @@ export default defineComponent({
 
       state.selectedFilterItems[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
 
-        let flg = false
+      let flg = false
       let selectFiliterCategoryBK = []
 
       if (state.isScreen === "送付内容") {
 
 
-          if (!state.selectFiliterCategory.includes(_obj.category)) {
-        state.selectFiliterCategory.push(_obj.category);
-          }
+        if (!state.selectFiliterCategory.includes(_obj.category)) {
+          state.selectFiliterCategory.push(_obj.category);
+        }
 
-           const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-            console.log(newArray);
+        const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+        console.log(newArray);
 
-            if (newArray.includes("すべて")) {
-              state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-            } else {
-              state.selectedFilterItemsBK[_obj.category] = newArray;
-            }
+        if (newArray.includes("すべて")) {
+          state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+        } else {
+          state.selectedFilterItemsBK[_obj.category] = newArray;
+        }
 
-         let target = [...state.data]
+        let target = [...state.data]
 
         creatData(target, false);
 
         if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-           state.testObj.フラグメント.list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems.フラグメント = ["すべて"]
+          state.testObj.フラグメント.list = {
+            すべて: "すべて",
+          };
+          state.selectedFilterItems.フラグメント = ["すべて"]
 
-        let data = state.dataContentOrg3.filter((x) => {
+          let data = state.dataContentOrg3.filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
               return true;
             } else {
               return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
+                x["prodcut1"]
               );
             }
-        })  
-          
-        creatDataFlagment(data, false);
+          })
+
+          creatDataFlagment(data, false);
         }
 
         console.log(_obj.category);
         console.log(state.selectFiliterCategory);
-        
-        
-        
-        
+
+
+
+
 
         if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-           state.testObj.製品.list = {
-          すべて: "すべて",
-        };
+          state.testObj.製品.list = {
+            すべて: "すべて",
+          };
           state.selectedFilterItems.製品 = ["すべて"]
-      let data = state.dataContentOrg3.filter((x) => {
+          let data = state.dataContentOrg3.filter((x) => {
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-               return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
+              return state.selectedFilterItems.フラグメント.includes(
+                x["Email_Fragments_vod__r.Name"]
               );
             }
-          })  
-        creatDataProduct(data, false);
+          })
+          creatDataProduct(data, false);
         }
-        
 
-        
+
+
         console.log(state.selectedFilterItems);
-      console.log(state.testObj);
-        return         
+        console.log(state.testObj);
+        return
       }
 
-         if (state.isScreen === "送付先詳細") {
-        if (_obj.category === "Target" || _obj.category === "メール送付月"  || _obj.category === "フラグメント"  || _obj.category === "医師名" || _obj.category === "製品") {
+      if (state.isScreen === "送付先詳細") {
+        if (_obj.category === "Target" || _obj.category === "メール送付月" || _obj.category === "フラグメント" || _obj.category === "医師名" || _obj.category === "製品") {
 
           if (!state.selectFiliterCategory.includes(_obj.category)) {
-        state.selectFiliterCategory.push(_obj.category);
+            state.selectFiliterCategory.push(_obj.category);
           }
 
-            const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-            console.log("newArray");
-            console.log(newArray);
-            
+          const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+          console.log("newArray");
+          console.log(newArray);
 
-            if (newArray.includes("すべて")) {
-              state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-            } 
-      
+
+          if (newArray.includes("すべて")) {
+            state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+          }
+
 
           if (state.selectedFilterItems3.施設名.includes("すべて")) {
             state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+              すべて: "すべて",
+            };
 
-      state.selectedFilterItems3.施設名 = ["すべて"];
-        
-       await onResize();
+            state.selectedFilterItems3.施設名 = ["すべて"];
+
+            await onResize();
           } else {
-            
+
             // state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名;
-      // state.selectedObj.施設名.list = {
-      //     すべて: "すべて",
-      // };
+            // state.selectedObj.施設名.list = {
+            //     すべて: "すべて",
+            // };
 
             //       state.selectedFilterItems3.施設名 = ["すべて"];
 
 
-          
-        
+
+
             await onResize();
-      console.log("state.dataDetailOrg");
-      
+            console.log("state.dataDetailOrg");
+
             console.log(state.dataDetailOrg);
 
-              const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+            const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
             console.log("newArray");
             console.log(newArray);
-            
+
 
             if (newArray.includes("すべて")) {
               state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
+              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
 
-               await onResize();
+              await onResize();
             } else {
-              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
+              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
 
-               await onResize();      
+              await onResize();
               state.selectedFilterItemsBK[_obj.category] = newArray;
 
-              
-            
+
+
               let mrList = state.dataDetailOrg
                 .filter((x) => {
 
                   let target
 
-                   if (_obj.category === "メール送付月") {
-                target =  dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M")
-                   } else if (_obj.category === "フラグメント") {
-                     target = x["Email_Fragments_vod__r.Name"]
-                    }else if (_obj.category === "製品") {
-                     target = x["prodcut1"]
-                    }else if (_obj.category === "医師名") {
-                     target = x["Dr_name"]
-                    }
-                   else {
-                 target = x[_obj.category]
-              }
+                  if (_obj.category === "メール送付月") {
+                    target = dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M")
+                  } else if (_obj.category === "フラグメント") {
+                    target = x["Email_Fragments_vod__r.Name"]
+                  } else if (_obj.category === "製品") {
+                    target = x["prodcut1"]
+                  } else if (_obj.category === "医師名") {
+                    target = x["Dr_name"]
+                  }
+                  else {
+                    target = x[_obj.category]
+                  }
 
 
                   return newArray.includes(target);
@@ -4260,130 +4542,130 @@ export default defineComponent({
 
               //   }
 
-            mrList = [...new Set(mrList)];
+              mrList = [...new Set(mrList)];
               state.selectedFilterItems3.施設名 = mrList
-             console.log(state.dataDetailOrg);            
-      }
-            
+              console.log(state.dataDetailOrg);
+            }
 
-           
 
-     
-                 
-          } 
 
-          
+
+
+
+          }
+
+
           console.log(state.selectedFilterItems);
 
 
           if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-           state.testObj.フラグメント.list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems.フラグメント = ["すべて"]
+            state.testObj.フラグメント.list = {
+              すべて: "すべて",
+            };
+            state.selectedFilterItems.フラグメント = ["すべて"]
 
-        let data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-        })  
-          
-        creatDataFlagment(data, false);
+            let data = state.dataDetailOrg.filter((x) => {
+              if (state.selectedFilterItems.製品.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.製品.includes(
+                  x["prodcut1"]
+                );
+              }
+            })
+
+            creatDataFlagment(data, false);
+          }
+
+          console.log(_obj.category);
+          console.log(state.selectFiliterCategory);
+
+
+
+
+
+          if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
+            state.testObj.製品.list = {
+              すべて: "すべて",
+            };
+            state.selectedFilterItems.製品 = ["すべて"]
+            let data = state.dataDetailOrg.filter((x) => {
+              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+                return true;
+              } else {
+                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+              }
+            })
+            creatDataProduct(data, false);
+          }
+
+          if (_obj.category !== "Target" && !state.selectFiliterCategory.includes("Target")) {
+            state.testObj.Target.list = {
+              すべて: "すべて",
+            };
+            state.selectedFilterItems.Target = ["すべて"]
+            let data = state.dataDetailOrg.filter((x) => {
+              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+                return true;
+              } else {
+                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+              }
+            }).filter((x) => {
+              if (state.selectedFilterItems.製品.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.製品.includes(
+                  x["prodcut1"]
+                );
+              }
+            })
+
+            creatDataTarget(data, false);
+
+
+          }
+
+          if (_obj.category !== "医師名" && !state.selectFiliterCategory.includes("医師名")) {
+            state.testObj.医師名.list = {
+              すべて: "すべて",
+            };
+            state.selectedFilterItems.医師名 = ["すべて"]
+            let data = state.dataDetailOrg.filter((x) => {
+              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+                return true;
+              } else {
+                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
+              }
+            }).filter((x) => {
+              if (state.selectedFilterItems.製品.includes("すべて")) {
+                return true;
+              } else {
+                return state.selectedFilterItems.製品.includes(
+                  x["prodcut1"]
+                );
+              }
+            })
+
+
+
+            creatDatDocter(data, false);
+          }
+
         }
-
-        console.log(_obj.category);
-        console.log(state.selectFiliterCategory);
-        
-        
-        
-        
-
-        if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-           state.testObj.製品.list = {
-          すべて: "すべて",
-        };
-          state.selectedFilterItems.製品 = ["すべて"]
-      let data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-          })  
-        creatDataProduct(data, false);
-        }
-
-         if (_obj.category !== "Target" && !state.selectFiliterCategory.includes("Target")) {
-           state.testObj.Target.list = {
-          すべて: "すべて",
-        };
-          state.selectedFilterItems.Target = ["すべて"]
-      let data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-      }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-        })  
-          
-        creatDataTarget(data, false);
-
-          
-        }
-
-        if (_obj.category !== "医師名" && !state.selectFiliterCategory.includes("医師名")) {
-           state.testObj.医師名.list = {
-          すべて: "すべて",
-        };
-          state.selectedFilterItems.医師名 = ["すべて"]
-      let data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-             return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
-            }
-      }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-        })  
-          
-     
-
-           creatDatDocter(data, false);
-        }
-        
-        }
-return
+        return
 
       }
 
       console.log('console.log(state.selectedFilterItemsBK);');
-      
+
 
       console.log(state.selectedFilterItemsBK);
 
 
       if (!state.selectFiliterCategory.includes(_obj.category)) {
-          
+
         state.selectFiliterCategory.push(_obj.category);
-        }
+      }
 
       const selectFiliterCategoryNumber = state.selectFiliterCategory.indexOf(_obj.category)
       const agoNum = selectFiliterCategoryNumber - 1
@@ -4398,156 +4680,157 @@ return
       console.log("orgList");
       console.log(orgList);
       console.log(newArray);
-      
-      
-      
-      if (newArray.includes('すべて') && orgList.length === newArray.length) { 
-          state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-          flg = true       
+
+
+
+      if (newArray.includes('すべて') && orgList.length === newArray.length) {
+        state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+        flg = true
       } else {
         state.selectedFilterItemsBK2[_obj.category] = newArray
         state.testObjBK[_obj.category].list = state.testObj[_obj.category].list
       }
 
-      for (const key in state.selectedFilterItems) { 
+      for (const key in state.selectedFilterItems) {
 
- if (key === "メール送付月") {
+        if (key === "メール送付月") {
           continue
- }
+        }
 
 
 
-          
 
-          
+
+
         if (!flg) {
           console.log("flg");
           console.log(flg);
-          
+
           if (_obj.category === key) {
-          continue
+            continue
           }
 
-          
 
-          
+
+
 
           if (state.selectFiliterCategory.includes(key)) {
 
-               if (key === "Target") {
-            continue
-               }
+            if (key === "Target") {
+              continue
+            }
 
-    if (key === "フラグメント") {
-          continue
- }   
- 
- 
-    if (key === "製品") {
-          continue
- }   
-     
+            if (key === "フラグメント") {
+              continue
+            }
+
+
+            if (key === "製品") {
+              continue
+            }
+
 
             let targetNum = state.selectFiliterCategory.indexOf(key)
             console.log(key);
-            
+
             console.log(targetNum);
             console.log(selectFiliterCategoryNumber);
             if (targetNum > selectFiliterCategoryNumber) {
-             if (selectFiliterCategoryBK.length === 0) {
-              selectFiliterCategoryBK = [...state.selectFiliterCategory]
-             }
+              if (selectFiliterCategoryBK.length === 0) {
+                selectFiliterCategoryBK = [...state.selectFiliterCategory]
+              }
               state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== key);
               state.testObj[key].list = { "すべて": "すべて" }
-            state.selectedFilterItems[key] = ["すべて"];
+              state.selectedFilterItems[key] = ["すべて"];
             } else if (targetNum < selectFiliterCategoryNumber) {
-               state.selectedFilterItems[key] = ["すべて"];
-            state.testObj[key].list = { "すべて": "すべて" }  
-              
-            } 
-          
-           
+              state.selectedFilterItems[key] = ["すべて"];
+              state.testObj[key].list = { "すべて": "すべて" }
 
-          if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
-            state.selectedFilterItems[key].unshift('すべて')
-          }
-                  
+            }
+
+
+
+            if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
+              state.selectedFilterItems[key].unshift('すべて')
+            }
+
           } else {
             state.selectedFilterItems[key] = ["すべて"];
-            state.testObj[key].list = { "すべて": "すべて" }  
+            state.testObj[key].list = { "すべて": "すべて" }
           }
-          
-        
+
+
         } else {
           console.log("flg");
           console.log(flg);
           if (state.selectFiliterCategory.includes(key)) {
 
 
-          if (key === "Target") {
-            continue
-        }
+            if (key === "Target") {
+              continue
+            }
 
 
-    if (key === "フラグメント") {
-          continue
- }   
- 
- 
-    if (key === "製品") {
-          continue
- }   
+            if (key === "フラグメント") {
+              continue
+            }
 
 
-         
+            if (key === "製品") {
+              continue
+            }
+
+
+
             let targetNum = state.selectFiliterCategory.indexOf(key)
             console.log(key);
-            
+
             console.log(targetNum);
             console.log(selectFiliterCategoryNumber);
-            
+
             if (targetNum === agoNum) {
               if (targetNum === 0) {
                 console.log(state.selectedFilterItemsBK2);
-                
+
                 state.selectedFilterItems[key] = state.selectedFilterItemsBK2[key].filter((n) => n !== "すべて")
 
                 state.testObj[key].list = state.selectedFilterItemsBK[key].reduce((acc, value, index) => {
                   return { ...acc, [value]: value };
-                }, {});              } else {
-                 state.testObj[key].list = state.testObjBK[key].list 
+                }, {});
+              } else {
+                state.testObj[key].list = state.testObjBK[key].list
                 state.selectedFilterItems[key] = state.selectedFilterItemsBK2[key]
               }
-              
-            }else if (targetNum > selectFiliterCategoryNumber) {
+
+            } else if (targetNum > selectFiliterCategoryNumber) {
               console.log("1");
               console.log(key);
-              
+
             } else if (targetNum < selectFiliterCategoryNumber) {
               console.log("2");
               console.log(key);
-              
+
             } else {
               state.testObj[key].list = { "すべて": "すべて" }
             }
-          
-           
 
-          if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
-            state.selectedFilterItems[key].unshift('すべて')
-          }
-                  
+
+
+            if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
+              state.selectedFilterItems[key].unshift('すべて')
+            }
+
           } else {
-      
-          
-          state.selectedFilterItems[key] = ["すべて"];
-          state.testObj[key].list = { "すべて": "すべて" }
+
+
+            state.selectedFilterItems[key] = ["すべて"];
+            state.testObj[key].list = { "すべて": "すべて" }
+          }
+
         }
-        
-        }
-        
-    
-     
+
+
+
       }
 
 
@@ -4555,504 +4838,504 @@ return
       console.log(state.selectedFilterItems);
       console.log(state.testObj);
       console.log(state.data);
-      
+
       let target = [...state.data]
-      
-
-          creatData(target, false);
-         await nextTick()     
-      
 
 
+      creatData(target, false);
+      await nextTick()
 
- 
-     
-    creatDataMR(target, false);
 
-    creatDataArea(target, false);
 
-    creatDataTerritory(target, false);
+
+
+
+      creatDataMR(target, false);
+
+      creatDataArea(target, false);
+
+      creatDataTerritory(target, false);
 
       creatDataTarget(target, false);
-    
 
-    
-   creatDataFlagment(target, false);
 
-     creatDataProduct(target, false);
-       creatDatDocter(target, false)
-  //   creatDataSales(target) 
-  
-  // creatDataChanel(target)
-     
+
+      creatDataFlagment(target, false);
+
+      creatDataProduct(target, false);
+      creatDatDocter(target, false)
+      //   creatDataSales(target) 
+
+      // creatDataChanel(target)
+
       // creatDataDataMonth();
 
 
-            if (selectFiliterCategoryBK.length !== 0) {
+      if (selectFiliterCategoryBK.length !== 0) {
         state.selectFiliterCategory = selectFiliterCategoryBK
 
         for (const element of state.selectFiliterCategory) {
           let targetNum = state.selectFiliterCategory.indexOf(element)
 
-          if (targetNum > selectFiliterCategoryNumber) { 
-             state.selectedFilterItems[element] = state.selectedFilterItemsBK2[element] .filter((x) => {
-             return Object.values(state.testObj[element].list).includes(x)
-           
-          })
+          if (targetNum > selectFiliterCategoryNumber) {
+            state.selectedFilterItems[element] = state.selectedFilterItemsBK2[element].filter((x) => {
+              return Object.values(state.testObj[element].list).includes(x)
+
+            })
           }
         }
 
-          creatData(target, false);
+        creatData(target, false);
       }
-       
-
-
-    //   let flg = false;
-    //   let flg2 = false;
-
-    //   if (state.isScreen === "送付先詳細") {
-    //     if (_obj.category === "Target") {
-
-    //       if (!state.selectFiliterCategory.includes(_obj.category)) {
-    //     if (_obj.category === "チャネル") {
-    //       state.selectFiliterCategory.unshift(_obj.category);
-    //     } else {
-    //       state.selectFiliterCategory.push(_obj.category);
-    //     }
-    //       }
-      
 
-    //       if (state.selectedFilterItems3.施設名.includes("すべて")) {
-    //         state.selectedObj.施設名.list = {
-    //       すべて: "すべて",
-    //     };
-
-    //   state.selectedFilterItems3.施設名 = ["すべて"];
-        
-    //    await onResize();
-    //       } else {
-            
-    //         // state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名;
-    //   // state.selectedObj.施設名.list = {
-    //   //     すべて: "すべて",
-    //   // };
 
-    //         //       state.selectedFilterItems3.施設名 = ["すべて"];
 
+      //   let flg = false;
+      //   let flg2 = false;
 
-          
-        
-    //         await onResize();
-    //   console.log("state.dataDetailOrg");
-      
-    //         console.log(state.dataDetailOrg);
+      //   if (state.isScreen === "送付先詳細") {
+      //     if (_obj.category === "Target") {
 
-    //           const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-    //         console.log(newArray);
-
-    //         if (newArray.includes("すべて")) {
-    //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-    //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
-
-    //            await onResize();
-    //         } else {
-    //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
-
-    //            await onResize();      
-    //           state.selectedFilterItemsBK[_obj.category] = newArray;
-    //           let mrList = state.dataDetailOrg
-    //             .filter((x) => {
-    //               return newArray.includes(x[_obj.category]);
-    //             })
-    //             .map((p) => p["HP_name"])
-    //             .flat()
-    //             .sort((a, b) => {
-    //               if (a > b) return 1;
-    //               if (a < b) return -1;
-    //             });
-
-    //         mrList = [...new Set(mrList)];
-    //         state.selectedFilterItems3.施設名 = mrList
-
-    //         console.log(mrList);      
-    //   }
-            
-
-           
-
-     
-                 
-    //       } 
-
-          
-    //       console.log(state.selectedFilterItems);
-        
-    //     }
-
-    // return 
-
-    //   }
-        
-
-    
-
-
-      
-    // if (!state.selectFiliterCategory.includes(_obj.category)) {
-    //     if (_obj.category === "チャネル") {
-    //       state.selectFiliterCategory.unshift(_obj.category);
-    //     } else {
-    //       state.selectFiliterCategory.push(_obj.category);
-    //     }
-    //   } else {
-    //     const targetList = Object.keys(state.testObj[_obj.category].list).length;
-
-    //     console.log(targetList);
-
-    //     console.log(_obj.selectedValue);
-    //     console.log(state.selectFiliterCategory);
-
-     
-
-
-    //     if (state.selectFiliterCategory[0] === _obj.category && _obj.selectedValue.length === targetList) {
-
-    //       // if (state.selectFiliterCategory.includes('チャネル')) {
-    //       // console.log('チャネル');
-
-    //       // } else {
-    //       //   state.selectFiliterCategory = [];
-    //       // }
-    //       //  state.selectFiliterCategory = [];
-    //       // state.dataOrgFilter = [];
-    //       //  state.dataOrg3 = []
-
-    //       state.selectFiliterCategory.shift();
-
-    //       // console.log(state.testObj[state.selectFiliterCategory[0]].list);
-    //       // console.log(state.selectedFilterItems[state.selectFiliterCategory[0]]);
-
-    //       for (const element of state.selectFiliterCategory) {
-    //         if (state.selectFiliterCategory[0] === element) {
-    //           if (!state.selectedFilterItems[element].includes("すべて")) {
-    //             const lists = Object.values(state.testObj[element].list).filter((n) => n !== "すべて");
-    //             console.log(lists);
-
-    //             const selectList = state.selectedFilterItems[element];
-
-    //             const diff = lists.filter((i) => selectList.indexOf(i) == -1);
-    //             console.log(diff);
-
-    //             const mrList = state.dataOrg
-    //               .filter((x) => {
-    //                 return !diff.includes(x[element]);
-    //               })
-    //               .map((p) => p[element])
-    //               .flat()
-    //               .sort((a, b) => {
-    //                 if (a > b) return 1;
-    //                 if (a < b) return -1;
-    //               });
-
-    //             const mrListOrg = state.dataOrg
-    //               .map((p) => p[element])
-    //               .flat()
-    //               .sort((a, b) => {
-    //                 if (a > b) return 1;
-    //                 if (a < b) return -1;
-    //               });
-
-    //             state.selectedFilterItems[element] = [];
-    //             state.selectedFilterItems[element] = mrList;
-    //             console.log(mrList);
-
-    //             state.dataOrgFilter = [...state.data];
-    //             state.dataOrg3 = [...state.data];
-    //             state.testObj[element].list = mrListOrg.reduce((acc, value, index) => {
-    //               return { ...acc, [value]: value };
-    //             }, {});
-    //             state.testObj[element].list["すべて"] = "すべて";
-    //             flg = true;
-    //           }
-    //         }
-    //       }
-
-    //       // let mrList = state.data
-    //       //     .map((p) => p[state.selectFiliterCategory[0]])
-    //       //   .sort((a, b) => {
-    //       //     if (a > b) return 1;
-    //       //     if (a < b) return -1;
-    //       //     });
-    //     }
-    //   }
-
-    //    await nextTick();
-
-    //   if (state.selectFiliterCategory[0] === _obj.category) {
-    //     if (_obj.category === "チャネル") {
-    //       for (const element of state.selectFiliterCategory) {
-    //         if (element === "チャネル") {
-    //           continue;
-    //         }
-
-    //         state.selectedFilterItems[element] = ["すべて"];
-    //       }
-    //       await nextTick();
-    //     }
-
-    //     if (state.selectFiliterCategory[0]  === "Target") {
-    //       state.dataOrgFilter = [...state.data];
-    //     } else {
-    //       state.dataOrgFilter = [...state.data];
-    //     }
-
-        
-    //     state.dataOrg3 = [...state.data];
-    //   }
-
-       
-
-    //   const test = state.selectFiliterCategory.filter((n) => n !== "チャネル"  && n !== "Target");
-
-    //   if (test.includes(_obj.category)) {
-    //     const i = state.selectFiliterCategory.indexOf(_obj.category) + 1;
-
-    //     const i2 = state.selectFiliterCategory.indexOf(_obj.category);
-
-    //     for (let index = i; index < state.selectFiliterCategory.length; index++) {
-    //       if (state.selectFiliterCategory[index] === "チャネル" || state.selectFiliterCategory[index] === "Target") {
-    //         continue;
-    //       }
-    //       state.selectedFilterItems[state.selectFiliterCategory[index]] = ["すべて"];
-    //       state.testObj[state.selectFiliterCategory[index]].list = {
-    //         すべて: "すべて",
-    //       };
-
-    //       state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== state.selectFiliterCategory[index]);
-    //     }
-
-    //     if (test[0] === _obj.category) {
-    //       state.dataOrgFilter2 = [...state.data];
-    //     }
-    //   }
-
-    //   await nextTick();
-    //   const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-
-    //   console.log(newArray);
-
-    //   if (newArray.includes("すべて")) {
-    //     state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-
-    //     flg2 = true;
-    //     // state.selectedFilterItemsBK[_obj.category] = []
-
-    //     // continue
-    //   } else {
-    //     state.selectedFilterItemsBK[_obj.category] = newArray;
-    //   }
-
-
-    //   for (const element of state.selectFiliterCategory) {
-    //     console.log("あり");
-    //     console.log(element);
-
-       
-    //     // if (state.selectedFilterItems[_obj.category].length === 0) {
-    //     //       if ( _obj.category !== element) {
-    //     //   state.testObj[element].list = {}
-    //     //   state.testObj[element].list["すべて"] = "すべて";
-    //     // }
-        
-    //     //  continue;
-    //     // }
-
-        
-
-    //     if ((_obj.category === element && flg) || _obj.category === element) {
-    //       continue;
-    //     }
-
-    //     console.log("実行");
-    //     console.log(flg2);
-
-    //     if (flg2 && element !== "チャネル") {
-    //       state.selectedFilterItems[element] = state.selectedFilterItemsBK[element];
-    //     } else {
-    //       console.log(_obj.category);
-    //       console.log(state.dataOrgFilter);
-    //       let mrList;
-
-    //       if (_obj.category === "チャネル" || element === "チャネル" ) {
-    //         //  state.selectedFilterItemsBK[_obj.category] = state.selectedFilterItems[element]
-    //         state.selectedFilterItems[element] = ["すべて"];
-    //         mrList = state.dataOrgFilter
-    //           .map((p) => p[element])
-    //           .flat()
-    //           .sort((a, b) => {
-    //             if (a > b) return 1;
-    //             if (a < b) return -1;
-    //           });
-
-    //         mrList = [...new Set(mrList)];
-
-    //         state.selectedFilterItems[element] = state.selectedFilterItemsBK[element].filter((n) => mrList.includes(n));
-    //         if (element === "チャネル") {
-    //           continue
-    //         }
-    //         state.testObj[element].list = mrList.reduce((acc, value, index) => {
-    //           return { ...acc, [value]: value };
-    //         }, {});
-    //         if (state.selectedFilterItems[element].length === Object.values(state.testObj[element].list).length && state.selectedFilterItems[element].length > 0) {
-    //           state.selectedFilterItems[element].unshift("すべて");
-    //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== element);
-    //         }
-    //         state.testObj[element].list["すべて"] = "すべて";
-    //       } else if (element === "Target" || _obj.category === "Target") {
-    //         console.log("a");
-            
-        
-    //       } else {
-    //         const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target");
-    //         let data;
-    //         if (state.dataOrgFilter2.length > 0) {
-    //           data = state.dataOrgFilter2;
-    //         } else {
-    //           data = state.dataOrgFilter;
-    //         }
-
-    //         if (test.length <= 2) {
-    //           mrList = data
-    //             .filter((x) => {
-    //               return newArray.includes(x[_obj.category]);
-    //             })
-    //             .map((p) => p[element])
-    //             .flat()
-    //             .sort((a, b) => {
-    //               if (a > b) return 1;
-    //               if (a < b) return -1;
-    //             });
-    //         } else if (test.length === 3) {
-    //           console.log(test[1]);
-
-    //           mrList = data
-    //             .filter((x) => {
-    //               return newArray.includes(x[_obj.category]);
-    //             })
-    //             .filter((x) => {
-    //               return state.selectedFilterItems[test[1]].includes(x[test[1]]);
-    //             })
-    //             .map((p) => p[element])
-    //             .flat()
-    //             .sort((a, b) => {
-    //               if (a > b) return 1;
-    //               if (a < b) return -1;
-    //             });
-    //         }
-
-      
-    //         console.log(state.dataOrgFilter);
-
-    //         console.log("mrList");
-    //         console.log(mrList);
-    //         state.selectedFilterItems[element] = [];
-    //         state.selectedFilterItems[element] = mrList;
-
-    //         if (Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length === 0) {
-    //           state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
-    //             return { ...acc, [value]: value };
-    //           }, {});
-    //           state.testObj[element].list["すべて"] = "すべて";
-    //         }
-
-    //         if (mrList.length === Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length && mrList.length > 0) {
-    //           state.selectedFilterItems[element].unshift("すべて");
-    //         }
-    //       }
-    //     }
-    //   }
-
-
-    //   await nextTick();
-
-    //   for (const element in state.selectedFilterItems) {
-    //     if (element === "メール送付月") {
-    //       continue;
-    //     }
-    
-
-    //     if (!state.selectFiliterCategory.includes(element)) {
-    //       // if (state.selectFiliterCategory.length === 0) {
-    //       //   continue
-    //       // }
-
-    //       state.selectedFilterItems[element] = ["すべて"];
-    //       await nextTick();
-
-    //       console.log(state.data);
-    //       let mrList
-
-    //          if (element === "チャネル") {
-    //       mrList = state.data
-    //         .filter((x) => {
-    //           if (x.Total === 0 && state.isScreen === "半期実績") {
-    //             return false;
-    //           } else {
-    //             return true;
-    //           }
-    //         })
-    //         .map((p) => p["チャネル2"])
-    //         .flat()
-    //         .sort((a, b) => {
-    //           if (a > b) return 1;
-    //           if (a < b) return -1;
-    //         });
-    //          } else {
-    //         mrList = state.data
-    //         .filter((x) => {
-    //           if (x.Total === 0 && state.isScreen === "半期実績") {
-    //             return false;
-    //           } else {
-    //             return true;
-    //           }
-    //         })
-    //         .map((p) => p[element])
-    //         .flat()
-    //         .sort((a, b) => {
-    //           if (a > b) return 1;
-    //           if (a < b) return -1;
-    //         });
-    //     }
-
-
-          
-
-          
-
-    //       mrList = [...new Set(mrList)];
-
-    //       console.log(mrList);
-
-    //       state.selectedFilterItems[element] = [];
-    //       state.selectedFilterItems[element] = mrList;
-    //       state.selectedFilterItems[element].unshift("すべて");
-
-    //       state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
-    //         return { ...acc, [value]: value };
-    //       }, {});
-    //     }
-    //   }
-    
-    //   let target = [...state.data]
-
-    //   creatData(target, false);
-      
-        
+      //       if (!state.selectFiliterCategory.includes(_obj.category)) {
+      //     if (_obj.category === "チャネル") {
+      //       state.selectFiliterCategory.unshift(_obj.category);
+      //     } else {
+      //       state.selectFiliterCategory.push(_obj.category);
+      //     }
+      //       }
+
+
+      //       if (state.selectedFilterItems3.施設名.includes("すべて")) {
+      //         state.selectedObj.施設名.list = {
+      //       すべて: "すべて",
+      //     };
+
+      //   state.selectedFilterItems3.施設名 = ["すべて"];
+
+      //    await onResize();
+      //       } else {
+
+      //         // state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名;
+      //   // state.selectedObj.施設名.list = {
+      //   //     すべて: "すべて",
+      //   // };
+
+      //         //       state.selectedFilterItems3.施設名 = ["すべて"];
+
+
+
+
+      //         await onResize();
+      //   console.log("state.dataDetailOrg");
+
+      //         console.log(state.dataDetailOrg);
+
+      //           const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+      //         console.log(newArray);
+
+      //         if (newArray.includes("すべて")) {
+      //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+      //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
+
+      //            await onResize();
+      //         } else {
+      //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
+
+      //            await onResize();      
+      //           state.selectedFilterItemsBK[_obj.category] = newArray;
+      //           let mrList = state.dataDetailOrg
+      //             .filter((x) => {
+      //               return newArray.includes(x[_obj.category]);
+      //             })
+      //             .map((p) => p["HP_name"])
+      //             .flat()
+      //             .sort((a, b) => {
+      //               if (a > b) return 1;
+      //               if (a < b) return -1;
+      //             });
+
+      //         mrList = [...new Set(mrList)];
+      //         state.selectedFilterItems3.施設名 = mrList
+
+      //         console.log(mrList);      
+      //   }
+
+
+
+
+
+
+      //       } 
+
+
+      //       console.log(state.selectedFilterItems);
+
+      //     }
+
+      // return 
+
+      //   }
+
+
+
+
+
+
+      // if (!state.selectFiliterCategory.includes(_obj.category)) {
+      //     if (_obj.category === "チャネル") {
+      //       state.selectFiliterCategory.unshift(_obj.category);
+      //     } else {
+      //       state.selectFiliterCategory.push(_obj.category);
+      //     }
+      //   } else {
+      //     const targetList = Object.keys(state.testObj[_obj.category].list).length;
+
+      //     console.log(targetList);
+
+      //     console.log(_obj.selectedValue);
+      //     console.log(state.selectFiliterCategory);
+
+
+
+
+      //     if (state.selectFiliterCategory[0] === _obj.category && _obj.selectedValue.length === targetList) {
+
+      //       // if (state.selectFiliterCategory.includes('チャネル')) {
+      //       // console.log('チャネル');
+
+      //       // } else {
+      //       //   state.selectFiliterCategory = [];
+      //       // }
+      //       //  state.selectFiliterCategory = [];
+      //       // state.dataOrgFilter = [];
+      //       //  state.dataOrg3 = []
+
+      //       state.selectFiliterCategory.shift();
+
+      //       // console.log(state.testObj[state.selectFiliterCategory[0]].list);
+      //       // console.log(state.selectedFilterItems[state.selectFiliterCategory[0]]);
+
+      //       for (const element of state.selectFiliterCategory) {
+      //         if (state.selectFiliterCategory[0] === element) {
+      //           if (!state.selectedFilterItems[element].includes("すべて")) {
+      //             const lists = Object.values(state.testObj[element].list).filter((n) => n !== "すべて");
+      //             console.log(lists);
+
+      //             const selectList = state.selectedFilterItems[element];
+
+      //             const diff = lists.filter((i) => selectList.indexOf(i) == -1);
+      //             console.log(diff);
+
+      //             const mrList = state.dataOrg
+      //               .filter((x) => {
+      //                 return !diff.includes(x[element]);
+      //               })
+      //               .map((p) => p[element])
+      //               .flat()
+      //               .sort((a, b) => {
+      //                 if (a > b) return 1;
+      //                 if (a < b) return -1;
+      //               });
+
+      //             const mrListOrg = state.dataOrg
+      //               .map((p) => p[element])
+      //               .flat()
+      //               .sort((a, b) => {
+      //                 if (a > b) return 1;
+      //                 if (a < b) return -1;
+      //               });
+
+      //             state.selectedFilterItems[element] = [];
+      //             state.selectedFilterItems[element] = mrList;
+      //             console.log(mrList);
+
+      //             state.dataOrgFilter = [...state.data];
+      //             state.dataOrg3 = [...state.data];
+      //             state.testObj[element].list = mrListOrg.reduce((acc, value, index) => {
+      //               return { ...acc, [value]: value };
+      //             }, {});
+      //             state.testObj[element].list["すべて"] = "すべて";
+      //             flg = true;
+      //           }
+      //         }
+      //       }
+
+      //       // let mrList = state.data
+      //       //     .map((p) => p[state.selectFiliterCategory[0]])
+      //       //   .sort((a, b) => {
+      //       //     if (a > b) return 1;
+      //       //     if (a < b) return -1;
+      //       //     });
+      //     }
+      //   }
+
+      //    await nextTick();
+
+      //   if (state.selectFiliterCategory[0] === _obj.category) {
+      //     if (_obj.category === "チャネル") {
+      //       for (const element of state.selectFiliterCategory) {
+      //         if (element === "チャネル") {
+      //           continue;
+      //         }
+
+      //         state.selectedFilterItems[element] = ["すべて"];
+      //       }
+      //       await nextTick();
+      //     }
+
+      //     if (state.selectFiliterCategory[0]  === "Target") {
+      //       state.dataOrgFilter = [...state.data];
+      //     } else {
+      //       state.dataOrgFilter = [...state.data];
+      //     }
+
+
+      //     state.dataOrg3 = [...state.data];
+      //   }
+
+
+
+      //   const test = state.selectFiliterCategory.filter((n) => n !== "チャネル"  && n !== "Target");
+
+      //   if (test.includes(_obj.category)) {
+      //     const i = state.selectFiliterCategory.indexOf(_obj.category) + 1;
+
+      //     const i2 = state.selectFiliterCategory.indexOf(_obj.category);
+
+      //     for (let index = i; index < state.selectFiliterCategory.length; index++) {
+      //       if (state.selectFiliterCategory[index] === "チャネル" || state.selectFiliterCategory[index] === "Target") {
+      //         continue;
+      //       }
+      //       state.selectedFilterItems[state.selectFiliterCategory[index]] = ["すべて"];
+      //       state.testObj[state.selectFiliterCategory[index]].list = {
+      //         すべて: "すべて",
+      //       };
+
+      //       state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== state.selectFiliterCategory[index]);
+      //     }
+
+      //     if (test[0] === _obj.category) {
+      //       state.dataOrgFilter2 = [...state.data];
+      //     }
+      //   }
+
+      //   await nextTick();
+      //   const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+
+      //   console.log(newArray);
+
+      //   if (newArray.includes("すべて")) {
+      //     state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+
+      //     flg2 = true;
+      //     // state.selectedFilterItemsBK[_obj.category] = []
+
+      //     // continue
+      //   } else {
+      //     state.selectedFilterItemsBK[_obj.category] = newArray;
+      //   }
+
+
+      //   for (const element of state.selectFiliterCategory) {
+      //     console.log("あり");
+      //     console.log(element);
+
+
+      //     // if (state.selectedFilterItems[_obj.category].length === 0) {
+      //     //       if ( _obj.category !== element) {
+      //     //   state.testObj[element].list = {}
+      //     //   state.testObj[element].list["すべて"] = "すべて";
+      //     // }
+
+      //     //  continue;
+      //     // }
+
+
+
+      //     if ((_obj.category === element && flg) || _obj.category === element) {
+      //       continue;
+      //     }
+
+      //     console.log("実行");
+      //     console.log(flg2);
+
+      //     if (flg2 && element !== "チャネル") {
+      //       state.selectedFilterItems[element] = state.selectedFilterItemsBK[element];
+      //     } else {
+      //       console.log(_obj.category);
+      //       console.log(state.dataOrgFilter);
+      //       let mrList;
+
+      //       if (_obj.category === "チャネル" || element === "チャネル" ) {
+      //         //  state.selectedFilterItemsBK[_obj.category] = state.selectedFilterItems[element]
+      //         state.selectedFilterItems[element] = ["すべて"];
+      //         mrList = state.dataOrgFilter
+      //           .map((p) => p[element])
+      //           .flat()
+      //           .sort((a, b) => {
+      //             if (a > b) return 1;
+      //             if (a < b) return -1;
+      //           });
+
+      //         mrList = [...new Set(mrList)];
+
+      //         state.selectedFilterItems[element] = state.selectedFilterItemsBK[element].filter((n) => mrList.includes(n));
+      //         if (element === "チャネル") {
+      //           continue
+      //         }
+      //         state.testObj[element].list = mrList.reduce((acc, value, index) => {
+      //           return { ...acc, [value]: value };
+      //         }, {});
+      //         if (state.selectedFilterItems[element].length === Object.values(state.testObj[element].list).length && state.selectedFilterItems[element].length > 0) {
+      //           state.selectedFilterItems[element].unshift("すべて");
+      //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== element);
+      //         }
+      //         state.testObj[element].list["すべて"] = "すべて";
+      //       } else if (element === "Target" || _obj.category === "Target") {
+      //         console.log("a");
+
+
+      //       } else {
+      //         const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target");
+      //         let data;
+      //         if (state.dataOrgFilter2.length > 0) {
+      //           data = state.dataOrgFilter2;
+      //         } else {
+      //           data = state.dataOrgFilter;
+      //         }
+
+      //         if (test.length <= 2) {
+      //           mrList = data
+      //             .filter((x) => {
+      //               return newArray.includes(x[_obj.category]);
+      //             })
+      //             .map((p) => p[element])
+      //             .flat()
+      //             .sort((a, b) => {
+      //               if (a > b) return 1;
+      //               if (a < b) return -1;
+      //             });
+      //         } else if (test.length === 3) {
+      //           console.log(test[1]);
+
+      //           mrList = data
+      //             .filter((x) => {
+      //               return newArray.includes(x[_obj.category]);
+      //             })
+      //             .filter((x) => {
+      //               return state.selectedFilterItems[test[1]].includes(x[test[1]]);
+      //             })
+      //             .map((p) => p[element])
+      //             .flat()
+      //             .sort((a, b) => {
+      //               if (a > b) return 1;
+      //               if (a < b) return -1;
+      //             });
+      //         }
+
+
+      //         console.log(state.dataOrgFilter);
+
+      //         console.log("mrList");
+      //         console.log(mrList);
+      //         state.selectedFilterItems[element] = [];
+      //         state.selectedFilterItems[element] = mrList;
+
+      //         if (Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length === 0) {
+      //           state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
+      //             return { ...acc, [value]: value };
+      //           }, {});
+      //           state.testObj[element].list["すべて"] = "すべて";
+      //         }
+
+      //         if (mrList.length === Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length && mrList.length > 0) {
+      //           state.selectedFilterItems[element].unshift("すべて");
+      //         }
+      //       }
+      //     }
+      //   }
+
+
+      //   await nextTick();
+
+      //   for (const element in state.selectedFilterItems) {
+      //     if (element === "メール送付月") {
+      //       continue;
+      //     }
+
+
+      //     if (!state.selectFiliterCategory.includes(element)) {
+      //       // if (state.selectFiliterCategory.length === 0) {
+      //       //   continue
+      //       // }
+
+      //       state.selectedFilterItems[element] = ["すべて"];
+      //       await nextTick();
+
+      //       console.log(state.data);
+      //       let mrList
+
+      //          if (element === "チャネル") {
+      //       mrList = state.data
+      //         .filter((x) => {
+      //           if (x.Total === 0 && state.isScreen === "半期実績") {
+      //             return false;
+      //           } else {
+      //             return true;
+      //           }
+      //         })
+      //         .map((p) => p["チャネル2"])
+      //         .flat()
+      //         .sort((a, b) => {
+      //           if (a > b) return 1;
+      //           if (a < b) return -1;
+      //         });
+      //          } else {
+      //         mrList = state.data
+      //         .filter((x) => {
+      //           if (x.Total === 0 && state.isScreen === "半期実績") {
+      //             return false;
+      //           } else {
+      //             return true;
+      //           }
+      //         })
+      //         .map((p) => p[element])
+      //         .flat()
+      //         .sort((a, b) => {
+      //           if (a > b) return 1;
+      //           if (a < b) return -1;
+      //         });
+      //     }
+
+
+
+
+
+
+      //       mrList = [...new Set(mrList)];
+
+      //       console.log(mrList);
+
+      //       state.selectedFilterItems[element] = [];
+      //       state.selectedFilterItems[element] = mrList;
+      //       state.selectedFilterItems[element].unshift("すべて");
+
+      //       state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
+      //         return { ...acc, [value]: value };
+      //       }, {});
+      //     }
+      //   }
+
+      //   let target = [...state.data]
+
+      //   creatData(target, false);
+
+
 
       //  creatDataMR(target, _obj.category);
       // creatDataArea(target, _obj.category);
       // creatDataTerritory(target, _obj.category);
-      
+
     };
 
     const creatDataMR = (data, category) => {
@@ -5065,7 +5348,7 @@ return
           }
         })
         .map((p) => p["MR"])
-        
+
 
       for (const key of mrList) {
         if (!state.testObj.MR.list[key]) {
@@ -5088,8 +5371,8 @@ return
       // }
       // }
       // }
-           if (state.selectedFilterItemsBK.MR.length === 0) {
-         state.selectedFilterItemsBK.MR = state.selectedFilterItems.MR
+      if (state.selectedFilterItemsBK.MR.length === 0) {
+        state.selectedFilterItemsBK.MR = state.selectedFilterItems.MR
 
       }
 
@@ -5121,9 +5404,9 @@ return
       //   }
       // }
 
-            // }
-           if (state.selectedFilterItemsBK.エリア.length === 0) {
-         state.selectedFilterItemsBK.エリア = state.selectedFilterItems.エリア
+      // }
+      if (state.selectedFilterItemsBK.エリア.length === 0) {
+        state.selectedFilterItemsBK.エリア = state.selectedFilterItems.エリア
 
       }
 
@@ -5154,8 +5437,8 @@ return
       //   }
       // }
 
-                 if (state.selectedFilterItemsBK.テリトリー名.length === 0) {
-         state.selectedFilterItemsBK.テリトリー名 = state.selectedFilterItems.テリトリー名
+      if (state.selectedFilterItemsBK.テリトリー名.length === 0) {
+        state.selectedFilterItemsBK.テリトリー名 = state.selectedFilterItems.テリトリー名
 
       }
 
@@ -5174,7 +5457,7 @@ return
         }
       }
 
-      if ( state.selectedFilterItems3.施設名2.length > 0) {
+      if (state.selectedFilterItems3.施設名2.length > 0) {
         state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名2
         state.selectedFilterItems3.施設名2 = []
       }
@@ -5194,13 +5477,13 @@ return
 
     };
 
-        const creatDataTarget = (data, category) => {
-          // state.testObj.Target.list["すべて"] = "すべて"
-          // state.selectedFilterItems.Target = ["すべて"]
+    const creatDataTarget = (data, category) => {
+      // state.testObj.Target.list["すべて"] = "すべて"
+      // state.selectedFilterItems.Target = ["すべて"]
 
-          console.log('data');
-          
-console.log(data);
+      console.log('data');
+
+      console.log(data);
       const mrList = data
         .filter((x) => {
           if (x.Total === 0 && state.isScreen === "半期実績") {
@@ -5216,57 +5499,57 @@ console.log(data);
           if (a < b) return -1;
         });
 
-          console.log(mrList);
+      console.log(mrList);
 
-          if (category !== "goScreen") {
+      if (category !== "goScreen") {
 
-               for (const key of mrList) {
-        if (!state.testObj.Target.list[key]) {
-          state.testObj.Target.list[key] = key;
-          state.selectedFilterItems.Target.push(key);
+        for (const key of mrList) {
+          if (!state.testObj.Target.list[key]) {
+            state.testObj.Target.list[key] = key;
+            state.selectedFilterItems.Target.push(key);
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-      }
-           }   else {
-                for (const key of mrList) {
-        if (!state.testObj.Target.list[key]) {
-          state.testObj.Target.list[key] = key;
+      } else {
+        for (const key of mrList) {
+          if (!state.testObj.Target.list[key]) {
+            state.testObj.Target.list[key] = key;
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-                }
 
-          if (!state.selectedFilterItems2.Target.includes("すべて")) {
-                  console.log(state.selectedFilterItems2.Target);
-                  
+        if (!state.selectedFilterItems2.Target.includes("すべて")) {
+          console.log(state.selectedFilterItems2.Target);
+
           if (state.selectedFilterItems2.Target.length > 0) {
             state.selectedFilterItems.Target = state.selectedFilterItems2.Target;
           }
 
-        
+
         }
-      
-        }
-        
-
-   
-
-
-        if (state.selectedFilterItemsBK.Target.length === 0) {
-         state.selectedFilterItemsBK.Target = state.selectedFilterItems.Target
 
       }
 
 
-        if (category === "メール送付月") {
+
+
+
+      if (state.selectedFilterItemsBK.Target.length === 0) {
+        state.selectedFilterItemsBK.Target = state.selectedFilterItems.Target
+
+      }
+
+
+      if (category === "メール送付月") {
         if (!state.selectedFilterItems2.Target.includes("すべて")) {
           if (state.selectedFilterItems2.Target.length > 0) {
             state.selectedFilterItems.Target = state.selectedFilterItems2.Target;
           }
 
-        
+
         }
-        }
-      
+      }
+
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5278,27 +5561,27 @@ console.log(data);
 
       //       console.log(state.testObj.Target);
       //     console.log(state.selectedFilterItems.Target);
-          
+
 
       //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
       //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
       //     console.log(diff);
-                  
+
       //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
       //       state.selectedFilterItems.Target.push('すべて')
       //     }
 
-    
-          
-          
+
+
+
 
       return mrList;
     };
 
 
-        const creatDataFlagment = (data, category) => {
-          // state.testObj.Target.list["すべて"] = "すべて"
-          // state.selectedFilterItems.Target = ["すべて"]
+    const creatDataFlagment = (data, category) => {
+      // state.testObj.Target.list["すべて"] = "すべて"
+      // state.selectedFilterItems.Target = ["すべて"]
 
       const mrList = data
         .filter((x) => {
@@ -5315,61 +5598,61 @@ console.log(data);
           if (a < b) return -1;
         });
 
-        console.log('mrList');
-        
+      console.log('mrList');
 
-        console.log(mrList);
 
-        if (category !== "goScreen") {
-             for (const key of mrList) {
-        if (!state.testObj.フラグメント.list[key]) {
-          state.testObj.フラグメント.list[key] = key;
-          state.selectedFilterItems.フラグメント.push(key);
+      console.log(mrList);
+
+      if (category !== "goScreen") {
+        for (const key of mrList) {
+          if (!state.testObj.フラグメント.list[key]) {
+            state.testObj.フラグメント.list[key] = key;
+            state.selectedFilterItems.フラグメント.push(key);
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-      }
-        } else {
-                for (const key of mrList) {
-        if (!state.testObj.フラグメント.list[key]) {
-          state.testObj.フラグメント.list[key] = key;
+      } else {
+        for (const key of mrList) {
+          if (!state.testObj.フラグメント.list[key]) {
+            state.testObj.フラグメント.list[key] = key;
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-                }
 
-          if (!state.selectedFilterItems2.フラグメント.includes("すべて")) {
-                  console.log(state.selectedFilterItems2.フラグメント);
-                  
+        if (!state.selectedFilterItems2.フラグメント.includes("すべて")) {
+          console.log(state.selectedFilterItems2.フラグメント);
+
           if (state.selectedFilterItems2.フラグメント.length > 0) {
             state.selectedFilterItems.フラグメント = state.selectedFilterItems2.フラグメント;
           }
 
-        
+
         }
-      
-        }
-        
 
-   
-
-      console.log(state.selectedFilterItems.フラグメント);
-      
-
-
-        if (state.selectedFilterItemsBK.フラグメント.length === 0) {
-         state.selectedFilterItemsBK.フラグメント = state.selectedFilterItems.フラグメント
       }
 
 
-        if (category === "メール送付月") {
+
+
+      console.log(state.selectedFilterItems.フラグメント);
+
+
+
+      if (state.selectedFilterItemsBK.フラグメント.length === 0) {
+        state.selectedFilterItemsBK.フラグメント = state.selectedFilterItems.フラグメント
+      }
+
+
+      if (category === "メール送付月") {
         if (!state.selectedFilterItems2.フラグメント.includes("すべて")) {
           if (state.selectedFilterItems2.フラグメント.length > 0) {
             state.selectedFilterItems.フラグメント = state.selectedFilterItems2.フラグメント;
           }
 
-        
+
         }
-        }
-      
+      }
+
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5381,26 +5664,26 @@ console.log(data);
 
       //       console.log(state.testObj.Target);
       //     console.log(state.selectedFilterItems.Target);
-          
+
 
       //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
       //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
       //     console.log(diff);
-                  
+
       //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
       //       state.selectedFilterItems.Target.push('すべて')
       //     }
 
-    
-          
-          
+
+
+
 
       return mrList;
     };
 
-           const creatDataProduct = (data, category) => {
-          // state.testObj.Target.list["すべて"] = "すべて"
-          // state.selectedFilterItems.Target = ["すべて"]
+    const creatDataProduct = (data, category) => {
+      // state.testObj.Target.list["すべて"] = "すべて"
+      // state.selectedFilterItems.Target = ["すべて"]
 
       const mrList = data
         .filter((x) => {
@@ -5417,61 +5700,61 @@ console.log(data);
           if (a < b) return -1;
         });
 
-        console.log('mrList');
-        
+      console.log('mrList');
 
-        console.log(mrList);
 
-        if (category !== "goScreen") {
-             for (const key of mrList) {
-        if (!state.testObj.製品.list[key]) {
-          state.testObj.製品.list[key] = key;
-          state.selectedFilterItems.製品.push(key);
+      console.log(mrList);
+
+      if (category !== "goScreen") {
+        for (const key of mrList) {
+          if (!state.testObj.製品.list[key]) {
+            state.testObj.製品.list[key] = key;
+            state.selectedFilterItems.製品.push(key);
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-      }
-        } else {
-                for (const key of mrList) {
-        if (!state.testObj.製品.list[key]) {
-          state.testObj.製品.list[key] = key;
+      } else {
+        for (const key of mrList) {
+          if (!state.testObj.製品.list[key]) {
+            state.testObj.製品.list[key] = key;
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-                }
 
-          if (!state.selectedFilterItems2.製品.includes("すべて")) {
-                  console.log(state.selectedFilterItems2.製品);
-                  
+        if (!state.selectedFilterItems2.製品.includes("すべて")) {
+          console.log(state.selectedFilterItems2.製品);
+
           if (state.selectedFilterItems2.製品.length > 0) {
             state.selectedFilterItems.製品 = state.selectedFilterItems2.製品;
           }
 
-        
+
         }
-      
-        }
-        
 
-   
-
-      console.log(state.selectedFilterItems.製品);
-      
-
-
-        if (state.selectedFilterItemsBK.製品.length === 0) {
-         state.selectedFilterItemsBK.製品 = state.selectedFilterItems.製品
       }
 
 
-        if (category === "メール送付月") {
+
+
+      console.log(state.selectedFilterItems.製品);
+
+
+
+      if (state.selectedFilterItemsBK.製品.length === 0) {
+        state.selectedFilterItemsBK.製品 = state.selectedFilterItems.製品
+      }
+
+
+      if (category === "メール送付月") {
         if (!state.selectedFilterItems2.製品.includes("すべて")) {
           if (state.selectedFilterItems2.製品.length > 0) {
             state.selectedFilterItems.製品 = state.selectedFilterItems2.製品;
           }
 
-        
+
         }
-        }
-      
+      }
+
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5483,26 +5766,26 @@ console.log(data);
 
       //       console.log(state.testObj.Target);
       //     console.log(state.selectedFilterItems.Target);
-          
+
 
       //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
       //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
       //     console.log(diff);
-                  
+
       //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
       //       state.selectedFilterItems.Target.push('すべて')
       //     }
 
-    
-          
-          
+
+
+
 
       return mrList;
     };
 
     const creatDatDocter = (data, category) => {
-          // state.testObj.Target.list["すべて"] = "すべて"
-          // state.selectedFilterItems.Target = ["すべて"]
+      // state.testObj.Target.list["すべて"] = "すべて"
+      // state.selectedFilterItems.Target = ["すべて"]
 
       const mrList = data
         .filter((x) => {
@@ -5519,60 +5802,60 @@ console.log(data);
           if (a < b) return -1;
         });
 
-        console.log('mrList');
-        
+      console.log('mrList');
 
-        console.log(mrList);
 
-        if (category !== "goScreen") {
-             for (const key of mrList) {
-        if (!state.testObj.医師名.list[key]) {
-          state.testObj.医師名.list[key] = key;
-          state.selectedFilterItems.医師名.push(key);
+      console.log(mrList);
+
+      if (category !== "goScreen") {
+        for (const key of mrList) {
+          if (!state.testObj.医師名.list[key]) {
+            state.testObj.医師名.list[key] = key;
+            state.selectedFilterItems.医師名.push(key);
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-      }
-        } else {
-                for (const key of mrList) {
-        if (!state.testObj.医師名.list[key]) {
-          state.testObj.医師名.list[key] = key;
+      } else {
+        for (const key of mrList) {
+          if (!state.testObj.医師名.list[key]) {
+            state.testObj.医師名.list[key] = key;
+          }
+          // state.selectedFilterItems.MR.push(key);
         }
-        // state.selectedFilterItems.MR.push(key);
-                }
 
-          if (!state.selectedFilterItems2.医師名.includes("すべて")) {
-                  console.log(state.selectedFilterItems2.医師名);
-                  
+        if (!state.selectedFilterItems2.医師名.includes("すべて")) {
+          console.log(state.selectedFilterItems2.医師名);
+
           if (state.selectedFilterItems2.医師名.length > 0) {
             state.selectedFilterItems.医師名 = state.selectedFilterItems2.医師名;
           }
 
-        
+
         }
-      
-        }
-        
 
-   
-
-      
-
-
-        if (state.selectedFilterItemsBK.医師名.length === 0) {
-         state.selectedFilterItemsBK.医師名 = state.selectedFilterItems.医師名
       }
 
 
-        if (category === "メール送付月") {
+
+
+
+
+
+      if (state.selectedFilterItemsBK.医師名.length === 0) {
+        state.selectedFilterItemsBK.医師名 = state.selectedFilterItems.医師名
+      }
+
+
+      if (category === "メール送付月") {
         if (!state.selectedFilterItems2.医師名.includes("すべて")) {
           if (state.selectedFilterItems2.医師名.length > 0) {
             state.selectedFilterItems.医師名 = state.selectedFilterItems2.医師名;
           }
 
-        
+
         }
-        }
-      
+      }
+
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5584,19 +5867,19 @@ console.log(data);
 
       //       console.log(state.testObj.Target);
       //     console.log(state.selectedFilterItems.Target);
-          
+
 
       //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
       //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
       //     console.log(diff);
-                  
+
       //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
       //       state.selectedFilterItems.Target.push('すべて')
       //     }
 
-    
-          
-          
+
+
+
 
       return mrList;
     };
@@ -5615,9 +5898,9 @@ console.log(data);
       }
     };
 
-      const creatDataDataOptInProduct = () => {
+    const creatDataDataOptInProduct = () => {
 
-        const mrList = state.optIndata
+      const mrList = state.optIndata
         .map((p) => p["製品"])
 
       for (const key of mrList) {
@@ -5626,19 +5909,19 @@ console.log(data);
         }
       }
 
-        state.optInObj.許諾製品.list.sort((a, b) => {
-      if (a === "デフォルトに戻す" || b === "デフォルトに戻す") {
-        return 0 
-      }  
-                  if (a > b) return 1;
-                  if (a < b) return -1;
-                });
+      state.optInObj.許諾製品.list.sort((a, b) => {
+        if (a === "デフォルトに戻す" || b === "デフォルトに戻す") {
+          return 0
+        }
+        if (a > b) return 1;
+        if (a < b) return -1;
+      });
     };
 
-    const creatData = (data,flg) => {
+    const creatData = (data, flg) => {
       if (state.monthArry.length === 0) {
         let monthData = data
-        .map((p) => Object.values(p["dataOrg"]))
+          .map((p) => Object.values(p["dataOrg"]))
           .filter((v) => v.length > 0)
           .flat(2)
           .map((p) => dayjs(p.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))
@@ -5647,7 +5930,7 @@ console.log(data);
 
 
         console.log(monthData);
-        
+
 
         const monthArryReserve = monthData
           .sort((a, b) => {
@@ -5660,7 +5943,7 @@ console.log(data);
           if (dayjs(a) < dayjs(b)) return -1;
         });
       }
-      
+
 
       const maxIndexArry = [];
       const minindexArry = [];
@@ -5676,61 +5959,61 @@ console.log(data);
 
         if (flg !== true && flg !== "false2") {
 
-            const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
-         
-          
-           for (const item of items4) {
-            
+          const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
+
+
+          for (const item of items4) {
+
             item.classList.remove("on");
-          
+
           }
-          
-            (state.selectObj[state.isScreen] = {
-              docter: "",
-              Id: "",
-              分類: "",    
-        sentDate: "",
-       templateName: "",
-              flagmentName: "",
-               FragmentId: "",
-          Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,        
-            })
-           
+
+          (state.selectObj[state.isScreen] = {
+            docter: "",
+            Id: "",
+            分類: "",
+            sentDate: "",
+            templateName: "",
+            flagmentName: "",
+            FragmentId: "",
+            Last_Click_Date_vod__c: false,
+            Last_Open_Date_vod__c: false,
+          })
+
         }
 
         const rankObj3 = {};
 
-         state.dataContentOrg3 = [...state.dataCont];
+        state.dataContentOrg3 = [...state.dataCont];
 
         let totalArray2 = [...state.dataCont.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-               return state.selectedFilterItems.フラグメント.includes(
-                 x["Email_Fragments_vod__r.Name"]
-              );
-            
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
-              );
-            }
-          }) ]
+          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.フラグメント.includes(
+              x["Email_Fragments_vod__r.Name"]
+            );
+
+          }
+        }).filter((x) => {
+          if (state.selectedFilterItems.製品.includes("すべて")) {
+            return true;
+          } else {
+            return state.selectedFilterItems.製品.includes(
+              x["prodcut1"]
+            );
+          }
+        })]
         console.log("totalArray2");
-        
-          console.log(totalArray2);
-          
-        
+
+        console.log(totalArray2);
+
+
 
         state.dataContentOrg2 = totalArray2;
 
-        
-        
+
+
 
         let targetArray = [];
 
@@ -5739,35 +6022,35 @@ console.log(data);
             targetArray = totalArray2.slice(0, state.dataContentOrg.length + 300);
           } else {
             if (state.dataContentOrg.length > 300) {
-               targetArray = totalArray2.slice(0, state.dataContentOrg.length);
+              targetArray = totalArray2.slice(0, state.dataContentOrg.length);
             } else {
               targetArray = totalArray2.slice(0, 300);
             }
-            
+
           }
         } else {
           targetArray = totalArray2;
         }
 
         // targetArray = totalArray2;
-        
+
 
         state.dataContentOrg = targetArray;
         console.log("targetArray");
-        
+
         console.log(targetArray);
-        
+
 
         let i = 0;
         for (const element2 of targetArray) {
 
-          
 
-           let sentDate = dayjs(element2.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
+
+          let sentDate = dayjs(element2.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
           if (sentDate === "Invalid Date") {
             sentDate = "NULL"
           }
-          
+
           if (!rankObj3["data"]) {
             rankObj3["data"] = {};
           }
@@ -5779,8 +6062,8 @@ console.log(data);
           if (!rankObj3["data"][element2.Dr_name][element2.分類]) {
             rankObj3["data"][element2.Dr_name][element2.分類] = {};
           }
-          
-         if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id]) {
+
+          if (!rankObj3["data"][element2.Dr_name][element2.分類][element2.Id]) {
             rankObj3["data"][element2.Dr_name][element2.分類][element2.Id] = {};
           }
 
@@ -5799,22 +6082,22 @@ console.log(data);
 
 
 
-         element2["dataNumber"] = i;
+          element2["dataNumber"] = i;
           i++;
 
-         
-          if (flg !== "false2" && flg !== true) {
-            element2.isActive = false 
-            element2.isClickActive = false
-               element2.isOpenActive = false
-          }
-        
-         
-             rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]].push(element2);
 
-           if (element2.Id === "a1tP6000004g9r0IAA") {
-           console.log(element2);
-            
+          if (flg !== "false2" && flg !== true) {
+            element2.isActive = false
+            element2.isClickActive = false
+            element2.isOpenActive = false
+          }
+
+
+          rankObj3["data"][element2.Dr_name][element2.分類][element2.Id][sentDate][element2["Approved_Email_Template_vod__r.Name"]][element2["Email_Fragments_vod__r.Name"]].push(element2);
+
+          if (element2.Id === "a1tP6000004g9r0IAA") {
+            console.log(element2);
+
           }
         }
 
@@ -5823,11 +6106,11 @@ console.log(data);
           .reverse();
 
         console.log("state.dataContent");
-        
+
         console.log(state.dataContent);
-        
+
       } else {
-        
+
         onResize();
       }
     };
@@ -5876,7 +6159,7 @@ console.log(data);
 
     const onTapOutside = async (evt) => {
 
-   
+
 
 
 
@@ -5891,95 +6174,95 @@ console.log(data);
       ) {
         return;
       }
-      
 
-      if (state.isScreen === "集計画面") { 
 
-       const items4 = document.querySelectorAll("#my-chart .call-list-title.on");
-          for (const item of items4) {
-            item.classList.remove("on");
-          }
+      if (state.isScreen === "集計画面") {
+
+        const items4 = document.querySelectorAll("#my-chart .call-list-title.on");
+        for (const item of items4) {
+          item.classList.remove("on");
+        }
 
         const item2 = document.querySelectorAll("#my-chart .call-list-data-item.no-active");
         const items3 = document.querySelectorAll("#my-chart .call-list-data-item.on");
 
         for (const item of item2) {
-            item.classList.remove("no-active");
-          }
+          item.classList.remove("no-active");
+        }
 
-          for (const item of items3) {
-            item.classList.remove("on");
-          }
-          
-          state.isHoverFlag = false;
+        for (const item of items3) {
+          item.classList.remove("on");
+        }
+
+        state.isHoverFlag = false;
 
 
-      }else  if (state.isScreen === "送付先詳細") { 
+      } else if (state.isScreen === "送付先詳細") {
 
-       const items4 = document.querySelectorAll("#my-chart2 .call-list-title.on");
-          for (const item of items4) {
-            item.classList.remove("on");
-          }
+        const items4 = document.querySelectorAll("#my-chart2 .call-list-title.on");
+        for (const item of items4) {
+          item.classList.remove("on");
+        }
 
         const item2 = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
         const items3 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
 
         for (const item of item2) {
-            item.classList.remove("no-active");
-          }
+          item.classList.remove("no-active");
+        }
 
-          for (const item of items3) {
-            item.classList.remove("on");
-          }
-          
-          state.isHoverFlag = false;
+        for (const item of items3) {
+          item.classList.remove("on");
+        }
+
+        state.isHoverFlag = false;
 
 
-      }else  if (state.isScreen === "送付内容") { 
-        
-        
+      } else if (state.isScreen === "送付内容") {
 
-          (state.selectObj[state.isScreen] = {
-            docter: "",
-            Id: "",
-            分類: "",  
-        sentDate: "",
-        templateName: "",
-            flagmentName: "",
-             FragmentId: "",
-         Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,    
-           })
 
-           
 
-          const itemParent = document.querySelector(".title-wrap.on");
+        (state.selectObj[state.isScreen] = {
+          docter: "",
+          Id: "",
+          分類: "",
+          sentDate: "",
+          templateName: "",
+          flagmentName: "",
+          FragmentId: "",
+          Last_Click_Date_vod__c: false,
+          Last_Open_Date_vod__c: false,
+        })
+
+
+
+        const itemParent = document.querySelector(".title-wrap.on");
         if (itemParent) {
           itemParent.classList.remove('on')
         }
 
-           const items3 = document.querySelector("#my-chart3 .call-list-data-item.on");
+        const items3 = document.querySelector("#my-chart3 .call-list-data-item.on");
         if (items3) {
           items3.classList.remove('on')
         }
 
-         const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
-         
-          
-           for (const item of items4) {
-            
-            item.classList.remove("on");
-          
-          }
+        const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
 
-           for (const element of state.dataContentOrg2) {
-           element.isClickActive = false
-            element.isOpenActive = false 
-           element.isActive = false   
-           }
 
-   
-          state.isHoverFlag = false;
+        for (const item of items4) {
+
+          item.classList.remove("on");
+
+        }
+
+        for (const element of state.dataContentOrg2) {
+          element.isClickActive = false
+          element.isOpenActive = false
+          element.isActive = false
+        }
+
+
+        state.isHoverFlag = false;
 
 
       }
@@ -6015,7 +6298,7 @@ console.log(data);
       // state.isHoverFlag = false;
     };
 
-    const onTapTarget2_2 = async(_obj, text, evt) => {
+    const onTapTarget2_2 = async (_obj, text, evt) => {
       // const itemParent = document.querySelector("#call-list-data-wrap");
       // const isCheckedParent = itemParent.classList.contains("selected");
 
@@ -6050,7 +6333,7 @@ console.log(data);
           const items = document.querySelectorAll("#my-chart .call-list-data-item");
           for (const item of items) {
             item.classList.add("no-active");
-             item.classList.remove("on");
+            item.classList.remove("on");
           }
 
           const items2 = parentElment.querySelectorAll("#my-chart .call-list-data-item");
@@ -6061,7 +6344,7 @@ console.log(data);
             item.classList.remove("no-active");
             item.classList.add("on");
             let t = item.textContent.substr(0, item.textContent.indexOf('('))
-          number.push(t);
+            number.push(t);
             // number.push(item.textContent);
           }
 
@@ -6071,90 +6354,90 @@ console.log(data);
           }
 
 
-      (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: evt.target.textContent,
-      }),
-        (state.isHoverFlag = false);
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: evt.target.textContent,
+          }),
+            (state.isHoverFlag = false);
 
-        if (evt.target.dataset.kinds2 === "ユニーク") {
-             (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: text,
-          })
-        }
+          if (evt.target.dataset.kinds2 === "ユニーク") {
+            (state.selectObj[state.isScreen] = {
+              Category: evt.target.dataset.kinds,
+              Value: text,
+            })
+          }
 
-         await nextTick()
+          await nextTick()
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
+            state.selectedFilterItems3.施設名 = ["すべて"];
 
-          
-        
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
+
+
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
 
           creatData(state.dataContent, false);
 
 
 
-        // if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
-        //     state.selectedFilterItems["フラグメント"] = ["すべて"];
-        //     state.selectedFilterItems2["フラグメント"] = ["すべて"];
-        //     state.testObj["フラグメント"].list = {
-        //       すべて: "すべて",
-        //     };
-        //   } else {
-        //     state.testObj["フラグメント"].list = {
-        //       すべて: "すべて",
-        //     };
-        //     state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-        //     state.selectedFilterItems["フラグメント"] = ["すべて"];
-        // }
+          // if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
+          //     state.selectedFilterItems["フラグメント"] = ["すべて"];
+          //     state.selectedFilterItems2["フラグメント"] = ["すべて"];
+          //     state.testObj["フラグメント"].list = {
+          //       すべて: "すべて",
+          //     };
+          //   } else {
+          //     state.testObj["フラグメント"].list = {
+          //       すべて: "すべて",
+          //     };
+          //     state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+          //     state.selectedFilterItems["フラグメント"] = ["すべて"];
+          // }
 
-        // creatDataFlagment(state.dataContent,"メール送付月")
+          // creatDataFlagment(state.dataContent,"メール送付月")
 
 
 
-        // if (state.selectedFilterItems["Target"].includes("すべて")) {
-        //     state.selectedFilterItems["Target"] = ["すべて"];
-        //     state.selectedFilterItems2["Target"] = ["すべて"];
-        //     state.testObj["Target"].list = {
-        //       すべて: "すべて",
-        //     };
-        //   } else {
-        //     state.testObj["Target"].list = {
-        //       すべて: "すべて",
-        //     };
-        //     state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-        //     state.selectedFilterItems["Target"] = ["すべて"];
-        // }
+          // if (state.selectedFilterItems["Target"].includes("すべて")) {
+          //     state.selectedFilterItems["Target"] = ["すべて"];
+          //     state.selectedFilterItems2["Target"] = ["すべて"];
+          //     state.testObj["Target"].list = {
+          //       すべて: "すべて",
+          //     };
+          //   } else {
+          //     state.testObj["Target"].list = {
+          //       すべて: "すべて",
+          //     };
+          //     state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
+          //     state.selectedFilterItems["Target"] = ["すべて"];
+          // }
 
           // creatDataTarget(state.dataDetailOrg,"メール送付月")
 
 
-     
+
           let data = state.dataDetailOrg.filter((x) => {
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
               return true;
             } else {
               return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
+                x["prodcut1"]
               );
             }
           }).filter((x) => {
@@ -6162,39 +6445,39 @@ console.log(data);
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
+                x["Dr_name"]
               );
             }
           })
 
 
-           if (!state.selectedFilterItems.Target.includes("すべて")) {
+          if (!state.selectedFilterItems.Target.includes("すべて")) {
             state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-             creatDataTarget(data, "goScreen");
-           } else {
-              
-      state.testObj["Target"].list = {
+            creatDataTarget(data, "goScreen");
+          } else {
+
+            state.testObj["Target"].list = {
               すべて: "すべて",
-          };
-           state.selectedFilterItems["Target"] = ["すべて"]  
+            };
+            state.selectedFilterItems["Target"] = ["すべて"]
             creatDataTarget(data, false);
           }
-          
 
 
-           
-          
+
+
+
 
           state.testObj["フラグメント"].list = {
-              すべて: "すべて",
+            すべて: "すべて",
           };
 
-           data = state.dataDetailOrg.filter((x) => {
+          data = state.dataDetailOrg.filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
               return true;
             } else {
               return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
+                x["prodcut1"]
               );
             }
           }).filter((x) => {
@@ -6202,132 +6485,132 @@ console.log(data);
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
+                x["Dr_name"]
               );
             }
           })
 
 
 
-            if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
+          if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
             state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-             creatDataFlagment(data, "goScreen");
-            } else {
-           state.selectedFilterItems["フラグメント"] = ["すべて"]  
+            creatDataFlagment(data, "goScreen");
+          } else {
+            state.selectedFilterItems["フラグメント"] = ["すべて"]
             creatDataFlagment(data, false);
           }
-          
 
-       
+
+
 
           data = state.dataDetailOrg.filter((x) => {
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.医師名.includes("すべて")) {
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
-                 x["Dr_name"]
+                x["Dr_name"]
               );
             }
           })
-          
-          
 
 
 
 
-            if (!state.selectedFilterItems.製品.includes("すべて")) {
+
+
+          if (!state.selectedFilterItems.製品.includes("すべて")) {
             state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
-             creatDataProduct(data, "goScreen");
-            } else {
-                 state.testObj["製品"].list = {
+            creatDataProduct(data, "goScreen");
+          } else {
+            state.testObj["製品"].list = {
               すべて: "すべて",
-          };
-           state.selectedFilterItems["製品"] = ["すべて"]  
+            };
+            state.selectedFilterItems["製品"] = ["すべて"]
             creatDataProduct(data, false);
           }
 
 
           state.testObj["医師名"].list = {
-              すべて: "すべて",
+            すべて: "すべて",
           };
 
           data = state.dataDetailOrg.filter((x) => {
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
             } else {
-            return x["Email_Fragments_vod__r.Name"].some((v) =>  state.selectedFilterItems.フラグメント.includes(v));
+              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
               return true;
             } else {
               return state.selectedFilterItems.製品.includes(
-                 x["prodcut1"]
+                x["prodcut1"]
               );
             }
           })
 
 
 
-            if (!state.selectedFilterItems.医師名.includes("すべて")) {
+          if (!state.selectedFilterItems.医師名.includes("すべて")) {
             state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
-             creatDatDocter(data, "goScreen");
-            } else {
-                 state.testObj["医師名"].list = {
+            creatDatDocter(data, "goScreen");
+          } else {
+            state.testObj["医師名"].list = {
               すべて: "すべて",
-          };
-           state.selectedFilterItems["医師名"] = ["すべて"]  
+            };
+            state.selectedFilterItems["医師名"] = ["すべて"]
             creatDatDocter(data, false);
           }
-          
-        
 
-         
-  state.iScrollObj.scrollTo(0, 0, 0);    
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
+
+
+
+          state.iScrollObj.scrollTo(0, 0, 0);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
 
           await nextTick()
 
 
-    
+
 
           const item2 = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
-          const item3 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");   
-         
-          
-        if (item2.length > 0 && item3.length > 0) {
-             console.log(item2);
+          const item3 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
+
+
+          if (item2.length > 0 && item3.length > 0) {
+            console.log(item2);
             const item = document.querySelectorAll("#my-chart2 .call-list-data-item");
             console.log(item);
-            
-          for (const element of item) {
-            if (element.classList.contains('on')) {
-              continue
-            }             
+
+            for (const element of item) {
+              if (element.classList.contains('on')) {
+                continue
+              }
               element.classList.add("no-active");
             }
-          }else if (item2.length > 0 && item3.length === 0){
-          const item = document.querySelectorAll("#my-chart2 .call-list-data-item");
-           for (const element of item) {        
+          } else if (item2.length > 0 && item3.length === 0) {
+            const item = document.querySelectorAll("#my-chart2 .call-list-data-item");
+            for (const element of item) {
               element.classList.remove("no-active");
-            }        }
-      
+            }
+          }
+
         }
 
-      console.log(state.testObj)
-        
-      }else if(state.isScreen === "送付先詳細")
-      {
+        console.log(state.testObj)
+
+      } else if (state.isScreen === "送付先詳細") {
         flg = false
-         if (evt.target.classList.contains("on")) {
+        if (evt.target.classList.contains("on")) {
           evt.target.classList.remove("on");
 
           const items = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
@@ -6350,8 +6633,8 @@ console.log(data);
           evt.target.classList.add("on");
 
           const items = document.querySelectorAll("#my-chart2 .call-list-data-item");
-           for (const item of items) {
-           item.classList.remove("on"); 
+          for (const item of items) {
+            item.classList.remove("on");
             item.classList.add("no-active");
           }
 
@@ -6364,35 +6647,35 @@ console.log(data);
             item.classList.add("on");
             // number.push(item.textContent);
             let t = item.textContent.substr(0, item.textContent.indexOf('('))
-          number.push(t);
+            number.push(t);
           }
 
-           console.log(evt.target.dataset.kinds)
-           console.log(_obj);
-            
-           let mr
-         let Value  = evt.target.textContent
+          console.log(evt.target.dataset.kinds)
+          console.log(_obj);
 
-           if (evt.target.dataset.kinds === "MR") {
+          let mr
+          let Value = evt.target.textContent
+
+          if (evt.target.dataset.kinds === "MR") {
             mr = evt.target.textContent
-            
-           } else if (evt.target.dataset.kinds === "HP_name") {
-             const keys = Object.keys(_obj)
-                mr =  _obj[keys[0]].MR 
-           }else if (evt.target.dataset.kinds === "Dr_name") {
-             mr = _obj.MR 
-             Value = _obj.Dr_name
-           }
 
-           console.log(mr);
-           
-            
+          } else if (evt.target.dataset.kinds === "HP_name") {
+            const keys = Object.keys(_obj)
+            mr = _obj[keys[0]].MR
+          } else if (evt.target.dataset.kinds === "Dr_name") {
+            mr = _obj.MR
+            Value = _obj.Dr_name
+          }
 
-              (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: Value,
-        MR: mr,
-      })  
+          console.log(mr);
+
+
+
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: Value,
+            MR: mr,
+          })
 
           if (items2.length > 1) {
             const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
@@ -6400,106 +6683,105 @@ console.log(data);
           }
 
 
-     
-           (state.isHoverFlag = false);
 
-        await nextTick()
+          (state.isHoverFlag = false);
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
+          await nextTick()
+
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
+
+            state.selectedFilterItems3.施設名 = ["すべて"];
+
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
+          state.iScrollObj.scrollTo(0, 0, 0);
+
+          creatData(state.data, false);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
+
+        }
+
+        console.log(state.dataDetail);
+
+
+
+
+
+        state.testObj["フラグメント"].list = {
           すべて: "すべて",
         };
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
-      state.iScrollObj.scrollTo(0, 0, 0);
+        if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
+          state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+          creatDataFlagment(state.dataContentOrg3, "goScreen");
+        } else {
 
-      creatData(state.data,false);
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
-      
-         }
 
-         console.log(state.dataDetail);
+          state.selectedFilterItems["フラグメント"] = ["すべて"]
+          creatDataFlagment(state.dataContentOrg3, false);
+        }
 
-         
-         
 
-         
-     state.testObj["フラグメント"].list = {
-              すべて: "すべて",
+
+
+
+
+        if (!state.selectedFilterItems.製品.includes("すべて")) {
+          state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
+          creatDataProduct(state.dataContentOrg3, "goScreen");
+        } else {
+          state.testObj["製品"].list = {
+            すべて: "すべて",
           };
-          
+          state.selectedFilterItems["製品"] = ["すべて"]
+          creatDataProduct(state.dataContentOrg3, false);
+        }
 
-           if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-            state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-             creatDataFlagment(state.dataContentOrg3, "goScreen");
-           } else {
-           
 
-             state.selectedFilterItems["フラグメント"] = ["すべて"]
-            creatDataFlagment(state.dataContentOrg3, false);
-          }
 
-         
+        console.log(state.selectedFilterItems);
 
-   
-          
 
-           if (!state.selectedFilterItems.製品.includes("すべて")) {
-            state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
-             creatDataProduct(state.dataContentOrg3, "goScreen");
-           } else {
-              state.testObj["製品"].list = {
-              すべて: "すべて",
-          };
-             state.selectedFilterItems["製品"] = ["すべて"]
-            creatDataProduct(state.dataContentOrg3, false);
-          }
-        
-          
-
-  console.log( state.selectedFilterItems);
-        
-  
-}else if(state.isScreen === "送付内容")
-      {
+      } else if (state.isScreen === "送付内容") {
 
         flg = true
 
-         if (evt.target.classList.contains("on")) {
-           evt.target.classList.remove("on");
+        if (evt.target.classList.contains("on")) {
+          evt.target.classList.remove("on");
 
-          
 
-        const a = state.dataContentOrg2.filter((x) => {
-           return x.Dr_name === state.selectObj['送付内容']['docter']
-        })
 
-           for (const element of a) {
-             element.isActive = false
-           }       
-         
+          const a = state.dataContentOrg2.filter((x) => {
+            return x.Dr_name === state.selectObj['送付内容']['docter']
+          })
 
-            (state.selectObj[state.isScreen] = {
-              docter: "",
-              分類: "",
-              Id: "",      
-        sentDate: "",
-        templateName: "",
-              flagmentName: "",
-               FragmentId: "",
-  Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,      
-           })
-           // const items = document.querySelectorAll("#my-chart3 .call-list-data-item.no-active");
+          for (const element of a) {
+            element.isActive = false
+          }
+
+
+          (state.selectObj[state.isScreen] = {
+            docter: "",
+            分類: "",
+            Id: "",
+            sentDate: "",
+            templateName: "",
+            flagmentName: "",
+            FragmentId: "",
+            Last_Click_Date_vod__c: false,
+            Last_Open_Date_vod__c: false,
+          })
+          // const items = document.querySelectorAll("#my-chart3 .call-list-data-item.no-active");
           // const items2 = document.querySelectorAll("#my-chart3 .call-list-data-item.on");
           // for (const item of items) {
           //   item.classList.remove("no-active");
@@ -6510,234 +6792,234 @@ console.log(data);
           // }
 
           state.isHoverFlag = false;
-         } else {
+        } else {
 
-           const itemParent = document.querySelector(".title-wrap.on");
-        if (itemParent) {
-          itemParent.classList.remove('on')
-        }
-
-            for (const element of state.dataContentOrg2) {
-          element.isClickActive = false
-        element.isOpenActive = false 
-        }
-
-
-          
-       if ( Object.values(state.selectObj['送付内容']['docter']).length > 0) {
-          const b = state.dataContentOrg2.filter((x) => {
-           return x.Dr_name ===state.selectObj['送付内容']['docter']
-          })
-             
-
-         for (const element of b) {
-           element.isActive = false
-         }
-       }   
-          
-           const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
-         
-          
-           for (const item of items4) {
-            
-            item.classList.remove("on");
-          
+          const itemParent = document.querySelector(".title-wrap.on");
+          if (itemParent) {
+            itemParent.classList.remove('on')
           }
 
-          
+          for (const element of state.dataContentOrg2) {
+            element.isClickActive = false
+            element.isOpenActive = false
+          }
 
-           evt.target.classList.add("on");
 
 
-
-           console.log(_obj);
-
-         
-      
-
-           if (evt.target.dataset.kinds === "docter") {
-
-            
-      
-            (state.selectObj[state.isScreen] = {
-             docter: text,
-             })
-   
-
-           } else if (evt.target.dataset.kinds === "kind") {
-        for (const key in _obj) {
-          for (const key2 in _obj[key]) {
-            for (const key3 in _obj[key][key2]) {
-              for (const key4 in _obj[key][key2][key3]) { 
-                   for (const element of _obj[key][key2][key3][key4]) {
-            
-            (state.selectObj[state.isScreen] = {
-              docter: element.Dr_name,
-              分類: text,
+          if (Object.values(state.selectObj['送付内容']['docter']).length > 0) {
+            const b = state.dataContentOrg2.filter((x) => {
+              return x.Dr_name === state.selectObj['送付内容']['docter']
             })
-             
+
+
+            for (const element of b) {
+              element.isActive = false
+            }
           }
-              }
-            
-             } 
-          
-         }
-        }  
-       }else if (evt.target.dataset.kinds === "sentDate") {
-        if (text ==="NULL") {
-          text = null
-        }  
-        for (const key in _obj) {
-         for (const key2 in _obj[key]) {
-          for (const element of _obj[key][key2]) {
+
+          const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
+
+
+          for (const item of items4) {
+
+            item.classList.remove("on");
+
+          }
+
+
+
+          evt.target.classList.add("on");
+
+
+
+          console.log(_obj);
+
+
+
+
+          if (evt.target.dataset.kinds === "docter") {
+
+
+
             (state.selectObj[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: text,
-               Id: element.Id,
-             })
+              docter: text,
+            })
+
+
+          } else if (evt.target.dataset.kinds === "kind") {
+            for (const key in _obj) {
+              for (const key2 in _obj[key]) {
+                for (const key3 in _obj[key][key2]) {
+                  for (const key4 in _obj[key][key2][key3]) {
+                    for (const element of _obj[key][key2][key3][key4]) {
+
+                      (state.selectObj[state.isScreen] = {
+                        docter: element.Dr_name,
+                        分類: text,
+                      })
+
+                    }
+                  }
+
+                }
+
+              }
+            }
+          } else if (evt.target.dataset.kinds === "sentDate") {
+            if (text === "NULL") {
+              text = null
+            }
+            for (const key in _obj) {
+              for (const key2 in _obj[key]) {
+                for (const element of _obj[key][key2]) {
+                  (state.selectObj[state.isScreen] = {
+                    docter: element.Dr_name,
+                    sentDate: text,
+                    Id: element.Id,
+                  })
+                }
+              }
+            }
           }
-         }
-        }  
-           }
-            else if (evt.target.dataset.kinds === "templateName")  {
-        for (const key in _obj) {
-         for (const element of _obj[key]) {
-          (state.selectObj[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-            templateName: text,
-                Id: element.Id,
-             })
-         }
-        }  
-           }else if (evt.target.dataset.kinds === "flagmentName")  {
-        //  for (const element of _obj) {
-        //   (state.selectObj[state.isScreen] = {
-        //       docter: element.Dr_name,
-        //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-        //        templateName: element["Approved_Email_Template_vod__r.Name"],
-        //       flagmentName: text,
-        //         Id: element.Id,
-        //      })
-             //      }
+          else if (evt.target.dataset.kinds === "templateName") {
+            for (const key in _obj) {
+              for (const element of _obj[key]) {
+                (state.selectObj[state.isScreen] = {
+                  docter: element.Dr_name,
+                  sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+                  templateName: text,
+                  Id: element.Id,
+                })
+              }
+            }
+          } else if (evt.target.dataset.kinds === "flagmentName") {
+            //  for (const element of _obj) {
+            //   (state.selectObj[state.isScreen] = {
+            //       docter: element.Dr_name,
+            //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            //        templateName: element["Approved_Email_Template_vod__r.Name"],
+            //       flagmentName: text,
+            //         Id: element.Id,
+            //      })
+            //      }
 
-   (state.selectObj[state.isScreen] = {
+            (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
-                flagmentName: _obj["Email_Fragments_vod__r.Name"],
-                Id: _obj.Id,
-          FragmentId: _obj.FragmentId,   
-             })    
+              flagmentName: _obj["Email_Fragments_vod__r.Name"],
+              Id: _obj.Id,
+              FragmentId: _obj.FragmentId,
+            })
 
-               text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
+            text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
 
-           } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
-              (state.selectObj[state.isScreen] = {
+          } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
+            (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
-                flagmentName: _obj["Email_Fragments_vod__r.Name"],
-            Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: true,  
-                Id: _obj.Id,
-          FragmentId: _obj.FragmentId,   
-              })
+              flagmentName: _obj["Email_Fragments_vod__r.Name"],
+              Last_Click_Date_vod__c: false,
+              Last_Open_Date_vod__c: true,
+              Id: _obj.Id,
+              FragmentId: _obj.FragmentId,
+            })
 
             //  _obj.isActive = true
-             text =  _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-           }
-           else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
-              (state.selectObj[state.isScreen] = {
+            text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+          }
+          else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
+            (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
               sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
-                flagmentName: _obj["Email_Fragments_vod__r.Name"],
-            Last_Click_Date_vod__c: true,
-            Last_Open_Date_vod__c: false,  
-                Id: _obj.Id,
-             FragmentId: _obj.FragmentId,
-              })
+              flagmentName: _obj["Email_Fragments_vod__r.Name"],
+              Last_Click_Date_vod__c: true,
+              Last_Open_Date_vod__c: false,
+              Id: _obj.Id,
+              FragmentId: _obj.FragmentId,
+            })
 
             //  _obj.isActive = true
-             text =  _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-           }
+            text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+          }
 
-           
-           
 
-        
+
+
+
           const a = state.dataContentOrg2.filter((x) => {
-           return x.Dr_name === state.selectObj[state.isScreen]["docter"]
-          }) .filter((x) => {
-            if ( state.selectObj[state.isScreen]["Id"]) {
-               return x["Id"]  === state.selectObj[state.isScreen]["Id"]
-            } else {
-            return true  
-            }
-          
+            return x.Dr_name === state.selectObj[state.isScreen]["docter"]
           }).filter((x) => {
-            if ( state.selectObj[state.isScreen]["FragmentId"]) {
-               return x["FragmentId"]  === state.selectObj[state.isScreen]["FragmentId"]
+            if (state.selectObj[state.isScreen]["Id"]) {
+              return x["Id"] === state.selectObj[state.isScreen]["Id"]
             } else {
-            return true  
+              return true
             }
-          
+
           }).filter((x) => {
-            if ( state.selectObj[state.isScreen]["sentDate"]) {
-               return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
+            if (state.selectObj[state.isScreen]["FragmentId"]) {
+              return x["FragmentId"] === state.selectObj[state.isScreen]["FragmentId"]
             } else {
-            return true  
+              return true
             }
-          
-          })
-          .filter((x) => {
-            if ( state.selectObj[state.isScreen]["templateName"]) {
-               return x["Approved_Email_Template_vod__r.Name"]  === state.selectObj[state.isScreen]["templateName"]
+
+          }).filter((x) => {
+            if (state.selectObj[state.isScreen]["sentDate"]) {
+              return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
             } else {
-            return true  
+              return true
             }
-          
+
           })
-          .filter((x) => {
-            if ( state.selectObj[state.isScreen]["flagmentName"]) {
-               return x["Email_Fragments_vod__r.Name"]  === state.selectObj[state.isScreen]["flagmentName"]
-            } else {
-            return true  
-            }
-          
-          })
-          .filter((x) => {
-            if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
-            return x["Last_Open_Date_vod__c"] ===  _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] ===  _obj.Last_Click_Date_vod__c
-            } else {
-            return true  
-            }
-          
-          })
+            .filter((x) => {
+              if (state.selectObj[state.isScreen]["templateName"]) {
+                return x["Approved_Email_Template_vod__r.Name"] === state.selectObj[state.isScreen]["templateName"]
+              } else {
+                return true
+              }
+
+            })
+            .filter((x) => {
+              if (state.selectObj[state.isScreen]["flagmentName"]) {
+                return x["Email_Fragments_vod__r.Name"] === state.selectObj[state.isScreen]["flagmentName"]
+              } else {
+                return true
+              }
+
+            })
+            .filter((x) => {
+              if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
+                return x["Last_Open_Date_vod__c"] === _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] === _obj.Last_Click_Date_vod__c
+              } else {
+                return true
+              }
+
+            })
 
           console.log(a);
 
 
-        
- for (const element of a) {
-   element.isActive = true
- }
 
-  //          const open = a.map((p) => p["Open_Count_vod__c"]).filter((v) => v)
-  //          const click = a.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
+          for (const element of a) {
+            element.isActive = true
+          }
 
-  //          console.log(open);
-  //          console.log(click);
-           
-           
+          //          const open = a.map((p) => p["Open_Count_vod__c"]).filter((v) => v)
+          //          const click = a.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
 
-  //          const sum = open.reduce((sum, num) => Number(sum) + Number(num), 0);
-  //          const sum2 = click.reduce((sum, num) => Number(sum) + Number(num), 0);
-  //          const sum3 = sum + sum2
-            
+          //          console.log(open);
+          //          console.log(click);
 
-  //  _obj = `<span class="fwb">${a.length * 2}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum3.toLocaleString()}</span>`;
+
+
+          //          const sum = open.reduce((sum, num) => Number(sum) + Number(num), 0);
+          //          const sum2 = click.reduce((sum, num) => Number(sum) + Number(num), 0);
+          //          const sum3 = sum + sum2
+
+
+          //  _obj = `<span class="fwb">${a.length * 2}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum3.toLocaleString()}</span>`;
 
 
           // const items = document.querySelectorAll("#my-chart3 .call-list-data-item");
@@ -6753,29 +7035,29 @@ console.log(data);
           //  console.log(_obj);
 
 
-           //  const number = [];
-
-     
-
-           
-
-          
+          //  const number = [];
 
 
 
-  
 
 
-           console.log(a);
-           
 
 
-          
+
+
+
+
+
+          console.log(a);
+
+
+
+
 
           // for (const item of items2) {
           //   item.classList.remove("no-active");
           //   item.classList.add("on");
-           
+
           // }
 
           // if (items2.length > 1) {
@@ -6784,257 +7066,257 @@ console.log(data);
           // }
 
 
-      
-         }
-        
-  
-}
-           if (flg === true) {
-setPouUp2_2(_obj, text, evt);
+
+        }
+
+
+      }
+      if (flg === true) {
+        setPouUp2_2(_obj, text, evt);
       }
 
 
       // }
     };
 
-    const onTapTarget2_3 = async(_obj, index, evt) => {
+    const onTapTarget2_3 = async (_obj, index, evt) => {
 
       if (state.isScreen === "集計画面") {
 
-            const items4 = document.querySelectorAll("#my-chart .call-list-title.on");
-      for (const item of items4) {
-        item.classList.remove("on");
-      }
-
-      const items2 = document.querySelectorAll("#my-chart .call-list-data-item.on");
-
-      for (const item of items2) {
-        item.classList.remove("on");
-      }
-
-      if (evt.target.classList.contains("no-active")) {
-        const items = document.querySelectorAll("#my-chart .call-list-data-item");
-        for (const item of items) {
-          item.classList.add("no-active");
+        const items4 = document.querySelectorAll("#my-chart .call-list-title.on");
+        for (const item of items4) {
+          item.classList.remove("on");
         }
 
-        evt.target.classList.remove("no-active");
-        evt.target.classList.add("on");
+        const items2 = document.querySelectorAll("#my-chart .call-list-data-item.on");
 
-         (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: index,
-      }),
-        (state.isHoverFlag = false);
+        for (const item of items2) {
+          item.classList.remove("on");
+        }
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+        if (evt.target.classList.contains("no-active")) {
+          const items = document.querySelectorAll("#my-chart .call-list-data-item");
+          for (const item of items) {
+            item.classList.add("no-active");
+          }
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
+          evt.target.classList.remove("no-active");
+          evt.target.classList.add("on");
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: index,
+          }),
+            (state.isHoverFlag = false);
 
-      creatData(state.data,false);
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
-      
-        setPouUp2_3(_obj, index, evt);
-      } else {
-        const item2 = document.querySelectorAll("#my-chart .call-list-data-item.no-active");
-        const items = document.querySelectorAll("#my-chart .call-list-data-item");
-        const items3 = document.querySelectorAll("#my-chart .call-list-data-item.on");
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
 
-        for (const item of items) {
+            state.selectedFilterItems3.施設名 = ["すべて"];
+
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
+
+          creatData(state.data, false);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
+
+          setPouUp2_3(_obj, index, evt);
+        } else {
+          const item2 = document.querySelectorAll("#my-chart .call-list-data-item.no-active");
+          const items = document.querySelectorAll("#my-chart .call-list-data-item");
+          const items3 = document.querySelectorAll("#my-chart .call-list-data-item.on");
+
+          for (const item of items) {
             item.classList.add("no-active");
           }
           evt.target.classList.remove("no-active");
           evt.target.classList.add("on");
 
-           (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: index,
-      }),
-        (state.isHoverFlag = false);
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: index,
+          }),
+            (state.isHoverFlag = false);
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
+            state.selectedFilterItems3.施設名 = ["すべて"];
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
 
-      creatData(state.data,false);
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
+          creatData(state.data, false);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
 
-          
+
           setPouUp2_3(_obj, index, evt);
-      }
-
-       state.isHoverFlag = false;
-
-       }else if (state.isScreen === "送付先詳細") {
-
-            const items4 = document.querySelectorAll("#my-chart2 .call-list-title.on");
-      for (const item of items4) {
-        item.classList.remove("on");
-      }
-
-      const items2 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
-
-      for (const item of items2) {
-        item.classList.remove("on");
-      }
-
-      if (evt.target.classList.contains("no-active")) {
-        const items = document.querySelectorAll("#my-chart2 .call-list-data-item");
-        for (const item of items) {
-          item.classList.add("no-active");
         }
 
-        evt.target.classList.remove("no-active");
-        evt.target.classList.add("on");
-        console.log("_obj");
-        
-        console.log(_obj);
-        
+        state.isHoverFlag = false;
 
-         (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: index,
-         MR:_obj.MR
-      }),
-        (state.isHoverFlag = false);
+      } else if (state.isScreen === "送付先詳細") {
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+        const items4 = document.querySelectorAll("#my-chart2 .call-list-title.on");
+        for (const item of items4) {
+          item.classList.remove("on");
+        }
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
+        const items2 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
+        for (const item of items2) {
+          item.classList.remove("on");
+        }
 
-      creatData(state.data,false);
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
-      
-        setPouUp2_3(_obj, index, evt);
-      } else {
-        const item2 = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
-        const items = document.querySelectorAll("#my-chart2 .call-list-data-item");
-        const items3 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
+        if (evt.target.classList.contains("no-active")) {
+          const items = document.querySelectorAll("#my-chart2 .call-list-data-item");
+          for (const item of items) {
+            item.classList.add("no-active");
+          }
 
-       for (const item of items) {
+          evt.target.classList.remove("no-active");
+          evt.target.classList.add("on");
+          console.log("_obj");
+
+          console.log(_obj);
+
+
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: index,
+            MR: _obj.MR
+          }),
+            (state.isHoverFlag = false);
+
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
+
+            state.selectedFilterItems3.施設名 = ["すべて"];
+
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
+
+          creatData(state.data, false);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
+
+          setPouUp2_3(_obj, index, evt);
+        } else {
+          const item2 = document.querySelectorAll("#my-chart2 .call-list-data-item.no-active");
+          const items = document.querySelectorAll("#my-chart2 .call-list-data-item");
+          const items3 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
+
+          for (const item of items) {
             item.classList.add("no-active");
           }
           evt.target.classList.remove("no-active");
           evt.target.classList.add("on");
 
           console.log("_obj");
-        
-        console.log(_obj);
 
-           (state.selectObj[state.isScreen] = {
-        Category: evt.target.dataset.kinds,
-        Value: index,
-        MR:_obj.MR
-      }),
-        (state.isHoverFlag = false);
+          console.log(_obj);
 
-      if (state.isScreen == "集計画面") {
-        state.selectedObj.施設名.list = {
-          すべて: "すべて",
-        };
+          (state.selectObj[state.isScreen] = {
+            Category: evt.target.dataset.kinds,
+            Value: index,
+            MR: _obj.MR
+          }),
+            (state.isHoverFlag = false);
 
-        state.selectedFilterItems3.施設名 = ["すべて"];
+          if (state.isScreen == "集計画面") {
+            state.selectedObj.施設名.list = {
+              すべて: "すべて",
+            };
 
-        state.isScreen = "送付先詳細";
-        state.selectedFilterScreenItems["画面"] = "送付先詳細";
-      } else {
-        state.isScreen = "送付内容";
-        state.selectedFilterScreenItems["画面"] = "送付内容";
-      }
+            state.selectedFilterItems3.施設名 = ["すべて"];
 
-      creatData(state.data,false);
-      if (state.iScrollObj) {
-        state.iScrollObj.refresh();
-      }
+            state.isScreen = "送付先詳細";
+            state.selectedFilterScreenItems["画面"] = "送付先詳細";
+          } else {
+            state.isScreen = "送付内容";
+            state.selectedFilterScreenItems["画面"] = "送付内容";
+          }
 
-          
+          creatData(state.data, false);
+          if (state.iScrollObj) {
+            state.iScrollObj.refresh();
+          }
+
+
           setPouUp2_3(_obj, index, evt);
-      }
+        }
 
-       state.isHoverFlag = false;
+        state.isHoverFlag = false;
       } else if (state.isScreen === "送付内容") {
 
         console.log(_obj);
         console.log(index);
 
-          (state.selectObj[state.isScreen] = {
-            docter: "",
-            Id: "",  
-            分類: "",     
-        sentDate: "",
-        templateName: "",
-            flagmentName: "",
-              FragmentId: "",
-    Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,    
-           })
-        
-        
+        (state.selectObj[state.isScreen] = {
+          docter: "",
+          Id: "",
+          分類: "",
+          sentDate: "",
+          templateName: "",
+          flagmentName: "",
+          FragmentId: "",
+          Last_Click_Date_vod__c: false,
+          Last_Open_Date_vod__c: false,
+        })
 
-          const itemParent = document.querySelector(".title-wrap.on");
+
+
+        const itemParent = document.querySelector(".title-wrap.on");
         if (itemParent) {
           itemParent.classList.remove('on')
         }
 
-         const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
-         
-          
-           for (const item of items4) {
-            
-            item.classList.remove("on");
-          
-          }
+        const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
 
-           for (const element of state.dataContentOrg2) {
-           element.isClickActive = false
-             element.isOpenActive = false 
-           element.isActive = false   
-           }
 
-           await nextTick()
-        
+        for (const item of items4) {
+
+          item.classList.remove("on");
+
+        }
+
+        for (const element of state.dataContentOrg2) {
+          element.isClickActive = false
+          element.isOpenActive = false
+          element.isActive = false
+        }
+
+        await nextTick()
+
         if (evt.target.classList.contains("on")) {
-           evt.target.classList.remove("on");
-   
-          
-          
-           // const items = document.querySelectorAll("#my-chart3 .call-list-data-item.no-active");
+          evt.target.classList.remove("on");
+
+
+
+          // const items = document.querySelectorAll("#my-chart3 .call-list-data-item.no-active");
           // const items2 = document.querySelectorAll("#my-chart3 .call-list-data-item.on");
           // for (const item of items) {
           //   item.classList.remove("no-active");
@@ -7045,31 +7327,31 @@ setPouUp2_2(_obj, text, evt);
           // }
 
           // state.isHoverFlag = false;
-         } else {
+        } else {
 
 
 
           const items3 = document.querySelector("#my-chart3 .call-list-data-item.on");
-        if (items3) {
-          items3.classList.remove('on')
-        }
-        
-         setPouUp2_3(_obj, index, evt);
-        
-
-         evt.target.classList.add("on")
-
-        
-
-
-
-      
+          if (items3) {
+            items3.classList.remove('on')
           }
-         
- 
 
-       }
-  
+          setPouUp2_3(_obj, index, evt);
+
+
+          evt.target.classList.add("on")
+
+
+
+
+
+
+        }
+
+
+
+      }
+
 
       // }
     };
@@ -7084,244 +7366,244 @@ setPouUp2_2(_obj, text, evt);
       if (state.isScreen === "集計画面") {
         items2 = document.querySelectorAll("#my-chart .call-list-data-item.on");
 
-              const number = [];
+        const number = [];
 
-      if (items2) {
-        for (const item of items2) {
-        // number.push(item.textContent);
-        let t = item.textContent.substr(0, item.textContent.indexOf('('))
-          number.push(t);
+        if (items2) {
+          for (const item of items2) {
+            // number.push(item.textContent);
+            let t = item.textContent.substr(0, item.textContent.indexOf('('))
+            number.push(t);
+          }
+
+          console.log('number');
+
+          console.log(number);
+          console.log(items2);
+
+
+
+
+
+          if (items2.length > 1) {
+            const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
+            _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
+          }
         }
-
-        console.log('number');
-        
-        console.log(number);
-        console.log(items2);
-        
-        
-
-      
- 
-      if (items2.length > 1) {
-        const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
-        _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
-        }
-      }
 
       } else if (state.isScreen === "送付先詳細") {
         items2 = document.querySelectorAll("#my-chart2 .call-list-data-item.on");
 
-              const number = [];
+        const number = [];
 
-      if (items2) {
-        for (const item of items2) {
-        // number.push(item.textContent);
-        let t = item.textContent.substr(0, item.textContent.indexOf('('))
-          number.push(t);
+        if (items2) {
+          for (const item of items2) {
+            // number.push(item.textContent);
+            let t = item.textContent.substr(0, item.textContent.indexOf('('))
+            number.push(t);
+          }
+
+          console.log('number');
+
+          console.log(number);
+          console.log(items2);
+
+
+
+
+
+          if (items2.length > 1) {
+            const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
+            _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
+          } else {
+            _obj = ""
+          }
         }
-
-        console.log('number');
-        
-        console.log(number);
-        console.log(items2);
-        
-        
-
-      
- 
-      if (items2.length > 1) {
-        const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
-        _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
-        }else {
-        _obj = ""
-      }
-      } 
 
 
       } else if (state.isScreen === "送付内容") {
 
-       console.log('a') 
+        console.log('a')
 
 
-       if (evt.target.dataset.kinds === "docter") {
+        if (evt.target.dataset.kinds === "docter") {
 
-            
-      
-            (state.selectObj2[state.isScreen] = {
-             docter: text,
-             })
-   
 
-           } else if (evt.target.dataset.kinds === "kind") {
-        
-        for (const key in _obj) {
-          for (const key2 in _obj[key]) {
-            for (const key3 in _obj[key][key2]) {
-               for (const key4 in _obj[key][key2][key3]) { 
-                   for (const element of _obj[key][key2][key3][key4]) {
-            
-            (state.selectObj2[state.isScreen] = {
-              docter: element.Dr_name,
-              分類: text,
-            })
-             
-          }
-              }
-             } 
-          
-         }
-        }  
-       }
-       else if (evt.target.dataset.kinds === "sentDate") {
-        if (text ==="NULL") {
-          text = null
-        }  
-        for (const key in _obj) {
-         for (const key2 in _obj[key]) {
-          for (const element of _obj[key][key2]) {
-            (state.selectObj2[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: text,
-              Id: element.Id,
-             })
-          }
-         }
-        }  
-           }
-            else if (evt.target.dataset.kinds === "templateName")  {
-        for (const key in _obj) {
-         for (const element of _obj[key]) {
+
           (state.selectObj2[state.isScreen] = {
-              docter: element.Dr_name,
-              sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-            templateName: text,
-               Id: element.Id,
-             })
-         }
-        }  
-           }else if (evt.target.dataset.kinds === "flagmentName")  {
-        //  for (const element of _obj) {
-        //   (state.selectObj2[state.isScreen] = {
-        //       docter: element.Dr_name,
-        //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-        //        templateName: element["Approved_Email_Template_vod__r.Name"],
-        //       flagmentName: text,
-        //        Id: element.Id,
-        //      })
-        //  } 
+            docter: text,
+          })
 
-         (state.selectObj2[state.isScreen] = {
-              docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-              templateName: _obj["Approved_Email_Template_vod__r.Name"],
-              flagmentName: _obj["Email_Fragments_vod__r.Name"],
-               Id: _obj.Id,
-                FragmentId: _obj.FragmentId,
-              })
 
-                text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
+        } else if (evt.target.dataset.kinds === "kind") {
 
-       } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
+          for (const key in _obj) {
+            for (const key2 in _obj[key]) {
+              for (const key3 in _obj[key][key2]) {
+                for (const key4 in _obj[key][key2][key3]) {
+                  for (const element of _obj[key][key2][key3][key4]) {
+
+                    (state.selectObj2[state.isScreen] = {
+                      docter: element.Dr_name,
+                      分類: text,
+                    })
+
+                  }
+                }
+              }
+
+            }
+          }
+        }
+        else if (evt.target.dataset.kinds === "sentDate") {
+          if (text === "NULL") {
+            text = null
+          }
+          for (const key in _obj) {
+            for (const key2 in _obj[key]) {
+              for (const element of _obj[key][key2]) {
+                (state.selectObj2[state.isScreen] = {
+                  docter: element.Dr_name,
+                  sentDate: text,
+                  Id: element.Id,
+                })
+              }
+            }
+          }
+        }
+        else if (evt.target.dataset.kinds === "templateName") {
+          for (const key in _obj) {
+            for (const element of _obj[key]) {
               (state.selectObj2[state.isScreen] = {
-              docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-              templateName: _obj["Approved_Email_Template_vod__r.Name"],
-              flagmentName: _obj["Email_Fragments_vod__r.Name"],
-               Id: _obj.Id,
-                FragmentId: _obj.FragmentId,
+                docter: element.Dr_name,
+                sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+                templateName: text,
+                Id: element.Id,
               })
-
-            //  _obj.isActive = true
-             text =  _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-           }
-           else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
-              (state.selectObj2[state.isScreen] = {
-              docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
-              templateName: _obj["Approved_Email_Template_vod__r.Name"],
-                flagmentName: _obj["Email_Fragments_vod__r.Name"],
-             Id: _obj.Id,  
-             FragmentId: _obj.FragmentId,
-              })
-
-            //  _obj.isActive = true
-             text =  _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-       }
-           
-
-
-
-           
-           
-
-        
-          const a = state.dataContentOrg2.filter((x) => {
-           return x.Dr_name === state.selectObj2[state.isScreen]["docter"]
-          }).filter((x) => {
-            if ( state.selectObj2[state.isScreen]["Id"]) {
-               return x.Id === state.selectObj2[state.isScreen]["Id"]
-            } else {
-            return true  
             }
-          
-          }).filter((x) => {
-            if ( state.selectObj2[state.isScreen]["FragmentId"]) {
-               return x.FragmentId === state.selectObj2[state.isScreen]["FragmentId"]
+          }
+        } else if (evt.target.dataset.kinds === "flagmentName") {
+          //  for (const element of _obj) {
+          //   (state.selectObj2[state.isScreen] = {
+          //       docter: element.Dr_name,
+          //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+          //        templateName: element["Approved_Email_Template_vod__r.Name"],
+          //       flagmentName: text,
+          //        Id: element.Id,
+          //      })
+          //  } 
+
+          (state.selectObj2[state.isScreen] = {
+            docter: _obj.Dr_name,
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            templateName: _obj["Approved_Email_Template_vod__r.Name"],
+            flagmentName: _obj["Email_Fragments_vod__r.Name"],
+            Id: _obj.Id,
+            FragmentId: _obj.FragmentId,
+          })
+
+          text = _obj["Email_Fragments_vod__r.Name"] ? _obj["Email_Fragments_vod__r.Name"] : "NULL"
+
+        } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
+          (state.selectObj2[state.isScreen] = {
+            docter: _obj.Dr_name,
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            templateName: _obj["Approved_Email_Template_vod__r.Name"],
+            flagmentName: _obj["Email_Fragments_vod__r.Name"],
+            Id: _obj.Id,
+            FragmentId: _obj.FragmentId,
+          })
+
+          //  _obj.isActive = true
+          text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+        }
+        else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
+          (state.selectObj2[state.isScreen] = {
+            docter: _obj.Dr_name,
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            templateName: _obj["Approved_Email_Template_vod__r.Name"],
+            flagmentName: _obj["Email_Fragments_vod__r.Name"],
+            Id: _obj.Id,
+            FragmentId: _obj.FragmentId,
+          })
+
+          //  _obj.isActive = true
+          text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+        }
+
+
+
+
+
+
+
+
+        const a = state.dataContentOrg2.filter((x) => {
+          return x.Dr_name === state.selectObj2[state.isScreen]["docter"]
+        }).filter((x) => {
+          if (state.selectObj2[state.isScreen]["Id"]) {
+            return x.Id === state.selectObj2[state.isScreen]["Id"]
+          } else {
+            return true
+          }
+
+        }).filter((x) => {
+          if (state.selectObj2[state.isScreen]["FragmentId"]) {
+            return x.FragmentId === state.selectObj2[state.isScreen]["FragmentId"]
+          } else {
+            return true
+          }
+
+        }).filter((x) => {
+          if (state.selectObj2[state.isScreen]["sentDate"]) {
+            return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj2[state.isScreen]["sentDate"]
+          } else {
+            return true
+          }
+
+        })
+          .filter((x) => {
+            if (state.selectObj2[state.isScreen]["templateName"]) {
+              return x["Approved_Email_Template_vod__r.Name"] === state.selectObj2[state.isScreen]["templateName"]
             } else {
-            return true  
+              return true
             }
-          
-          }).filter((x) => {
-            if ( state.selectObj2[state.isScreen]["sentDate"]) {
-               return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj2[state.isScreen]["sentDate"]
-            } else {
-            return true  
-            }
-          
+
           })
           .filter((x) => {
-            if ( state.selectObj2[state.isScreen]["templateName"]) {
-               return x["Approved_Email_Template_vod__r.Name"]  === state.selectObj2[state.isScreen]["templateName"]
+            if (state.selectObj2[state.isScreen]["flagmentName"]) {
+              return x["Email_Fragments_vod__r.Name"] === state.selectObj2[state.isScreen]["flagmentName"]
             } else {
-            return true  
+              return true
             }
-          
-          })
-          .filter((x) => {
-            if ( state.selectObj2[state.isScreen]["flagmentName"]) {
-               return x["Email_Fragments_vod__r.Name"]  === state.selectObj2[state.isScreen]["flagmentName"]
-            } else {
-            return true  
-            }
-          
+
           })
           .filter((x) => {
             if (evt.target.dataset.kinds === "Last_Open_Date_vod__c" || evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
-            return x["Last_Open_Date_vod__c"] ===  _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] ===  _obj.Last_Click_Date_vod__c
+              return x["Last_Open_Date_vod__c"] === _obj.Last_Open_Date_vod__c && x["Last_Click_Date_vod__c"] === _obj.Last_Click_Date_vod__c
             } else {
-            return true  
+              return true
             }
-          
+
           })
 
 
-           const open = a.map((p) => p["Open_Count_vod__c"]).filter((v) => v)
-           const click = a.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
+        const open = a.map((p) => p["Open_Count_vod__c"]).filter((v) => v)
+        const click = a.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
 
-           console.log(open);
-           console.log(click);
-           
-           
+        console.log(open);
+        console.log(click);
 
-           const sum = open.reduce((sum, num) => Number(sum) + Number(num), 0);
-           const sum2 = click.reduce((sum, num) => Number(sum) + Number(num), 0);
-           const sum3 = sum + sum2
-            
 
-      _obj = `<span class="fwb">${a.length * 2}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum3.toLocaleString()}.00</span>`;  
+
+        const sum = open.reduce((sum, num) => Number(sum) + Number(num), 0);
+        const sum2 = click.reduce((sum, num) => Number(sum) + Number(num), 0);
+        const sum3 = sum + sum2
+
+
+        _obj = `<span class="fwb">${a.length * 2}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum3.toLocaleString()}.00</span>`;
       }
 
-      
+
 
 
       state.popupData = {
@@ -7330,41 +7612,41 @@ setPouUp2_2(_obj, text, evt);
       };
     };
 
-     const onHoverItem2_2_2 = (target, text, evt) => {
+    const onHoverItem2_2_2 = (target, text, evt) => {
       if (evt.target.classList.contains("on")) {
         state.isHoverFlag = true;
       }
 
       if (!target) {
-        target =  state.dataContentOrg2
+        target = state.dataContentOrg2
       }
 
-        
-      
-                 
+
+
+
 
       let sum
-       if (text.trim() === "クリック回数") {
-       state.isHoverFlag19 = true;  
-          const click = target.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
+      if (text.trim() === "クリック回数") {
+        state.isHoverFlag19 = true;
+        const click = target.map((p) => p["Click_Count_vod__c"]).filter((v) => v)
         console.log(target);
-         sum = click.reduce((sum, num) => Number(sum) + Number(num), 0);
-        
-       } else {
-        state.isHoverFlag20 = true;   
+        sum = click.reduce((sum, num) => Number(sum) + Number(num), 0);
+
+      } else {
+        state.isHoverFlag20 = true;
         const open = target.map((p) => p["Open_Count_vod__c"]).filter((v) => v)
         sum = open.reduce((sum, num) => Number(sum) + Number(num), 0);
-      }     
-           
+      }
 
-        
-         
-    console.log(target.length);
-    
 
-        const _obj = `<span class="fwb">${target.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}.00</span>`;
 
-    
+
+      console.log(target.length);
+
+
+      const _obj = `<span class="fwb">${target.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}.00</span>`;
+
+
 
       state.popupData = {
         タイトル: _obj,
@@ -7382,60 +7664,60 @@ setPouUp2_2(_obj, text, evt);
       }
 
       if (state.isScreen === "集計画面") {
-         state.popupData = {
-        MR: _obj.MR,
-        エリア: _obj.エリア,
-        テリトリー名: _obj.テリトリー名,
-        営業部: _obj.営業部,
-        "移行済みデータ のカウント": _obj.Total,
-      };
+        state.popupData = {
+          MR: _obj.MR,
+          エリア: _obj.エリア,
+          テリトリー名: _obj.テリトリー名,
+          営業部: _obj.営業部,
+          "移行済みデータ のカウント": _obj.Total,
+        };
       } else if (state.isScreen === "送付先詳細") {
         state.popupData = {
-            Dr_name: _obj.Dr_name,
-        HP_name: _obj.HP_name,
-          MR: _obj.MR,  
-        "移行済みデータ のカウント": _obj.Total,
-      };
-      }else if (state.isScreen === "送付内容") {
-      
-     if (evt.target.dataset.kinds == "クリック回数") {
-       state.popupData = {
-          メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
-          メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
-          最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-          最終開封日時:  _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-          医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
-          フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
-          Dr_DCF: _obj.Dr_DCF,
-          HP_DCF: _obj.HP_DCF,
-          施設名: _obj.HP_name,
-          MR: _obj.MR,  
-          MR_ID:_obj.MR_ID, 
-          "クリック回数": _obj.Click_Count_vod__c,
-      };
-     } else {
-     state.popupData = {
-          メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
-          メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
-          最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-          最終開封日時:  _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-          医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
-          フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
-          Dr_DCF: _obj.Dr_DCF,
-          HP_DCF: _obj.HP_DCF,
-          施設名: _obj.HP_name,
-          MR: _obj.MR,  
-          MR_ID:_obj.MR_ID, 
-          "開封回数": _obj.Open_Count_vod__c,
-      };  
-     }
-       
+          Dr_name: _obj.Dr_name,
+          HP_name: _obj.HP_name,
+          MR: _obj.MR,
+          "移行済みデータ のカウント": _obj.Total,
+        };
+      } else if (state.isScreen === "送付内容") {
+
+        if (evt.target.dataset.kinds == "クリック回数") {
+          state.popupData = {
+            メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
+            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
+            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
+            フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
+            Dr_DCF: _obj.Dr_DCF,
+            HP_DCF: _obj.HP_DCF,
+            施設名: _obj.HP_name,
+            MR: _obj.MR,
+            MR_ID: _obj.MR_ID,
+            "クリック回数": _obj.Click_Count_vod__c,
+          };
+        } else {
+          state.popupData = {
+            メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
+            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
+            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
+            フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
+            Dr_DCF: _obj.Dr_DCF,
+            HP_DCF: _obj.HP_DCF,
+            施設名: _obj.HP_name,
+            MR: _obj.MR,
+            MR_ID: _obj.MR_ID,
+            "開封回数": _obj.Open_Count_vod__c,
+          };
+        }
+
       }
 
-     
+
     };
 
-     const onHoverItemq = (evt) => {
+    const onHoverItemq = (evt) => {
       state.isHoverFlag25 = true;
 
       const ua = navigator.userAgent;
@@ -7443,19 +7725,19 @@ setPouUp2_2(_obj, text, evt);
       if (state.isHoverFlagCount === 0 && ua.indexOf("iPad") <= 0) {
         state.isHoverFlag25 = false;
       } else {
-      setPouUpq(evt)  
+        setPouUpq(evt)
       }
 
-     
+
     };
 
 
-    const setPouUpq = async ( evt) => {
+    const setPouUpq = async (evt) => {
       if (!state.isHoverFlag25) {
         state.isHoverFlag25 = true;
       }
 
-      
+
 
       const stalker = document.getElementById("stalker2");
       const button = document.getElementById("question-button");
@@ -7463,50 +7745,50 @@ setPouUp2_2(_obj, text, evt);
       const stalker4 = document.getElementById("stalker4");
       let x
       let x2
-    
+
 
       const windowSize = window.innerWidth;
 
-       x = button.getBoundingClientRect().left - 45;
+      x = button.getBoundingClientRect().left - 45;
 
 
-      if (windowSize <  x + stalker.clientWidth) {
+      if (windowSize < x + stalker.clientWidth) {
         x = window.innerWidth - stalker.clientWidth - 15;
 
         x2 = button.getBoundingClientRect().left - x - 2
-           stalker3.style.left =  x2 + "px";
-        stalker4.style.left =  x2 + "px";
+        stalker3.style.left = x2 + "px";
+        stalker4.style.left = x2 + "px";
       } else {
         x = button.getBoundingClientRect().left - 45;
-        x2 = 10 
+        x2 = 10
 
-        stalker3.style.left =  x2 + "%";
-        stalker4.style.left =  x2 + "%";
+        stalker3.style.left = x2 + "%";
+        stalker4.style.left = x2 + "%";
       }
 
       const y = button.getBoundingClientRect().top - stalker.offsetHeight - 35;
 
 
 
-  
-   
+
+
       stalker.style.transform = "translate(" + x + "px, " + y + "px)";
 
- 
+
     };
 
 
-     const onTapTargetq = async(evt) => {
-       const ua = navigator.userAgent;
+    const onTapTargetq = async (evt) => {
+      const ua = navigator.userAgent;
 
 
 
-       
 
-     
- setPouUpq(evt)  
 
-      
+
+      setPouUpq(evt)
+
+
     };
 
     const setPouUp2_2 = async (_obj, text, evt) => {
@@ -7600,128 +7882,128 @@ setPouUp2_2(_obj, text, evt);
     };
 
     const onTapSortVisible = async (text) => {
-      
+
 
       const ua = navigator.userAgent;
 
       if (ua.indexOf("iPad") >= 0) {
         switch (text) {
           case "isHoverFlag2":
-             state.isHoverFlag2 = true;
-            
+            state.isHoverFlag2 = true;
+
             break;
-        case "isHoverFlag3":
-             state.isHoverFlag3 = true;
-            
+          case "isHoverFlag3":
+            state.isHoverFlag3 = true;
+
             break;
-         case "isHoverFlag4":
-             state.isHoverFlag4 = true;
-            
+          case "isHoverFlag4":
+            state.isHoverFlag4 = true;
+
             break;
-        case "isHoverFlag5":
-             state.isHoverFlag5 = true;
-            
+          case "isHoverFlag5":
+            state.isHoverFlag5 = true;
+
             break;
 
-         case "isHoverFlag6":
-             state.isHoverFlag6 = true;
-            
+          case "isHoverFlag6":
+            state.isHoverFlag6 = true;
+
             break;
 
-         case "isHoverFlag7":
-             state.isHoverFlag7 = true;
-            
+          case "isHoverFlag7":
+            state.isHoverFlag7 = true;
+
             break;
 
           case "isHoverFlag8":
-             state.isHoverFlag8 = true;
-            
+            state.isHoverFlag8 = true;
+
             break;
 
-            case "isHoverFlag9":
-             state.isHoverFlag9 = true;
-            
+          case "isHoverFlag9":
+            state.isHoverFlag9 = true;
+
             break;
 
-            case "isHoverFlag10":
-             state.isHoverFlag10 = true;
-            
+          case "isHoverFlag10":
+            state.isHoverFlag10 = true;
+
             break;
 
-            case "isHoverFlag11":
-             state.isHoverFlag11 = true;
-            
+          case "isHoverFlag11":
+            state.isHoverFlag11 = true;
+
             break;
 
-              case "isHoverFlag12":
-             state.isHoverFlag12 = true;
-            
-            break;
-        
+          case "isHoverFlag12":
+            state.isHoverFlag12 = true;
 
-              case "isHoverFlag13":
-             state.isHoverFlag13 = true;
-            
-            break;
-        
-
-              case "isHoverFlag14":
-             state.isHoverFlag14 = true;
-            
-            break;
-        
-
-              case "isHoverFlag15":
-             state.isHoverFlag15 = true;
-            
             break;
 
-              case "isHoverFlag16":
-             state.isHoverFlag16 = true;
-            
+
+          case "isHoverFlag13":
+            state.isHoverFlag13 = true;
+
             break;
 
-              case "isHoverFlag17":
-             state.isHoverFlag17 = true;
-            
+
+          case "isHoverFlag14":
+            state.isHoverFlag14 = true;
+
             break;
 
-              case "isHoverFlag18":
-             state.isHoverFlag18 = true;
-            
+
+          case "isHoverFlag15":
+            state.isHoverFlag15 = true;
+
             break;
 
-             case "isHoverFlag21":
-             state.isHoverFlag21 = true;
-            
+          case "isHoverFlag16":
+            state.isHoverFlag16 = true;
+
             break;
 
-             case "isHoverFlag22":
-             state.isHoverFlag22 = true;
-            
+          case "isHoverFlag17":
+            state.isHoverFlag17 = true;
+
             break;
 
-             case "isHoverFlag23":
-             state.isHoverFlag23 = true;
-            
+          case "isHoverFlag18":
+            state.isHoverFlag18 = true;
+
             break;
 
-             case "isHoverFlag24":
-             state.isHoverFlag24 = true;
-            
+          case "isHoverFlag21":
+            state.isHoverFlag21 = true;
+
             break;
-        
-            
-         default:
+
+          case "isHoverFlag22":
+            state.isHoverFlag22 = true;
+
+            break;
+
+          case "isHoverFlag23":
+            state.isHoverFlag23 = true;
+
+            break;
+
+          case "isHoverFlag24":
+            state.isHoverFlag24 = true;
+
+            break;
+
+
+          default:
             break;
         }
-       
+
       }
       // }
     };
 
     const onTapSort = async (evt) => {
-       
+
       let target = evt.target.getAttribute('data-sort')
       if (!target) {
         target = "DATA";
@@ -7750,9 +8032,9 @@ setPouUp2_2(_obj, text, evt);
         }
       }
 
-      
 
-      creatData(state.data,false);
+
+      creatData(state.data, false);
 
       state.isHoverFlag2 = false;
       state.isHoverFlag3 = false;
@@ -7796,7 +8078,7 @@ setPouUp2_2(_obj, text, evt);
       console.log(state.sortObj2);
 
       setTimeout(async () => {
-        creatData(state.data,false);
+        creatData(state.data, false);
       }, 1);
 
       // }
@@ -7804,13 +8086,13 @@ setPouUp2_2(_obj, text, evt);
 
     const onTapSort3 = async (evt) => {
 
-     
+
       let target = evt.target.getAttribute('data-sort')
       if (!target) {
         target = "DATA";
       }
 
-      if (target === "医師名" || target === "メール送付日" || target === "メールテンプレート"|| target === "フラグメント"|| target === "分類") {
+      if (target === "医師名" || target === "メール送付日" || target === "メールテンプレート" || target === "フラグメント" || target === "分類") {
         if (state.sortObj3[target] === "default") {
           state.sortObj3[target] = "ASC";
         } else if (state.sortObj3[target] === "ASC") {
@@ -7834,14 +8116,14 @@ setPouUp2_2(_obj, text, evt);
       console.log(state.sortObj3);
 
 
-       state.isHoverFlag17 = false;
+      state.isHoverFlag17 = false;
       state.isHoverFlag18 = false;
-        state.isHoverFlag19 = false;
-       creatData(state.data,"false2");
+      state.isHoverFlag19 = false;
+      creatData(state.data, "false2");
     };
 
 
-    const onTapDataHeader = async (text,evt) => {
+    const onTapDataHeader = async (text, evt) => {
       const ua = navigator.userAgent;
 
       if (ua.indexOf("iPad") >= 0) {
@@ -7864,38 +8146,38 @@ setPouUp2_2(_obj, text, evt);
       if (!evt.target.classList.contains('title-wrap')) {
         return
       }
-           (state.selectObj[state.isScreen] = {
-             docter: "",
-             分類: "",      
+      (state.selectObj[state.isScreen] = {
+        docter: "",
+        分類: "",
         sentDate: "",
-             templateName: "",
-             flagmentName: "",
-             Last_Click_Date_vod__c: false,
-            Last_Open_Date_vod__c: false,  
-       
-           })
+        templateName: "",
+        flagmentName: "",
+        Last_Click_Date_vod__c: false,
+        Last_Open_Date_vod__c: false,
 
-        const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
-         
-          
-           for (const item of items4) {
-            
-            item.classList.remove("on");
-          
-          }
+      })
+
+      const items4 = document.querySelectorAll("#my-chart3 .call-list-title.on");
+
+
+      for (const item of items4) {
+
+        item.classList.remove("on");
+
+      }
 
       if (evt.target.classList.contains('on')) {
         evt.target.classList.remove('on')
 
         for (const element of state.dataContentOrg2) {
           element.isClickActive = false
-          element.isOpenActive = false 
-         element.isActive = false  
+          element.isOpenActive = false
+          element.isActive = false
         }
- 
+
       } else {
 
-         const itemParent = document.querySelector(".title-wrap.on");
+        const itemParent = document.querySelector(".title-wrap.on");
         if (itemParent) {
           itemParent.classList.remove('on')
         }
@@ -7904,64 +8186,64 @@ setPouUp2_2(_obj, text, evt);
 
 
         if (evt.target.textContent.trim() === "クリック回数") {
-          
- for (const element of state.dataContentOrg2) {
-   element.isClickActive = true
-   element.isOpenActive = false
-   element.isActive = false  
- }
-        } else  if (evt.target.textContent.trim() === "開封回数") {
-           for (const element of state.dataContentOrg2) {
-             element.isOpenActive = true
-             element.isClickActive = false
-             element.isActive = false  
-   
- }
+
+          for (const element of state.dataContentOrg2) {
+            element.isClickActive = true
+            element.isOpenActive = false
+            element.isActive = false
+          }
+        } else if (evt.target.textContent.trim() === "開封回数") {
+          for (const element of state.dataContentOrg2) {
+            element.isOpenActive = true
+            element.isClickActive = false
+            element.isActive = false
+
+          }
         }
-         
+
 
 
         let target
 
 
-        
-      //  console.log(totalArray2_copy.length);
- 
-console.log(state.selectObj);
 
-//  if (Object.values(state.selectObj["送付先詳細"]["Value2"]).length > 0) {
-//   target = state.dataContentOrg2.filter((x) => {
-//           return x.HP_name == state.selectObj["送付先詳細"]["Value2"]
-//           })
-//  } else {
-//   target =  state.dataContentOrg2
-//  }
+        //  console.log(totalArray2_copy.length);
 
+        console.log(state.selectObj);
 
-   target =  state.dataContentOrg2
+        //  if (Object.values(state.selectObj["送付先詳細"]["Value2"]).length > 0) {
+        //   target = state.dataContentOrg2.filter((x) => {
+        //           return x.HP_name == state.selectObj["送付先詳細"]["Value2"]
+        //           })
+        //  } else {
+        //   target =  state.dataContentOrg2
+        //  }
 
 
-     
+        target = state.dataContentOrg2
 
 
-      setPouUp2_2_2(target, evt.target.textContent.trim(), evt);
+
+
+
+        setPouUp2_2_2(target, evt.target.textContent.trim(), evt);
       }
 
-    
 
 
-        
+
+
 
 
 
     };
 
-   
+
 
     let target = [...state.data];
 
-   
-     
+
+
     creatDataMR(target, false);
 
     creatDataArea(target, false);
@@ -7975,22 +8257,22 @@ console.log(state.selectObj);
     creatDataProduct(target, false);
 
     creatDatDocter(target, false);
-   
-    creatData(target,false);
-     
+
+    creatData(target, false);
+
     creatDataDataMonth();
 
     creatDataDataOptInProduct();
 
-    
+
     if (state.isScreen !== "送付内容") {
       window.addEventListener("resize", onResize);
     }
 
-     const onTapClose = () => {
-       state.isPopup = false
-     state.optInDetaildataFilter =  [] 
-     }
+    const onTapClose = () => {
+      state.isPopup = false
+      state.optInDetaildataFilter = []
+    }
 
     const onTapTargetPopup = async (mr, evt) => {
       if (!state.selectedFilterItemsOptIn.許諾製品) {
@@ -8002,35 +8284,50 @@ console.log(state.selectObj);
       //   return null
       // }
       console.log(state.optInDetaildata);
-      
+
       let result = state.optInDetaildata.filter((x) => {
-            return mr === x.MR;
+        return mr === x.MR;
       }).filter((x) => {
-            return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
       }).sort((a, b) => {
-        
-                  if (a.HP_name > b.HP_name) return 1;
-                  if (a.HP_name < b.HP_name) return -1;
-                });
+
+        if (a.HP_name > b.HP_name) return 1;
+        if (a.HP_name < b.HP_name) return -1;
+      });
 
       const uniqueUsers = Array.from(
-  new Map(result.map((user) => [user.uniqueID, user])).values()
-);
+        new Map(result.map((user) => [user.uniqueID, user])).values()
+      );
 
-console.log(uniqueUsers);
-
-
-      state.optInDetaildataFilter = uniqueUsers      
-     }
+      console.log(uniqueUsers);
 
 
-    
+      state.optInDetaildataFilter = uniqueUsers
+    }
+
+    const uniqueTotal = computed(() => {
+      const uniqueValues = new Set(
+        state.data.map(item => item.ユニーク)
+      )
+
+      console.log('state.data');
+      console.log(state.data);
+
+      console.log('uniqueValues');
+      console.log(uniqueValues);
+
+      return Array.from(uniqueValues)
+        .reduce((sum, v) => Number(sum) + Number(v), 0)
+    })
+
+
     return {
       state,
       root,
       chart,
       dayjs,
       isLoadComplete,
+      uniqueTotal,
       onTapSelectBoxItem,
       onTapSelectBoxItem2,
       onTapClearButton,
@@ -8060,7 +8357,6 @@ console.log(uniqueUsers);
   },
 });
 </script>
-
 <style lang="scss" scoped>
 @import "~@/assets/css/colors";
 
@@ -8089,12 +8385,12 @@ console.log(uniqueUsers);
 
 .title {
   text-align: center;
-      font-size: 21px;
-    line-height: 29px;
-    color: rgb(102, 102, 102);
-    font-weight: bold;
-    font-style: normal;
-    text-decoration: none;
+  font-size: 21px;
+  line-height: 29px;
+  color: rgb(102, 102, 102);
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: none;
 }
 
 // // ヘッダー部分の順番を入れ替え
@@ -8138,6 +8434,7 @@ console.log(uniqueUsers);
 :deep(.vuejs3-datepicker__content) {
   margin: 0;
 }
+
 // // ヘッダー部分の順番を入れ替え
 // :deep(.vuejs3-datepicker__calendar header .next) {
 //   order: 3;
@@ -8240,7 +8537,7 @@ console.log(uniqueUsers);
   flex-wrap: wrap;
 
   &-text {
-    
+
     display: flex;
     align-items: flex-end;
     font-size: 16px;
@@ -8253,17 +8550,18 @@ console.log(uniqueUsers);
     justify-content: space-between;
     width: 100%;
 
-    &2{
+    &2 {
       min-width: 965px;
     }
-    
-    &3{
+
+    &3 {
       min-width: 810px;
       max-width: 1265px;
+      width: 100%;
     }
 
     &-note {
-      color: rgb(51, 51, 51);
+
       font-size: 90%;
     }
   }
@@ -8275,11 +8573,11 @@ console.log(uniqueUsers);
   align-items: center;
   margin-bottom: 20px;
 
-  &-text{
+  &-text {
     margin-left: 10px;
     color: rgb(89, 161, 79);
     font-size: 15px;
-        font-weight: bold;
+    font-weight: bold;
   }
 }
 
@@ -8474,11 +8772,11 @@ console.log(uniqueUsers);
     display: flex;
     padding-top: 5px;
 
-    &2{
+    &2 {
       max-width: 1300px;
     }
 
-    &3{
+    &3 {
       max-width: 1190px;
     }
 
@@ -8490,7 +8788,7 @@ console.log(uniqueUsers);
 
         color: #fff;
 
-      
+
         &-title {
           background-color: rgb(30, 0, 124);
           height: 40px;
@@ -8504,7 +8802,7 @@ console.log(uniqueUsers);
 
         &-content {
           display: flex;
-          align-items: flex-end;
+          align-items: center;
           background-color: rgb(30, 0, 124);
           min-height: 27px;
 
@@ -8513,22 +8811,27 @@ console.log(uniqueUsers);
             flex: 1;
             text-align: center;
             min-height: 27px;
-           display: flex;
-           justify-content: center;
-           align-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+
+            &-text {
+              position: relative;
+            }
 
             ul {
               flex: 1;
+
               li {
                 width: calc(100% / 2);
                 font-size: 12px;
-                    min-height: 27px;
-    /* height: 100%; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+                min-height: 27px;
+                /* height: 100%; */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
 
                 &.on {
                   background-color: #98c2d1;
@@ -8541,63 +8844,63 @@ console.log(uniqueUsers);
 
         &-list {
           display: flex;
-          
+
           align-items: center;
           font-size: 18px;
           cursor: pointer;
           min-height: 27px;
-          
-          
+
+
 
           .call-list {
 
             position: relative;
 
-            &3{
+            &3 {
               font-size: 18px;
               text-align: center;
             }
 
-            &7{
+            &7 {
               font-size: 10pt;
               text-align: center;
               align-items: center;
               min-height: 27px;
             }
 
-            &8{
+            &8 {
               font-size: 10pt;
               text-align: center;
-               align-items: center;
+              align-items: center;
               min-height: 27px;
             }
 
-            &9{
+            &9 {
               font-size: 10pt;
               text-align: center;
-               align-items: center;
+              align-items: center;
               min-height: auto;
               min-height: 27px;
             }
 
-             &10{
+            &10 {
               font-size: 10pt;
               text-align: center;
-               align-items: center;
+              align-items: center;
               min-height: auto;
               min-height: 27px;
             }
 
-            &11{
+            &11 {
               font-size: 10pt;
               text-align: center;
-               align-items: center;
+              align-items: center;
               min-height: auto;
               min-height: 27px;
             }
 
-          
-        }
+
+          }
 
         }
       }
@@ -8641,6 +8944,7 @@ console.log(uniqueUsers);
         background-color: #98c2d1 !important;
       }
     }
+
     &0 {
       width: 65px;
       padding-left: 5px;
@@ -8648,6 +8952,7 @@ console.log(uniqueUsers);
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     &1 {
       width: 100px;
       white-space: nowrap;
@@ -8655,6 +8960,7 @@ console.log(uniqueUsers);
       text-overflow: ellipsis;
       text-align: center;
     }
+
     &2 {
       width: 130px;
       white-space: nowrap;
@@ -8662,23 +8968,25 @@ console.log(uniqueUsers);
       text-overflow: ellipsis;
       text-align: center;
 
-       &.opt {
+
+      &.opt {
         font-size: 14px;
         line-height: 1.2;
         padding: 3px 0;
         text-align: left;
         padding-left: 30px;
       }
-      
+
     }
+
     &2-2 {
       width: 80px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
-      
     }
+
     &3 {
       width: 200px;
       padding-left: 5px;
@@ -8687,7 +8995,7 @@ console.log(uniqueUsers);
       overflow: hidden;
       text-overflow: ellipsis;
 
-      &_2{
+      &_2 {
         text-align: center;
       }
     }
@@ -8706,7 +9014,7 @@ console.log(uniqueUsers);
       }
     }
 
-     &6 {
+    &6 {
       width: 170px;
       white-space: nowrap;
       overflow: hidden;
@@ -8715,13 +9023,13 @@ console.log(uniqueUsers);
     }
 
 
-     &7 {
+    &7 {
       width: 85px;
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
       font-size: 12px;
-       display: flex;
+      display: flex;
       justify-content: center;
       padding: 0 3px;
 
@@ -8740,7 +9048,7 @@ console.log(uniqueUsers);
       text-overflow: ellipsis;
       text-align: center;
       font-size: 12px;
-       display: flex;
+      display: flex;
       justify-content: center;
       padding: 0 3px;
 
@@ -8759,7 +9067,7 @@ console.log(uniqueUsers);
       text-overflow: ellipsis;
       text-align: center;
       font-size: 12px;
-       display: flex;
+      display: flex;
       justify-content: center;
       padding: 0 3px;
 
@@ -8767,11 +9075,11 @@ console.log(uniqueUsers);
         height: 116px;
         display: flex;
         align-items: center;
-         pointer-events: none;
+        pointer-events: none;
       }
     }
 
-     &9 {
+    &9 {
       width: 130px;
       min-height: 116px;
       display: flex;
@@ -8783,27 +9091,27 @@ console.log(uniqueUsers);
         height: 116px;
         display: flex;
         align-items: center;
-         pointer-events: none;
-         width: 100%;
+        pointer-events: none;
+        width: 100%;
 
         & span {
-        max-height: 90px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      font-size: 12px;
-     display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5; //行数を指定
-    line-height: 1.5;
-      }
+          max-height: 90px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: left;
+          font-size: 12px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 5; //行数を指定
+          line-height: 1.5;
+        }
 
       }
-      
-      
+
+
     }
 
-     &10 {
+    &10 {
       width: 150px;
       min-height: 116px;
       display: flex;
@@ -8815,31 +9123,32 @@ console.log(uniqueUsers);
         height: 116px;
         display: flex;
         align-items: center;
-         pointer-events: none;
-          width: 100%;
+        pointer-events: none;
+        width: 100%;
 
         & span {
-        max-height:  90px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      font-size: 12px;
-     display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5; //行数を指定
-    line-height: 1.5;
-      }
+          max-height: 90px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: left;
+          font-size: 12px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 5; //行数を指定
+          line-height: 1.5;
+        }
 
       }
-      
-      
+
+
     }
 
     &11 {
       width: 150px;
       min-height: 116px;
       display: flex;
-      align-items: flex-start;;
+      align-items: flex-start;
+      ;
       justify-content: center;
       padding: 0 3px;
 
@@ -8847,23 +9156,23 @@ console.log(uniqueUsers);
         height: 116px;
         display: flex;
         align-items: center;
-         pointer-events: none;
+        pointer-events: none;
 
         & span {
-        max-height: 82px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      font-size: 12px;
-     display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4; //行数を指定
-    line-height: 1.5;
-      }
+          max-height: 82px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: left;
+          font-size: 12px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4; //行数を指定
+          line-height: 1.5;
+        }
 
       }
-      
-      
+
+
     }
 
     &5 {
@@ -8964,6 +9273,7 @@ console.log(uniqueUsers);
     &:last-child {
       padding: 10px 10px 10px 0px;
     }
+
     &2 {
       padding: 15px 10px 15px 10px;
     }
@@ -8983,6 +9293,7 @@ console.log(uniqueUsers);
 
 .header-list-item {
   cursor: pointer;
+
   &.on {
     background-color: #98c2d1;
   }
@@ -9066,22 +9377,33 @@ console.log(uniqueUsers);
   display: flex;
   margin-left: 5px;
   cursor: pointer;
-   padding-right: 5px;
+  padding-right: 5px;
 
   &-left {
-    width: 760px;
+    width: 731px;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+
+    .total-title {
+      border: none;
+      font-weight: 600;
+      color: #666666;
+      text-align: center;
+      width: 130px;
+      padding-top: 10px;
+    }
   }
 
   &2 {
-    .content-footer-left{
+    .content-footer-left {
       width: 580px;
     }
   }
 
   &-right {
-     border-left:1px solid #cbcbcb;
-         border-right:1px solid #cbcbcb;
+    border-left: 1px solid #cbcbcb;
+    border-right: 1px solid #cbcbcb;
     color: #666666;
     font-weight: bold;
     flex: 1;
@@ -9092,8 +9414,8 @@ console.log(uniqueUsers);
     font-size: 16px;
     color: #333;
     text-align: center;
-    
-    &2{
+
+    &2 {
       display: inline-block;
       position: relative;
     }
@@ -9123,43 +9445,26 @@ console.log(uniqueUsers);
 
 }
 
-.q-button {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    right: 20px;
-    top: 9px;
+.sort-button {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  right: 0;
+  top: 6px;
 
-    & div {
-       width: 100%;
-  height: 100%;
-      background: url('~@/assets/images/icon/q.png'); /* 表示する画像 */
-  background-size: contain; 
-  background-repeat: no-repeat;
-  background-position: left top;
-
-    }
+  &.opt {
+    top: 12px;
   }
 
-.sort-button {
-      position: absolute;
-    width: 15px;
-    height: 15px;
-    right: 0;
-    top: 6px;
+  &.kinds {
+    top: 2px;
+  }
 
-    &.opt {
-      top: 12px;
-    }
-
-     &.kinds {
-      top: 2px;
-    }
-  &:hover{
+  &:hover {
     background-color: #fff;
   }
 
-  &2{
+  &2 {
     right: 40px;
   }
 
@@ -9169,34 +9474,38 @@ console.log(uniqueUsers);
     height: 15px;
     right: 3px;
     top: 7px;
-  &:hover{
-    background-color: #fff;
-  }
+
+    &:hover {
+      background-color: #fff;
+    }
   }
 
   &-data {
-     width: 15px;
+    position: absolute;
+    width: 15px;
     height: 15px;
+    top: 14px;
+    left: 150px;
 
-     &:hover{
-    background-color: #fff;
+    &:hover {
+      background-color: #fff;
 
-   
-  }
 
-   &2 {
-     position: absolute;
-       width: 15px;
-    height: 15px;
-    top: 5px;
-    left: 100px;
+    }
 
-       &:hover{
-    background-color: #d9d9d9;
+    &2 {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      top: 5px;
+      left: 100px;
 
-   
-  }
-    
+      &:hover {
+        background-color: #d9d9d9;
+
+
+      }
+
     }
 
   }
@@ -9212,73 +9521,82 @@ console.log(uniqueUsers);
 .sort-asc {
   width: 100%;
   height: 100%;
-  background: url('~@/assets/images/icon/sortAZSecond.svg'); /* 表示する画像 */
-  background-size: contain; 
+  background: url('~@/assets/images/icon/sortAZSecond.svg');
+  /* 表示する画像 */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: left top;
 
-  &2{
-    background: url('~@/assets/images/icon/sortAZ.svg'); /* 表示する画像 */
+  &2 {
+    background: url('~@/assets/images/icon/sortAZ.svg');
+    /* 表示する画像 */
     width: 100%;
-  height: 100%;
-  background-size: contain; 
-  background-repeat: no-repeat;
-  background-position: left top;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
 
-   &:hover{
-     background: url('~@/assets/images/icon/sortAZ.svg'); /* 表示する画像 */
+    &:hover {
+      background: url('~@/assets/images/icon/sortAZ.svg');
+      /* 表示する画像 */
+    }
+
   }
 
-  }
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortAZ.svg'); /* 表示する画像 */
+  &:hover {
+    background: url('~@/assets/images/icon/sortAZ.svg');
+    /* 表示する画像 */
   }
 
   &-data {
 
     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortZAdata.svg'); /* 表示する画像 */
-  background-size: contain; 
-  background-repeat: no-repeat;
-  background-position: left top;
+    height: 100%;
+    background: url('~@/assets/images/icon/sortZAdata.svg');
+    /* 表示する画像 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
 
-  &2{
+    &2 {
 
-     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortZAdataThrid.svg'); /* 表示する画像 */
-  background-size: 10px 10px; 
-  background-repeat: no-repeat;
-  background-position: center;
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortZAdataSecond.svg'); /* 表示する画像 */
-     background-size: 12px 12px; 
-     background-repeat: no-repeat;
-     background-position: center;
-  }
+      width: 100%;
+      height: 100%;
+      background: url('~@/assets/images/icon/sortZAdataThrid.svg');
+      /* 表示する画像 */
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: center;
 
-  }
+      &:hover {
+        background: url('~@/assets/images/icon/sortZAdataSecond.svg');
+        /* 表示する画像 */
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
 
-    &3{
+    }
 
-     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortZAdataFour.svg'); /* 表示する画像 */
-  background-size: 10px 10px; 
-  background-repeat: no-repeat;
-  background-position: center;
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortZAdata.svg'); /* 表示する画像 */
-     background-size: 12px 12px; 
-     background-repeat: no-repeat;
-     background-position: center;
-  }
+    &3 {
 
-  }
+      width: 100%;
+      height: 100%;
+      background: url('~@/assets/images/icon/sortZAdataFour.svg');
+      /* 表示する画像 */
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &:hover {
+        background: url('~@/assets/images/icon/sortZAdata.svg');
+        /* 表示する画像 */
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+    }
 
   }
 
@@ -9287,60 +9605,67 @@ console.log(uniqueUsers);
 .sort-desc {
   width: 100%;
   height: 100%;
-  background: url('~@/assets/images/icon/sortZASecond.svg'); /* 表示する画像 */
-  background-size: contain; 
+  background: url('~@/assets/images/icon/sortZASecond.svg');
+  /* 表示する画像 */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: left top;
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortZA.svg'); /* 表示する画像 */
+
+  &:hover {
+    background: url('~@/assets/images/icon/sortZA.svg');
+    /* 表示する画像 */
   }
 
-   &-data {
+  &-data {
 
     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortAZdata.svg'); /* 表示する画像 */
-  background-size: contain; 
-  background-repeat: no-repeat;
-  background-position: left top;
+    height: 100%;
+    background: url('~@/assets/images/icon/sortAZdata.svg');
+    /* 表示する画像 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
 
-    &2{
+    &2 {
 
-     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortAZdataThrid.svg'); /* 表示する画像 */
-  background-size: 10px 10px; 
-  background-repeat: no-repeat;
-  background-position: center;
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortAZdataSecond.svg'); /* 表示する画像 */
-     background-size: 12px 12px; 
-     background-repeat: no-repeat;
-     background-position: center;
-  }
+      width: 100%;
+      height: 100%;
+      background: url('~@/assets/images/icon/sortAZdataThrid.svg');
+      /* 表示する画像 */
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: center;
 
-  }
+      &:hover {
+        background: url('~@/assets/images/icon/sortAZdataSecond.svg');
+        /* 表示する画像 */
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
 
-    &3{
+    }
 
-     width: 100%;
-  height: 100%;
-  background: url('~@/assets/images/icon/sortAZdataFour.svg'); /* 表示する画像 */
-  background-size: 10px 10px; 
-  background-repeat: no-repeat;
-  background-position: center;
- 
-  &:hover{
-     background: url('~@/assets/images/icon/sortAZdata.svg'); /* 表示する画像 */
-     background-size: 12px 12px; 
-     background-repeat: no-repeat;
-     background-position: center;
-  }
+    &3 {
 
-  }
-  
+      width: 100%;
+      height: 100%;
+      background: url('~@/assets/images/icon/sortAZdataFour.svg');
+      /* 表示する画像 */
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &:hover {
+        background: url('~@/assets/images/icon/sortAZdata.svg');
+        /* 表示する画像 */
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+    }
+
 
   }
 
@@ -9348,54 +9673,55 @@ console.log(uniqueUsers);
 
 .test6 {
 
-   :not(:last-child)  {
+  :not(:last-child) {
     .call-list6 {
 
-     border-bottom: none;
-    
-  }
-    
+      border-bottom: none;
+
     }
 
-  
+  }
+
+
 }
 
-#my-chart3{
+#my-chart3 {
 
- 
+
 
   .call-list-title {
     padding-top: 0;
     padding-bottom: 0;
   }
 
-  
+
 
 
   .call-list-data {
     min-width: 200px;
     background-color: #fff;
+
     &-item {
       width: 50%;
-    } 
+    }
   }
 
- 
 
-    .test4{
-   .call-list-back {
-     background-color: #f1f1f1;
-   }
+
+  .test4 {
+    .call-list-back {
+      background-color: #f1f1f1;
+    }
   }
 
-   .call-list-data-item.on {
+  .call-list-data-item.on {
     outline: none;
     background-color: #afe1f0;
   }
 }
 
 @media screen and (min-width: 1050px) {
-  .call-list10  {
+  .call-list10 {
     width: 165px;
   }
 }
@@ -9403,60 +9729,87 @@ console.log(uniqueUsers);
 
 
 @media screen and (min-width: 1150px) {
-  .call-list10  {
+  .call-list10 {
     width: 265px;
   }
 }
 
 .opt-value {
-display: flex;
-            justify-content: space-around;
-            align-items: center;
-           
-         
-          
-           
-            font-size: 14px;
-              border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
-                &:nth-child(2n) {
-                background-color:#f3f3f3;
-              }
-         
-            
-            li {
-              text-align: center;
-                min-height: 40px;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-               padding: 2px 5px;
-               font-weight: bold;
-                
-              &:nth-child(1) {
-                width: 30%;
-                border-right: 1px solid #ccc;
-              }
 
-               &:nth-child(2) {
-                width: 23%;
-                 border-right: 1px solid #ccc;
-              }
 
-              &:nth-child(3) {
-                width: 27%;
-                 border-right: 1px solid #ccc;
-              }
 
-              &:nth-child(4) {
-                width: 20%;
-                font-size: 20px;
-                color:  rgb(30, 0, 124);
-              }
+  font-size: 14px;
+  border-bottom: 1px solid #ccc;
 
-            
+  &:nth-child(2n) {
+    background-color: #f3f3f3;
+  }
 
-            }
+
+  li {
+    text-align: center;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    font-weight: bold;
+
+    &:nth-child(1) {
+      width: 30%;
+      border-right: 1px solid #ccc;
+    }
+
+    &:nth-child(2) {
+      width: 23%;
+      border-right: 1px solid #ccc;
+    }
+
+    &:nth-child(3) {
+      width: 27%;
+      border-right: 1px solid #ccc;
+    }
+
+    &:nth-child(4) {
+      width: 20%;
+      font-size: 20px;
+      color: rgb(30, 0, 124);
+    }
+
+
+
+  }
+}
+
+
+.call-header-link {
+  color: #1a699e !important;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.q-button {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 20px;
+  top: 9px;
+
+  & div {
+    width: 100%;
+    height: 100%;
+    background: url('~@/assets/images/icon/q.png');
+    /* 表示する画像 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
+
+  }
 }
 
 .speechBubble {
@@ -9464,9 +9817,9 @@ display: flex;
   font-size: 14px;
 
   & .pop-content {
-flex-direction: column;
+    flex-direction: column;
   }
-  
+
 }
 
 
@@ -9482,7 +9835,7 @@ flex-direction: column;
 }
 
 .speechBubble3 {
- 
+
   position: absolute;
   bottom: 0;
   left: 10%;
@@ -9491,5 +9844,4 @@ flex-direction: column;
   border-color: #ffffff transparent transparent;
   translate: -50% 100%;
 }
-
 </style>
