@@ -2,12 +2,10 @@
   <Loading v-if="!isLoadComplete" />
 
   <keep-alive>
-    <div  ref="root" class="wrap">
+    <div ref="root" class="wrap">
 
-
-
-    <div class="header">
-    </div>
+      <div class="header">
+      </div>
       <div class="title-wrap">
         <div class="title-area">
           <div class="icon"></div>
@@ -18,51 +16,105 @@
       <div class="wrap2">
         <div class="iscroll-wrapper">
           <div class="iscroll__scroller">
-            <div class="date-title">2025年1月〜</div>
+
+            <div class="date-title">2026年1月〜</div>
             <ul class="list list2">
-              <li @tap="onTapScreen('CSL_DOCTER_REPORT')">
-                
-                  <div class="tab"><div class="tab2"></div></div>
-                  <div class="img-wrap"></div>
-                  <span class="text">医師別レポート</span>
-   
+              <li @tap="onTapScreen('CSL_DOCTER_REPORT_2026_2H')">
+
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">医師別レポート</span>
+
               </li>
             </ul>
-             <div class="date-title">2025年7月〜</div>
-              <ul class="list">
-              <li  @tap="onTapScreen('CSL_CALL_REPORT_2025_2H')">
-             <div class="tab"><div class="tab2"></div></div>
-                  <div class="img-wrap"></div>
-                  <span class="text">事業別Call実績レポート</span>
- 
+
+            <div class="date-title">2026年1月〜</div>
+            <ul class="list">
+              <li @tap="onTapScreen('CSL_CALL_REPORT_2026_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別Call実績レポート</span>
+
               </li>
 
-              <li  @tap="onTapScreen('CSL_MAIL_REPORT_2025_2H')">
-             <div class="tab"><div class="tab2"></div></div>
-                  <div class="img-wrap"></div>
-                  <span class="text">事業別メール送付実績レポート</span>
- 
+              <li @tap="onTapScreen('CSL_MAIL_REPORT_2026_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別メール送付実績レポート</span>
+
               </li>
 
-               <li  @tap="onTapScreen('CSL_CONTENTS_REPORT_2025_2H')">
-             <div class="tab"><div class="tab2"></div></div>
-                  <div class="img-wrap"></div>
-                  <span class="text">コンテンツ使用実績レポート</span>
- 
+              <li @tap="onTapScreen('CSL_CONTENTS_REPORT_2026_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">コンテンツ使用実績レポート</span>
+
+              </li>
+            </ul>
+
+            <div class="date-title">2025年1月〜12月</div>
+            <ul class="list list2">
+              <li @tap="onTapScreen('CSL_DOCTER_REPORT')">
+
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">医師別レポート</span>
+
+              </li>
+            </ul>
+
+            <div class="date-title">2025年7月〜12月</div>
+            <ul class="list">
+              <li @tap="onTapScreen('CSL_CALL_REPORT_2025_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別Call実績レポート</span>
+
               </li>
 
-</ul>
+              <li @tap="onTapScreen('CSL_MAIL_REPORT_2025_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別メール送付実績レポート</span>
+
+              </li>
+
+              <li @tap="onTapScreen('CSL_CONTENTS_REPORT_2025_2H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">コンテンツ使用実績レポート</span>
+
+              </li>
+            </ul>
 
             <div class="date-title">2025年1月〜6月</div>
-             <ul class="list">
+            <ul class="list">
               <li>
-                <router-link  :to="{
-          name: 'CallTop',
-          query: {
-            date: 'newData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                <router-link :to="{
+                  name: 'CallTop',
+                  query: {
+                    date: 'newData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
                   <span class="text">事業別Call実績レポート</span>
                 </router-link>
@@ -70,39 +122,45 @@
 
               <li>
                 <router-link :to="{
-          name: 'SentEmailTop',
-          query: {
-            date: 'newData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                  name: 'SentEmailTop',
+                  query: {
+                    date: 'newData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
-                  <span class="text">事業別メール送付実績レポート</span></router-link
-                >
+                  <span class="text">事業別メール送付実績レポート</span>
+                </router-link>
               </li>
               <li>
                 <router-link :to="{
-          name: 'CallKeyMessageTop',
-          query: {
-            date: 'newData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                  name: 'CallKeyMessageTop',
+                  query: {
+                    date: 'newData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
-                  <span class="text">コンテンツ使用実績レポート</span></router-link
-                >
+                  <span class="text">コンテンツ使用実績レポート</span>
+                </router-link>
               </li>
             </ul>
             <div class="date-title mt20">2024年7月〜12月</div>
             <ul class="list">
               <li>
                 <router-link :to="{
-          name: 'CallTop',
-          query: {
-          date: 'oldData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                  name: 'CallTop',
+                  query: {
+                    date: 'oldData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
                   <span class="text">事業別Call実績レポート</span>
                 </router-link>
@@ -110,27 +168,31 @@
 
               <li>
                 <router-link :to="{
-          name: 'SentEmailTop',
-          query: {
-            date: 'oldData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                  name: 'SentEmailTop',
+                  query: {
+                    date: 'oldData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
-                  <span class="text">事業別メール送付実績レポート</span></router-link
-                >
+                  <span class="text">事業別メール送付実績レポート</span>
+                </router-link>
               </li>
               <li>
                 <router-link :to="{
-          name: 'CallKeyMessageTop',
-          query: {
-            date: 'oldData',
-          },
-        }"
-                  ><div class="tab"><div class="tab2"></div></div>
+                  name: 'CallKeyMessageTop',
+                  query: {
+                    date: 'oldData',
+                  },
+                }">
+                  <div class="tab">
+                    <div class="tab2"></div>
+                  </div>
                   <div class="img-wrap"></div>
-                  <span class="text">コンテンツ使用実績レポート</span></router-link
-                >
+                  <span class="text">コンテンツ使用実績レポート</span>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -210,23 +272,39 @@ export default defineComponent({
           window.com.veeva.clm.gotoSlide(`CSL_DOCTER_REPORT_0.0.zip`, `CSL_DOCTER_REPORT`)
           break;
 
-            case "CSL_CALL_REPORT_2025_2H":
+        case "CSL_CALL_REPORT_2025_2H":
           window.com.veeva.clm.gotoSlide(`CSL_CALL_REPORT_2025_2H_0.0.zip`, `CSL_CALL_REPORT_2025_2H`)
           break;
 
-             case "CSL_MAIL_REPORT_2025_2H":
+        case "CSL_MAIL_REPORT_2025_2H":
           window.com.veeva.clm.gotoSlide(`CSL_MAIL_REPORT_2025_2H_0.0.zip`, `CSL_MAIL_REPORT_2025_2H`)
           break;
 
-             case "CSL_CONTENTS_REPORT_2025_2H":
+        case "CSL_CONTENTS_REPORT_2025_2H":
           window.com.veeva.clm.gotoSlide(`CSL_CONTENTS_REPORT_2025_2H_0.0.zip`, `CSL_CONTENTS_REPORT_2025_2H`)
           break;
-      
+
+        case "CSL_DOCTER_REPORT_2026_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_DOCTER_REPORT_2026_2H_0.0.zip`, `CSL_DOCTER_REPORT_2026_2H`)
+          break;
+
+        case "CSL_CALL_REPORT_2026_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_CALL_REPORT_2026_2H_0.0.zip`, `CSL_CALL_REPORT_2026_2H`)
+          break;
+
+        case "CSL_MAIL_REPORT_2026_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_MAIL_REPORT_2026_2H_0.0.zip`, `CSL_MAIL_REPORT_2026_2H`)
+          break;
+
+        case "CSL_CONTENTS_REPORT_2026_2H":
+          window.com.veeva.clm.gotoSlide(`CSL_CONTENTS_REPORT_2026_2H_0.0.zip`, `CSL_CONTENTS_REPORT_2026_2H`)
+          break;
+
         default:
           break;
       }
-      
-     
+
+
 
       // }
     };
@@ -415,20 +493,20 @@ ul.list {
 .list2 {
 
   li {
-    cursor:pointer;
+    cursor: pointer;
   }
 
-  &:before{
-    content:"";
+  &:before {
+    content: "";
     display: block;
-    width:450px;
-    order:1;
+    width: 450px;
+    order: 1;
   }
 
-  &:after{
-    content:"";
+  &:after {
+    content: "";
     display: block;
-    width:450px;
+    width: 450px;
   }
 }
 
@@ -449,11 +527,11 @@ ul.list {
 }
 
 .date-title {
-    width: 100%;
-    padding: 8px 55px 0;
-    margin: 0 auto;
-    height: 100%;
-    font-size: 24px;
+  width: 100%;
+  padding: 8px 55px 0;
+  margin: 0 auto;
+  height: 100%;
+  font-size: 24px;
 }
 
 .d-no {
