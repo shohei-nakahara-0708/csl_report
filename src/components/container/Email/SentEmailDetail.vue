@@ -84,6 +84,12 @@
                     <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示</template>
                   </div>
 
+                  <div class="optin-button" @tap="onTapOptInPopup()">
+                    <template v-if="state.isScreen === '集計画面'">ⓘ エリア別オプトイン状況はこちら<div data-v-7d3fd3c4=""
+                        class="select__arrow"></div></template>
+                  </div>
+
+
 
                 </div>
               </div>
@@ -1088,6 +1094,23 @@
             </ul>
           </PopupScrollOpt>
 
+          <PopupScrollOptTotal v-if="state.isPopup2" :tap-close="onTapClose2" :title="'エリア別オプトイン状況'">
+            <ul class="opt-value2" v-for="(obj, index) in state.optInTotaldata" :key="index">
+              <li>
+                {{ obj.エリア }}
+              </li>
+              <li>
+                {{ obj.許諾割合 }}%
+              </li>
+              <li>
+                {{ obj.許諾数 }}
+              </li>
+              <li>
+                {{ obj.総数 }}
+              </li>
+            </ul>
+          </PopupScrollOptTotal>
+
         </div>
       </div>
     </div>
@@ -1099,7 +1122,7 @@
 import { defineComponent, ref, computed, reactive, onMounted, onUpdated, onUnmounted, watch, nextTick } from "vue";
 // import IScroll from "iscroll";
 import IScroll from "iscroll/build/iscroll-probe.js";
-import { SelectBox, SelectBox3, Loading, SelectBox5, PopupScrollOpt } from "@/components/presentational/organisms";
+import { SelectBox, SelectBox3, Loading, SelectBox5, PopupScrollOpt, PopupScrollOptTotal } from "@/components/presentational/organisms";
 import { SelectBox2 } from "@/components/presentational/organisms";
 import dayjs from "dayjs";
 import { sleep } from "@/utils/sleep";
@@ -1258,9 +1281,11 @@ interface State {
   selectedFilterItemsOptIn: {
     許諾製品?: any;
   };
-  isPopup,
+  isPopup: boolean;
+  isPopup2: boolean;
   optInDetaildata: any;
   optInDetaildataFilter: any;
+  optInTotaldata: any;
   uniqueCountTotal: number
 }
 
@@ -1269,7 +1294,8 @@ export default defineComponent({
     SelectBox3,
     SelectBox2,
     SelectBox5,
-    PopupScrollOpt
+    PopupScrollOpt,
+    PopupScrollOptTotal,
   },
   props: {
     id: {
@@ -1709,8 +1735,10 @@ export default defineComponent({
       date: null,
       optIndata: [],
       isPopup: false,
+      isPopup2: false,
       optInDetaildata: [],
       optInDetaildataFilter: [],
+      optInTotaldata: [],
       uniqueCountTotal: 0
     });
 
@@ -1856,6 +1884,138 @@ export default defineComponent({
       return result
 
     })
+
+    const normalizeName = (v) =>
+      String(v ?? "").replace(/\u3000/g, " ").replace(/\s+/g, " ").trim();
+
+    const toBool = (v) => {
+      if (typeof v === "boolean") return v;
+      const s = String(v ?? "").trim().toLowerCase();
+      return s === "true" || s === "1" || s === "yes";
+    };
+
+    // 製品別に計算 → エリアでトータル（製品合算＝Drは製品跨ぎで二重カウント）
+    const summarizeByDeptAreaTotalFromProducts = (rows) => {
+      const uniq = new Map();
+
+      for (const r of rows ?? []) {
+        const dept = String(r["営業部"] ?? "").trim();
+        const area = String(r["エリア"] ?? "").trim();
+        const product = String(r["製品"] ?? "").trim();
+        const dr = normalizeName(r["Dr_name"]);
+        const hp = normalizeName(r["HP_name"]);  // ← 追加
+
+        if (!dept || !area || !product || !dr || !hp) continue;
+
+
+        const k = `${dept}||${area}||${product}||${dr}||${hp}`;
+        const consent = toBool(r["許諾"]);
+
+        const prev = uniq.get(k);
+        if (!prev) {
+          uniq.set(k, {
+            営業部: dept,
+            エリア: area,
+            製品: product,
+            Dr_name: dr,
+            HP_name: hp,
+            許諾: consent
+          });
+        } else {
+          prev.許諾 = prev.許諾 || consent;
+        }
+      }
+
+      // 製品別集計
+      const prodAgg = new Map();
+
+      for (const v of uniq.values()) {
+        const k = `${v.営業部}||${v.エリア}||${v.製品}`;
+
+        const cur = prodAgg.get(k) ?? {
+          営業部: v.営業部,
+          エリア: v.エリア,
+          製品: v.製品,
+          総数: 0,
+          許諾数: 0
+        };
+
+        cur.総数 += 1;
+        if (v.許諾) cur.許諾数 += 1;
+
+        prodAgg.set(k, cur);
+      }
+
+      const products = Array.from(prodAgg.values()).map(p => ({
+        ...p,
+        許諾割合: Number(((p.許諾数 / p.総数) * 100).toFixed(1))
+      }));
+
+      // エリア合算（製品別を足し上げ）
+      const areaAgg = new Map();
+
+      for (const p of products) {
+        const k = `${p.営業部}||${p.エリア}`;
+        const cur = areaAgg.get(k) ?? {
+          営業部: p.営業部,
+          エリア: p.エリア,
+          総数: 0,
+          許諾数: 0,
+          products: []
+        };
+
+        cur.総数 += p.総数;
+        cur.許諾数 += p.許諾数;
+        cur.products.push({
+          製品: p.製品,
+          総数: p.総数,
+          許諾数: p.許諾数,
+          許諾割合: p.許諾割合
+        });
+
+        areaAgg.set(k, cur);
+      }
+
+      return Array.from(areaAgg.values()).map(a => ({
+        ...a,
+        許諾割合: a.総数 > 0
+          ? Number(((a.許諾数 / a.総数) * 100).toFixed(1))
+          : 0
+      }));
+    };
+
+
+
+    state.optInTotaldata = computed(() => {
+      const summary = summarizeByDeptAreaTotalFromProducts(state.optInDetaildata);
+
+      const rows = summary
+        .filter(r => r["営業部"] === props.id)
+        .sort((a, b) => String(a["エリア"]).localeCompare(String(b["エリア"]), "ja"));
+
+      // エリア合算の総計（これも製品合算の足し上げ）
+      const total = rows.reduce(
+        (acc, r) => {
+          acc.総数 += Number(r.総数 ?? 0);
+          acc.許諾数 += Number(r.許諾数 ?? 0);
+          return acc;
+        },
+        { 総数: 0, 許諾数: 0 }
+      );
+
+      if (total.総数 > 0) {
+        rows.push({
+          営業部: props.id,
+          エリア: "総計",
+          総数: total.総数,
+          許諾数: total.許諾数,
+          許諾割合: Number(((total.許諾数 / total.総数) * 100).toFixed(1)),
+          products: [] // 必要なら総計のproductsも作れる
+        });
+      }
+
+      return rows;
+    });
 
 
 
@@ -2058,8 +2218,14 @@ export default defineComponent({
               }
 
 
-              Targets.push(emailList[key][key2][key3][element]["Target"])
-              dataObj.push(emailList[key][key2][key3][element]);
+              if (emailList[key][key2][key3][element]["Id"]) {
+                dataObj.push(emailList[key][key2][key3][element]);
+                Targets.push(emailList[key][key2][key3][element]["Target"])
+                produts.push(emailList[key][key2][key3][element]["prodcut1"])
+              } else {
+                emailList[key][key2][key3][element]["Target"] = "NULL"
+                Targets.push("NULL")
+              }
 
               for (const f of emailList[key][key2][key3][element]["Email_Fragments_vod__r.Name"]) {
                 flagments.push(f)
@@ -2068,7 +2234,7 @@ export default defineComponent({
 
 
 
-              produts.push(emailList[key][key2][key3][element]["prodcut1"])
+              // produts.push(emailList[key][key2][key3][element]["prodcut1"])
               docters.push(emailList[key][key2][key3][element]["Dr_name"])
               const e2 = dayjs(emailList[key][key2][key3][element]["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")
               if (!unique[e2]) {
@@ -3399,9 +3565,9 @@ export default defineComponent({
               "background-size": `calc(100% / ${girdNum}) 100%`,
             };
 
-            if (element.Total === 0) {
-              continue;
-            }
+            // if (element.Total === 0) {
+            //   continue;
+            // }
 
             if (!rankObj["data"]) {
               rankObj["data"] = {};
@@ -5342,13 +5508,13 @@ export default defineComponent({
 
     const creatDataMR = (data, category) => {
       const mrList = data
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "集計画面") {
-            return false;
-          } else {
-            return true;
-          }
-        })
+        // .filter((x) => {
+        //   if (x.Total === 0 && state.isScreen === "集計画面") {
+        //     return false;
+        //   } else {
+        //     return true;
+        //   }
+        // })
         .map((p) => p["MR"])
 
 
@@ -5384,13 +5550,13 @@ export default defineComponent({
 
     const creatDataArea = (data, category) => {
       const mrList = data
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "集計画面") {
-            return false;
-          } else {
-            return true;
-          }
-        })
+        // .filter((x) => {
+        //   if (x.Total === 0 && state.isScreen === "集計画面") {
+        //     return false;
+        //   } else {
+        //     return true;
+        //   }
+        // })
         .map((p) => p["エリア"])
 
       for (const key of mrList) {
@@ -5417,13 +5583,13 @@ export default defineComponent({
 
     const creatDataTerritory = (data, category) => {
       const territoryList = data
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "集計画面") {
-            return false;
-          } else {
-            return true;
-          }
-        })
+        // .filter((x) => {
+        //   if (x.Total === 0 && state.isScreen === "集計画面") {
+        //     return false;
+        //   } else {
+        //     return true;
+        //   }
+        // })
         .map((p) => p["テリトリー名"])
 
       for (const key of territoryList) {
@@ -6354,6 +6520,12 @@ export default defineComponent({
             const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
             _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
           }
+
+          const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
+          if (sum === 0) {
+            return;
+          }
+
 
 
           (state.selectObj[state.isScreen] = {
@@ -8276,6 +8448,11 @@ export default defineComponent({
       state.optInDetaildataFilter = []
     }
 
+    const onTapClose2 = () => {
+      state.isPopup2 = false
+    }
+
+
     const onTapTargetPopup = async (mr, evt) => {
       if (!state.selectedFilterItemsOptIn.許諾製品) {
         return
@@ -8305,6 +8482,11 @@ export default defineComponent({
 
 
       state.optInDetaildataFilter = uniqueUsers
+    }
+
+    const onTapOptInPopup = async () => {
+
+      state.isPopup2 = true
     }
 
     const uniqueTotal = computed(() => {
@@ -8352,7 +8534,9 @@ export default defineComponent({
       getOptin,
       onTapSelectBoxItemOptIn,
       onTapClose,
+      onTapClose2,
       onTapTargetPopup,
+      onTapOptInPopup,
       onHoverItemq,
       onTapTargetq
     };
@@ -9787,6 +9971,44 @@ export default defineComponent({
   }
 }
 
+.opt-value2 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+
+
+
+  font-size: 14px;
+  border-bottom: 1px solid #ccc;
+
+  &:nth-child(2n) {
+    background-color: #f3f3f3;
+  }
+
+
+  li {
+    text-align: center;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+    flex: 1;
+
+
+
+    &:nth-child(4) {
+      width: 20%;
+      border-right: none;
+    }
+
+
+
+  }
+}
 
 .call-header-link {
   color: #1a699e !important;
@@ -9845,5 +10067,28 @@ export default defineComponent({
   border-width: 17.8px 8.9px 0 8.9px;
   border-color: #ffffff transparent transparent;
   translate: -50% 100%;
+}
+
+.optin-button {
+  color: #333;
+  font-size: 1.2rem;
+  border: 1px solid #d6d6d6;
+  padding: 5px 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .select__arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-top: 4px solid #555555;
+    border-bottom: 0;
+    margin-left: 5px;
+    transform: rotate(270deg);
+  }
+
 }
 </style>

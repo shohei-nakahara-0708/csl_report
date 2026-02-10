@@ -1,53 +1,39 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
-import {
-  ACCOUNT__GET_WORK_HISTORY,
-  ACCOUNT__USER_MASTER,
-  JSON__CALL_DATA,
-  JSON__CALL_DATA_NEW,
-  JSON__EMAIL_DATA,
-  JSON__EMAIL_DATA2,
-  JSON__EMAIL_DATA_NEW,
-  JSON__EMAIL_DATA_NEW2,
-  JSON__MEDIA_DATA,
-   JSON__MEDIA_DATA_NEW,
-  ACCOUNT__GET_ACCOUNT
-} from '@/constants'
-import account from '@/store/apis/accountApi'
+import { defineStore, acceptHMRUpdate } from "pinia";
+import { ACCOUNT__GET_WORK_HISTORY, ACCOUNT__USER_MASTER, JSON__CALL_DATA, JSON__CALL_DATA_NEW, JSON__EMAIL_DATA, JSON__EMAIL_DATA2, JSON__EMAIL_DATA_NEW, JSON__EMAIL_DATA_NEW2, JSON__MEDIA_DATA, JSON__MEDIA_DATA_NEW, ACCOUNT__GET_ACCOUNT } from "@/constants";
+import account from "@/store/apis/accountApi";
 
-  
-
-import { useApplicationStore } from '@/store/modules/applicationModule'
-import dayjs from 'dayjs'
-import { NULL } from 'sass';
+import { useApplicationStore } from "@/store/modules/applicationModule";
+import dayjs from "dayjs";
+import { NULL } from "sass";
 
 interface AccountState {
-  currentAccountId: string
-  currentfacilityAccountId: string
-  sentEmailList: any
-  sentEmailListDetail: any
-  sentEmailAccountList: any
-   MRListOrg: any
-  MRList: any
-  MRListById:any
-  DrList: any
-  CallList: any
-  CallListNew: any
-  CallListOrg: any
-  CallListOrgNew: any
-  EmailList: any
-  EmailListNew: any
-  EmailList2: any
-  EmailListNew2: any
-  MediaList: any
-  MediaListNew: any
-  EmailListContent: any
-  EmailListContentNew: any
-  EmailAccountList: any
-  EmailAccountObj: any
+  currentAccountId: string;
+  currentfacilityAccountId: string;
+  sentEmailList: any;
+  sentEmailListDetail: any;
+  sentEmailAccountList: any;
+  MRListOrg: any;
+  MRList: any;
+  MRListById: any;
+  DrList: any;
+  CallList: any;
+  CallListNew: any;
+  CallListOrg: any;
+  CallListOrgNew: any;
+  EmailList: any;
+  EmailListNew: any;
+  EmailList2: any;
+  EmailListNew2: any;
+  MediaList: any;
+  MediaListNew: any;
+  EmailListContent: any;
+  EmailListContentNew: any;
+  EmailAccountList: any;
+  EmailAccountObj: any;
 }
 
 export const useAccountStore = defineStore({
-  id: 'Account',
+  id: "Account",
   state: (): AccountState => ({
     currentAccountId: null,
     currentfacilityAccountId: null,
@@ -71,105 +57,93 @@ export const useAccountStore = defineStore({
     EmailListContent: {},
     EmailListContentNew: {},
     EmailAccountList: [],
-    EmailAccountObj:{}
+    EmailAccountObj: {},
   }),
   getters: {
     /**
      * 選択中の施設医師のID（Child Account）を返却する
      */
     getCurrentAccountId: (state) => {
-      return state.MRList
+      return state.MRList;
     },
 
-    getCallKeyMessageList: (state) =>{
-      return state.MediaList
+    getCallKeyMessageList: (state) => {
+      return state.MediaList;
     },
 
-    getCallKeyMessageListNew: (state) =>{
-      return state.MediaListNew
+    getCallKeyMessageListNew: (state) => {
+      return state.MediaListNew;
     },
 
-     getsentCallListOrg: (state) =>{
-      return state.CallListOrg
-    },
-     
-    getsentCallListOrgNew: (state) =>{
-      return state.CallListOrgNew
+    getsentCallListOrg: (state) => {
+      return state.CallListOrg;
     },
 
-    getsentCallList: (state) =>{
-      return state.CallList
+    getsentCallListOrgNew: (state) => {
+      return state.CallListOrgNew;
     },
 
-      getsentCallListByKey: (state) => (key) =>{
-      return state.CallList[key]
+    getsentCallList: (state) => {
+      return state.CallList;
     },
-       getsentCallListByKeyNew: (state) => (key) =>{
-      return state.CallListNew[key]
+
+    getsentCallListByKey: (state) => (key) => {
+      return state.CallList[key];
     },
-      
-      getsentEmailListByKey: (state) => (key) =>{
-      return state.EmailList[key]
+    getsentCallListByKeyNew: (state) => (key) => {
+      return state.CallListNew[key];
     },
-      
-        getsentEmailList2ByKey: (state) => (key) =>{
-      return state.EmailList2[key]
+
+    getsentEmailListByKey: (state) => (key) => {
+      return state.EmailList[key];
     },
-        
-      
-        getsentEmailListContentByKey: (state) => (key) =>{
-      return state.EmailListContent[key]
+
+    getsentEmailList2ByKey: (state) => (key) => {
+      return state.EmailList2[key];
     },
-        
-          getsentEmailListByKeyNew: (state) => (key) =>{
-      return state.EmailListNew[key]
+
+    getsentEmailListContentByKey: (state) => (key) => {
+      return state.EmailListContent[key];
     },
-      
-        getsentEmailList2ByKeyNew: (state) => (key) =>{
-      return state.EmailListNew2[key]
+
+    getsentEmailListByKeyNew: (state) => (key) => {
+      return state.EmailListNew[key];
     },
-        
-      
-        getsentEmailListContentByKeyNew: (state) => (key) =>{
-      return state.EmailListContentNew[key]
+
+    getsentEmailList2ByKeyNew: (state) => (key) => {
+      return state.EmailListNew2[key];
+    },
+
+    getsentEmailListContentByKeyNew: (state) => (key) => {
+      return state.EmailListContentNew[key];
     },
 
     getsentEmailList: (state) => {
-      return state.sentEmailList
+      return state.sentEmailList;
     },
 
-     getsentEmailListDetail: (state) => (key) =>{
-      return state.sentEmailListDetail[key]
+    getsentEmailListDetail: (state) => (key) => {
+      return state.sentEmailListDetail[key];
     },
 
     getsentEmailAccountList: (state) => {
       return state.EmailAccountList.sort((a, b) => {
-        return a.localeCompare(b, 'ja');
-      })
+        return a.localeCompare(b, "ja");
+      });
     },
     getsentEmailAccountObj: (state) => {
-      return state.EmailAccountObj
+      return state.EmailAccountObj;
     },
-
-    
   },
   actions: {
-
-
-  async [ACCOUNT__GET_ACCOUNT](): Promise<void> {
-      const ret = await account[ACCOUNT__GET_ACCOUNT]()
+    async [ACCOUNT__GET_ACCOUNT](): Promise<void> {
+      const ret = await account[ACCOUNT__GET_ACCOUNT]();
 
       console.log(ret);
-      
     },
 
-
-
     async [ACCOUNT__USER_MASTER](masterDataUser, masterData): Promise<void> {
-    
-
-      const masterDatamasterDataUser = []
-
+      const masterDatamasterDataUser = [];
 
       // const masterDataListSrt = JSON.stringify(masterData)
       // const masterDataList = JSON.parse(masterDataListSrt)
@@ -182,11 +156,9 @@ export const useAccountStore = defineStore({
       //      ary2row.MR_ID === ary1row.MR_ID).filter(
       //        (x) => {
       //       return ary1row.VeevaId = x.VeevaId
-               
+
       //       }
       //     ));
-      
-
 
       // for (const element of masterDataList) {
       //   if (!this.MRListOrg[`${element["VeevaId"]}_${element["テリトリー名"]}`]) {
@@ -202,65 +174,37 @@ export const useAccountStore = defineStore({
       // }
 
       // console.log(this.MRListOrg);
-      
-      
-      
 
       for (const element in masterDataUser) {
         if (!this.MRList[masterDataUser[element]["VeevaId"]]) {
           this.MRList[masterDataUser[element]["VeevaId"]] = {};
-          
-          this.MRList[masterDataUser[element]["VeevaId"]]["営業部"] = masterDataUser[element]["営業部"]
-          this.MRList[masterDataUser[element]["VeevaId"]]["エリア"] = masterDataUser[element]["エリア名"]
-          this.MRList[masterDataUser[element]["VeevaId"]]["テリトリー名"] = masterDataUser[element]["テリトリー名"]
-           this.MRList[masterDataUser[element]["VeevaId"]]["MR"] = masterDataUser[element]["MR name"]
-        }
 
+          this.MRList[masterDataUser[element]["VeevaId"]]["営業部"] = masterDataUser[element]["営業部"];
+          this.MRList[masterDataUser[element]["VeevaId"]]["エリア"] = masterDataUser[element]["エリア名"];
+          this.MRList[masterDataUser[element]["VeevaId"]]["テリトリー名"] = masterDataUser[element]["テリトリー名"];
+          this.MRList[masterDataUser[element]["VeevaId"]]["MR"] = masterDataUser[element]["MR name"];
+        }
       }
-      
+
       console.log(this.MRList);
-      
 
       for (const element in masterData) {
-
-         if (!this.DrList[masterData[element]["Dr_name"]]) {
+        if (!this.DrList[masterData[element]["Dr_name"]]) {
           this.DrList[masterData[element]["Dr_name"]] = {};
-          
-          this.DrList[masterData[element]["Dr_name"]]["HP_name"] = masterData[element]["HP_name"]
+
+          this.DrList[masterData[element]["Dr_name"]]["HP_name"] = masterData[element]["HP_name"];
         }
-        
-
-       
       }
-
-
-      
-
-      
     },
 
-
     async [JSON__CALL_DATA](callData): Promise<void> {
-
       console.log(callData);
-      
 
+      const ApplicationStore = useApplicationStore();
 
-       const ApplicationStore = useApplicationStore()
-
-
-      ApplicationStore.isLoadComplete = false
-
-      
-
-      
-      
-
-      
+      ApplicationStore.isLoadComplete = false;
 
       // console.log('a');
-      
-
 
       // const parentCall = callList3.filter((x) => {
       //       if (x.Is_Parent_Call_vod__c === "1") {
@@ -321,522 +265,394 @@ export const useAccountStore = defineStore({
       //       }
       // })
 
-      
-
-
       // const parentCallchildCall2 = parentCall.filter(ary1row=>childCall2.filter(
       // ary2row=>
       //     ary2row.Parent_Call_vod__c === ary1row.Id).length > 0);
-      
 
-      
       //    const childCallchildCall2 = childCall.filter(ary1row=>childCall2.filter(
       // ary2row=>
       //     ary2row.Parent_Call_vod__c === ary1row.Parent_Call_vod__c).length > 0);
-      
+
       // const callData2 = parentCallchildCall2.concat(childCallchildCall2);
 
+      // const test = callData2.filter(ary1row=>this.MRListOrg.filter(
+      //   ary2row=>
+      //        ary2row.MR_ID === ary1row.OwnerId && ary2row["Account_vod__r.CSLB_National_ID_1__c"] === ary1row.Dr_DCF).filter(
+      //          (x) => {
+      //         return ary1row.MR = x.MR , ary1row.営業部 = x.営業部
 
+      //         }
+      //       ));
 
-    // const test = callData2.filter(ary1row=>this.MRListOrg.filter(
-    //   ary2row=>
-    //        ary2row.MR_ID === ary1row.OwnerId && ary2row["Account_vod__r.CSLB_National_ID_1__c"] === ary1row.Dr_DCF).filter(
-    //          (x) => {
-    //         return ary1row.MR = x.MR , ary1row.営業部 = x.営業部
-               
-    //         }
-    //       ));
-      
       //   console.log(test);
 
-      
-
       for (const element of callData) {
-           
-        const target = element["CSLB_Channel_Type__c"]
+        const target = element["CSLB_Channel_Type__c"];
 
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
-          if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
-           
+        if (!target) {
+          element["CSLB_Channel_Type__c"] = "NULL";
+        }
 
-           if (!target) {
-             element["CSLB_Channel_Type__c"] = "NULL"
-           }
-         
+        if (!this.CallList[element["営業部"].trim()]) {
+          this.CallList[element["営業部"].trim()] = {};
+        }
 
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
 
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
 
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
+        }
 
-         
+        const date = `${dayjs(element["Call_Date_vod__c"]).format("YYYY/M")}`;
 
-      if (!this.CallList[element["営業部"].trim()]) {
-        this.CallList[element["営業部"].trim()] = {};
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
+        }
+
+        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element);
+        this.CallListOrg.push(element);
       }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
-      }
-         
-         const date = `${dayjs(element["Call_Date_vod__c"]).format('YYYY/M')}`
 
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
-      }
-        
+      ApplicationStore.isLoadComplete = true;
 
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element)
-         this.CallListOrg.push(element)
-         }
-      
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.CallList);
-      
     },
 
-        async [JSON__CALL_DATA_NEW](callData): Promise<void> {
-
+    async [JSON__CALL_DATA_NEW](callData): Promise<void> {
       console.log(callData);
-      
 
+      const ApplicationStore = useApplicationStore();
 
-       const ApplicationStore = useApplicationStore()
-
-
-      ApplicationStore.isLoadComplete = false
-
-      
-      
+      ApplicationStore.isLoadComplete = false;
 
       for (const element of callData) {
-           
-        const target = element["CSLB_Channel_Type__c"]
-           
+        const target = element["CSLB_Channel_Type__c"];
 
-         if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
-           if (!target) {
-             element["CSLB_Channel_Type__c"] = "NULL"
-           }
-         
+        if (!target) {
+          element["CSLB_Channel_Type__c"] = "NULL";
+        }
 
+        if (!this.CallListNew[element["営業部"].trim()]) {
+          this.CallListNew[element["営業部"].trim()] = {};
+        }
 
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
 
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
 
-         
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
+        }
 
-      if (!this.CallListNew[element["営業部"].trim()]) {
-        this.CallListNew[element["営業部"].trim()] = {};
+        const date = `${dayjs(element["Call_Date_vod__c"]).format("YYYY/M")}`;
+
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
+        }
+
+        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element);
+        this.CallListOrgNew.push(element);
       }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
-      }
-         
-         const date = `${dayjs(element["Call_Date_vod__c"]).format('YYYY/M')}`
 
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
-      }
-        
+      ApplicationStore.isLoadComplete = true;
 
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element)
-         this.CallListOrgNew.push(element)
-         }
-      
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.CallListNew);
-      
     },
-    
 
+    async [JSON__EMAIL_DATA](emailData): Promise<void> {
+      const ApplicationStore = useApplicationStore();
 
-        async [JSON__EMAIL_DATA](emailData): Promise<void> {
+      ApplicationStore.isLoadComplete = false;
 
+      for (const element of emailData) {
+        // if (!element['Dr_DCF'] ||!element['Dr_Target_Status'] ) {
+        //         continue
+        //        }
 
-       const ApplicationStore = useApplicationStore()
+        let target = element["Dr_name"];
 
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
-      ApplicationStore.isLoadComplete = false
+        if (!target) {
+          target = "NULL";
+        }
 
- 
+        if (!element["Email_Fragments_vod__r.Name"]) {
+          element["Email_Fragments_vod__r.Name"] = "NULL";
+        }
 
+        //  if (!element["Last_Open_Date_vod__c"]) {
+        //   element["Last_Open_Date_vod__c"] =  "NULL"
+        //  }
 
+        //  if (!element["Last_Click_Date_vod__c"]) {
+        //   element["Last_Click_Date_vod__c"] =  "NULL"
+        //  }
 
-    
-      
-      
+        if (!this.EmailAccountObj[target]) {
+          this.EmailAccountObj[target] = target;
+        }
 
-         for (const element of emailData) {
-         
-    // if (!element['Dr_DCF'] ||!element['Dr_Target_Status'] ) {
-    //         continue
-           //        }
+        if (!this.EmailAccountList.includes(target)) {
+          this.EmailAccountList.push(target);
+        }
 
-           let target = element["Dr_name"]
+        if (!this.EmailList[element["営業部"].trim()]) {
+          this.EmailList[element["営業部"].trim()] = {};
+        }
 
-            if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
-           
-           
-
-           if (!target) {
-            target = "NULL"
-           }
-
-           if (!element["Email_Fragments_vod__r.Name"]) {
-            element["Email_Fragments_vod__r.Name"] =  "NULL"
-           }
-
-          //  if (!element["Last_Open_Date_vod__c"]) {
-          //   element["Last_Open_Date_vod__c"] =  "NULL"
-          //  }
-
-          //  if (!element["Last_Click_Date_vod__c"]) {
-          //   element["Last_Click_Date_vod__c"] =  "NULL"
-          //  }
-
-            if (!this.EmailAccountObj[target]) {
-            this.EmailAccountObj[target] = target;
-            }
-           
-           
-          if (!this.EmailAccountList.includes(target)) {
-            this.EmailAccountList.push(target)
-          }
-         
-      
-
-      if (!this.EmailList[element["営業部"].trim()]) {
-        this.EmailList[element["営業部"].trim()] = {};
-      }
-           
         if (!this.EmailList2[element["営業部"].trim()]) {
-        this.EmailList2[element["営業部"].trim()] = [];
+          this.EmailList2[element["営業部"].trim()] = [];
+        }
+
+        if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.EmailList[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
+
+        if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
+
+        if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
+        }
+
+        const flagments = [];
+
+        const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***");
+
+        for (const element2 of flagmentsSplit) {
+          flagments.push(element2);
+        }
+
+        element["Email_Fragments_vod__r.Name"] = flagments;
+
+        this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()].push(element);
+        this.EmailList2[element["営業部"].trim()].push(element);
+
+        //       if (!element["Dr_DCF"] || !element["Dr_Target_Status"]) {
+        //        continue
+        //  }
+
+        if (!element["Id"]) {
+          continue;
+        }
+
+        if (!this.CallList[element["営業部"].trim()]) {
+          this.CallList[element["営業部"].trim()] = {};
+        }
+
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
+
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
+
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
+        }
+
+        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")}`;
+
+        if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
+          this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
+        }
+
+        element.CSLB_Channel_Type__c = "OnetoOne";
+
+        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element);
       }
-         
-      if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.EmailList[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
-      }
-           
-            const flagments = []
 
-           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-                    for (const element2 of flagmentsSplit) {
+      ApplicationStore.isLoadComplete = true;
 
-              
-                      flagments.push(element2)
-                    }
-
-           
-           element["Email_Fragments_vod__r.Name"] = flagments
-           
-
-           
-
-
-        this.EmailList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()].push(element)
-           this.EmailList2[element["営業部"].trim()].push(element)
-           
-
-          //       if (!element["Dr_DCF"] || !element["Dr_Target_Status"]) {
-          //        continue
-          //  }
-
-      if (!this.CallList[element["営業部"].trim()]) {
-        this.CallList[element["営業部"].trim()] = {};
-      }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
-      }
-         
-         const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format('YYYY/M')}`
-
-      if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
-        this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
-      }
-           
-           element.CSLB_Channel_Type__c = "OnetoOne" 
-           
-      
-            this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element)
-
-       
-           
-         }
-      
-    
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.EmailList);
-      
     },
-        
-        
-        async [JSON__EMAIL_DATA_NEW](emailData): Promise<void> {
 
+    async [JSON__EMAIL_DATA_NEW](emailData): Promise<void> {
+      const ApplicationStore = useApplicationStore();
 
-       const ApplicationStore = useApplicationStore()
+      ApplicationStore.isLoadComplete = false;
 
+      for (const element of emailData) {
+        // if (!element['Dr_DCF'] ||!element['Dr_Target_Status'] ) {
+        //         continue
+        //        }
 
-      ApplicationStore.isLoadComplete = false
+        // if (!element["Id"]) {
+        //   continue;
+        // }
 
- 
+        let target = element["Dr_name"];
 
+        if (!target) {
+          target = "NULL";
+        }
 
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
-    
-      
-      
+        if (!element["Email_Fragments_vod__r.Name"]) {
+          element["Email_Fragments_vod__r.Name"] = "NULL";
+        }
 
-         for (const element of emailData) {
-         
-    // if (!element['Dr_DCF'] ||!element['Dr_Target_Status'] ) {
-    //         continue
-           //        }
+        //  if (!element["Last_Open_Date_vod__c"]) {
+        //   element["Last_Open_Date_vod__c"] =  "NULL"
+        //  }
 
-           let target = element["Dr_name"]
-           
+        //  if (!element["Last_Click_Date_vod__c"]) {
+        //   element["Last_Click_Date_vod__c"] =  "NULL"
+        //  }
 
-           if (!target) {
-            target = "NULL"
-           }
+        if (!this.EmailAccountObj[target]) {
+          this.EmailAccountObj[target] = target;
+        }
 
+        if (!this.EmailAccountList.includes(target)) {
+          this.EmailAccountList.push(target);
+        }
 
-            if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
-           
+        if (!this.EmailListNew[element["営業部"].trim()]) {
+          this.EmailListNew[element["営業部"].trim()] = {};
+        }
 
-           if (!element["Email_Fragments_vod__r.Name"]) {
-            element["Email_Fragments_vod__r.Name"] =  "NULL"
-           }
-
-          //  if (!element["Last_Open_Date_vod__c"]) {
-          //   element["Last_Open_Date_vod__c"] =  "NULL"
-          //  }
-
-          //  if (!element["Last_Click_Date_vod__c"]) {
-          //   element["Last_Click_Date_vod__c"] =  "NULL"
-          //  }
-
-            if (!this.EmailAccountObj[target]) {
-            this.EmailAccountObj[target] = target;
-            }
-           
-           
-          if (!this.EmailAccountList.includes(target)) {
-            this.EmailAccountList.push(target)
-          }
-           
-           
-         
-      
-
-      if (!this.EmailListNew[element["営業部"].trim()]) {
-        this.EmailListNew[element["営業部"].trim()] = {};
-      }
-           
         if (!this.EmailListNew2[element["営業部"].trim()]) {
-        this.EmailListNew2[element["営業部"].trim()] = [];
+          this.EmailListNew2[element["営業部"].trim()] = [];
+        }
+
+        if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
+
+        if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
+
+        if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
+        }
+
+        const flagments = [];
+
+        const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***");
+
+        for (const element2 of flagmentsSplit) {
+          flagments.push(element2);
+        }
+
+        element["Email_Fragments_vod__r.Name"] = flagments;
+
+        this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()].push(element);
+        this.EmailListNew2[element["営業部"].trim()].push(element);
+
+        //       if (!element["Dr_DCF"] || !element["Dr_Target_Status"]) {
+        //        continue
+        //  }
+
+        if (!element["Id"]) {
+          continue;
+        }
+
+        if (!this.CallListNew[element["営業部"].trim()]) {
+          this.CallListNew[element["営業部"].trim()] = {};
+        }
+
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
+        }
+
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
+        }
+
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
+        }
+
+        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")}`;
+
+        if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
+          this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
+        }
+
+        element.CSLB_Channel_Type__c = "OnetoOne";
+
+        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element);
       }
-         
-      if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = [];
-      }
-           
-            const flagments = []
 
-           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-                    for (const element2 of flagmentsSplit) {
+      ApplicationStore.isLoadComplete = true;
 
-              
-                      flagments.push(element2)
-                    }
-
-           
-           element["Email_Fragments_vod__r.Name"] = flagments
-           
-
-           
-
-
-        this.EmailListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()].push(element)
-           this.EmailListNew2[element["営業部"].trim()].push(element)
-           
-
-          //       if (!element["Dr_DCF"] || !element["Dr_Target_Status"]) {
-          //        continue
-          //  }
-
-      if (!this.CallListNew[element["営業部"].trim()]) {
-        this.CallListNew[element["営業部"].trim()] = {};
-      }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()] = {};
-      }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()] = {};
-      }
-         
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
-      }
-         
-         const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format('YYYY/M')}`
-
-      if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
-      }
-           
-           element.CSLB_Channel_Type__c = "OnetoOne" 
-           
-      
-        this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date].push(element)
-
-       
-           
-      }
-      
-    
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.EmailListNew2);
-      
     },
-        
-        async [JSON__EMAIL_DATA2](emailData): Promise<void> {
 
+    async [JSON__EMAIL_DATA2](emailData): Promise<void> {
+      for (const element of emailData) {
+        let target = element["Dr_name"];
 
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
+        if (!target) {
+          target = "NULL";
+        }
 
+        const flagments = [];
 
-    
-      
-      
+        const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***");
 
-         for (const element of emailData) {
+        for (const element2 of flagmentsSplit) {
+          flagments.push(element2);
+        }
 
+        element["Total"] = element["Id"];
+        element["Email_Fragments_vod__r.Name"] = flagments;
 
-           let target = element["Dr_name"]
+        element["Total"] = element["Id"];
 
-            if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
-           
+        if (!this.EmailListContent[element["営業部"].trim()]) {
+          this.EmailListContent[element["営業部"].trim()] = [];
+        }
 
-           if (!target) {
-            target = "NULL"
-           }
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
+        // }
 
-           const flagments = []
+        this.EmailListContent[element["営業部"].trim()].push(element);
 
-           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-                    for (const element2 of flagmentsSplit) {
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
+        // }
 
-              
-                      flagments.push(element2)
-                    }
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()] = {};
+        // }
 
-           
-           element["Total"] = element["Id"]
-           element["Email_Fragments_vod__r.Name"] = flagments
-
-           
-           element["Total"] = element["Id"]
-           
-      
-
-      if (!this.EmailListContent[element["営業部"].trim()]) {
-        this.EmailListContent[element["営業部"].trim()] = [];
-      }
-         
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
-      // }
-           
-      this.EmailListContent[element["営業部"].trim()].push(element)
-           
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
-      // }
-         
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()] = {};
-      // }
-      
-      //      if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()];
-      //      }
-
-
+        //      if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()];
+        //      }
 
         //    this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()] = {
         //     Total: element.Id,
@@ -844,80 +660,55 @@ export const useAccountStore = defineStore({
         //      HP_name: element.HP_name,
         //      MR: element.MR,
         // }
-         
-        }
-      
-    
-      
+      }
 
-      
       console.log(this.EmailListContent);
-      
     },
-        
-        async [JSON__EMAIL_DATA_NEW2](emailData): Promise<void> {
 
+    async [JSON__EMAIL_DATA_NEW2](emailData): Promise<void> {
+      for (const element of emailData) {
+        let target = element["Dr_name"];
 
+        if (element["Dr_name"].includes("テスト")) {
+          continue;
+        }
 
+        if (!target) {
+          target = "NULL";
+        }
 
+        const flagments = [];
 
-    
-      
-      
+        const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***");
 
-         for (const element of emailData) {
+        for (const element2 of flagmentsSplit) {
+          flagments.push(element2);
+        }
 
+        element["Total"] = element["Id"];
+        element["Email_Fragments_vod__r.Name"] = flagments;
 
-           let target = element["Dr_name"]
+        if (!this.EmailListContentNew[element["営業部"].trim()]) {
+          this.EmailListContentNew[element["営業部"].trim()] = [];
+        }
 
-            if (element["Dr_name"].includes("テスト")) {
-            continue
-           }
-           
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
+        // }
 
-           if (!target) {
-            target = "NULL"
-           }
+        this.EmailListContentNew[element["営業部"].trim()].push(element);
 
-           const flagments = []
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
+        // }
 
-           const flagmentsSplit = element["Email_Fragments_vod__r.Name"].split("***")
-                 
-                    
-                    for (const element2 of flagmentsSplit) {
+        // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()] = {};
+        // }
 
-              
-                      flagments.push(element2)
-                    }
-
-           
-           element["Total"] = element["Id"]
-           element["Email_Fragments_vod__r.Name"] = flagments
-      
-
-      if (!this.EmailListContentNew[element["営業部"].trim()]) {
-        this.EmailListContentNew[element["営業部"].trim()] = [];
-      }
-         
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
-      // }
-           
-      this.EmailListContentNew[element["営業部"].trim()].push(element)
-           
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()] = [];
-      // }
-         
-      // if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()] = {};
-      // }
-      
-      //      if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
-      //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()];
-      //      }
-
-
+        //      if (!this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()]) {
+        //   this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()];
+        //      }
 
         //    this.EmailListContent[element["営業部"].trim()][element["MR"].trim()][element["HP_name"].trim()][element["Dr_name"].trim()] = {
         //     Total: element.Id,
@@ -925,271 +716,208 @@ export const useAccountStore = defineStore({
         //      HP_name: element.HP_name,
         //      MR: element.MR,
         // }
-         
-        }
-      
-    
-      
+      }
 
-      
       console.log(this.EmailListContentNew);
-      
     },
-        
-        async [JSON__MEDIA_DATA](mediaData): Promise<void> {
 
+    async [JSON__MEDIA_DATA](mediaData): Promise<void> {
+      const ApplicationStore = useApplicationStore();
 
-       const ApplicationStore = useApplicationStore()
+      ApplicationStore.isLoadComplete = false;
+      this.MediaList = mediaData.filter((x) => {
+        return !x["Account_vod__r.Name"].includes("テスト");
+      });
 
+      ApplicationStore.isLoadComplete = true;
 
-          ApplicationStore.isLoadComplete = false
-          this.MediaList = mediaData.filter((x) => {
-              return !x["Account_vod__r.Name"].includes("テスト")
-          })
- 
-
-
-
-    
-    
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.MediaList);
-      
     },
 
-               
-        async [JSON__MEDIA_DATA_NEW](mediaData): Promise<void> {
+    async [JSON__MEDIA_DATA_NEW](mediaData): Promise<void> {
+      const ApplicationStore = useApplicationStore();
 
+      ApplicationStore.isLoadComplete = false;
+      this.MediaListNew = mediaData.filter((x) => {
+        return !x["Account_vod__r.Name"].includes("テスト");
+      });
 
-       const ApplicationStore = useApplicationStore()
+      ApplicationStore.isLoadComplete = true;
 
-
-          ApplicationStore.isLoadComplete = false
-          this.MediaListNew = mediaData.filter((x) => {
-              return !x["Account_vod__r.Name"].includes("テスト")
-          })
- 
-
-
-
-    
-    
-      
-      ApplicationStore.isLoadComplete = true
-
-
-      
       console.log(this.MediaListNew);
-      
-    }, 
-    
+    },
+
     /**
      * 過去勤務先の取得処理
      */
     async [ACCOUNT__GET_WORK_HISTORY](sentEmailData): Promise<void> {
+      const emailList = {};
+      const emailListByAccount = {};
 
-      
-      const emailList = {}
-       const emailListByAccount = {}
-
-    let i = 0;
+      let i = 0;
 
       for (const element in sentEmailData) {
-      
-
-       if (!this.MRList[sentEmailData[element]["OwnerId"]]) {
-          continue
-        } 
-        
-      if (!emailList[sentEmailData[element]["OwnerId"]]) {
-        emailList[sentEmailData[element]["OwnerId"]] = {};
-        emailList[sentEmailData[element]["OwnerId"]]["詳細"] = [];
-      }
-      
-
-      if (this.DrList[sentEmailData[element]["Account_vod__r.Name"]]) {
-         sentEmailData[element]["施設名"] = this.DrList[sentEmailData[element]["Account_vod__r.Name"]]["HP_name"]
-      } else {
-         sentEmailData[element]["施設名"] = "NULL"
-      }
-
-      sentEmailData[element]["営業部"] = this.MRList[sentEmailData[element]["OwnerId"]]["営業部"]
-      sentEmailData[element]["エリア"] = this.MRList[sentEmailData[element]["OwnerId"]]["エリア"]
-      sentEmailData[element]["テリトリー名"] = this.MRList[sentEmailData[element]["OwnerId"]]["テリトリー名"]
-      
-     
-      //   if (!emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]]) {
-      //   emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]] = {};
-      //   emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]]["詳細"] = [];
-      // }
-
-      emailList[sentEmailData[element]["OwnerId"]]["詳細"].push(
-        sentEmailData[element]
-      );
-
-    }
-
-    i = 0;
-
-      for (const element in emailList) {
-      
-       
-      emailList[element]["送付数"] =
-      emailList[element]["詳細"].length;
-      emailList[element]["MR"] = this.MRList[element]["MR"];
-      
-      emailList[element]["営業部"] = this.MRList[element]["営業部"]
-      emailList[element]["エリア"] = this.MRList[element]["エリア"]
-      emailList[element]["テリトリー名"] = this.MRList[element]["テリトリー名"]
-      
-
-
-      emailList[element]["詳細2"] = {}
-
-        for (const element2 of emailList[element]["詳細"]) {
-        
-
-        
-        if (!emailList[element]["詳細2"][element2["Account_vod__r.Name"]]) {
-        emailList[element]["詳細2"][element2["Account_vod__r.Name"]] = [];
-        
+        if (!this.MRList[sentEmailData[element]["OwnerId"]]) {
+          continue;
         }
 
-        emailList[element]["詳細2"][element2["Account_vod__r.Name"]].push(element2)
-        
+        if (!emailList[sentEmailData[element]["OwnerId"]]) {
+          emailList[sentEmailData[element]["OwnerId"]] = {};
+          emailList[sentEmailData[element]["OwnerId"]]["詳細"] = [];
+        }
+
+        if (this.DrList[sentEmailData[element]["Account_vod__r.Name"]]) {
+          sentEmailData[element]["施設名"] = this.DrList[sentEmailData[element]["Account_vod__r.Name"]]["HP_name"];
+        } else {
+          sentEmailData[element]["施設名"] = "NULL";
+        }
+
+        sentEmailData[element]["営業部"] = this.MRList[sentEmailData[element]["OwnerId"]]["営業部"];
+        sentEmailData[element]["エリア"] = this.MRList[sentEmailData[element]["OwnerId"]]["エリア"];
+        sentEmailData[element]["テリトリー名"] = this.MRList[sentEmailData[element]["OwnerId"]]["テリトリー名"];
+
+        //   if (!emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]]) {
+        //   emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]] = {};
+        //   emailListByAccount[sentEmailData[element]["Account_vod__r.Name"]]["詳細"] = [];
+        // }
+
+        emailList[sentEmailData[element]["OwnerId"]]["詳細"].push(sentEmailData[element]);
       }
 
-      i += 1;
-    }
-      
-      console.log(emailList);
-      
+      i = 0;
 
       for (const element in emailList) {
-        
-      
-      if (!this.sentEmailList[emailList[element]["営業部"]]) {
-        this.sentEmailList[emailList[element]["営業部"]] = {};
+        emailList[element]["送付数"] = emailList[element]["詳細"].length;
+        emailList[element]["MR"] = this.MRList[element]["MR"];
+
+        emailList[element]["営業部"] = this.MRList[element]["営業部"];
+        emailList[element]["エリア"] = this.MRList[element]["エリア"];
+        emailList[element]["テリトリー名"] = this.MRList[element]["テリトリー名"];
+
+        emailList[element]["詳細2"] = {};
+
+        for (const element2 of emailList[element]["詳細"]) {
+          if (!emailList[element]["詳細2"][element2["Account_vod__r.Name"]]) {
+            emailList[element]["詳細2"][element2["Account_vod__r.Name"]] = [];
+          }
+
+          emailList[element]["詳細2"][element2["Account_vod__r.Name"]].push(element2);
+        }
+
+        i += 1;
       }
-        
-      if (!this.sentEmailListDetail[emailList[element]["営業部"]]) {
-        this.sentEmailListDetail[emailList[element]["営業部"]] = [];
-      }
-        
+
+      console.log(emailList);
+
+      for (const element in emailList) {
+        if (!this.sentEmailList[emailList[element]["営業部"]]) {
+          this.sentEmailList[emailList[element]["営業部"]] = {};
+        }
+
+        if (!this.sentEmailListDetail[emailList[element]["営業部"]]) {
+          this.sentEmailListDetail[emailList[element]["営業部"]] = [];
+        }
+
         this.sentEmailListDetail[emailList[element]["営業部"]].push(emailList[element]);
 
+        if (!this.sentEmailList[emailList[element]["営業部"]][emailList[element]["エリア"]]) {
+          this.sentEmailList[emailList[element]["営業部"]][emailList[element]["エリア"]] = [];
+        }
 
-      if (
-        !this.sentEmailList[emailList[element]["営業部"]][
-          emailList[element]["エリア"]
-        ]
-      ) {
-        this.sentEmailList[emailList[element]["営業部"]][
-          emailList[element]["エリア"]
-        ] = [];
+        this.sentEmailList[emailList[element]["営業部"]][emailList[element]["エリア"]].push(emailList[element]);
+
+        this.sentEmailAccountList.push(emailList[element]);
       }
-
-      this.sentEmailList[emailList[element]["営業部"]][
-        emailList[element]["エリア"]
-      ].push(emailList[element]);
-
-      this.sentEmailAccountList.push(emailList[element]);
-    }
-      console.log('a');
-      
+      console.log("a");
 
       // for (const key in this.sentEmailListDetail) {
       //   console.log(key);
 
       //   for (const element of this.sentEmailListDetail[key]) {
       //     console.log(element);
-          
+
       //   }
-        
+
       // }
-  
-    console.log(this.sentEmailListDetail);
 
-    this.sentEmailAccountList.sort((a, b) => {
-      if (dayjs(a.送付数) < dayjs(b.送付数)) return 1;
-      if (dayjs(a.送付数) > dayjs(b.送付数)) return -1;
-    });
+      console.log(this.sentEmailListDetail);
 
-    // const test2 = this.sentEmailAccountList.map((p) => p["送付数"]);
-    // let maxIndex = Math.max(...test2);
+      this.sentEmailAccountList.sort((a, b) => {
+        if (dayjs(a.送付数) < dayjs(b.送付数)) return 1;
+        if (dayjs(a.送付数) > dayjs(b.送付数)) return -1;
+      });
 
-    // const numberDigit = String(maxIndex).length;
+      // const test2 = this.sentEmailAccountList.map((p) => p["送付数"]);
+      // let maxIndex = Math.max(...test2);
 
-    // console.log(numberDigit);
+      // const numberDigit = String(maxIndex).length;
 
-    // let maxIndexCe;
-    // let girdNum;
-    // let girdNumPulus;
+      // console.log(numberDigit);
 
-    // if (numberDigit >= 4) {
-    //   maxIndex += 100;
-    //   maxIndexCe = Math.ceil(maxIndex / 100) * 100;
-    //   girdNum = maxIndexCe / 100;
-    //   girdNumPulus = 100;
-    // } else if (numberDigit === 3) {
-    //   maxIndex += 10;
-    //   maxIndexCe = Math.ceil(maxIndex / 10) * 10;
-    //   girdNum = maxIndexCe / 10;
-    //   girdNumPulus = 10;
-    // } else if (numberDigit <= 2) {
-    //   if (maxIndex <= 20) {
-    //     maxIndexCe = maxIndex + 1;
-    //     girdNum = maxIndexCe / 1;
-    //     girdNumPulus = 1;
-    //   } else if (maxIndex <= 40) {
-    //     maxIndex += 2;
-    //     maxIndexCe = Math.ceil(maxIndex / 2) * 2;
-    //     girdNum = maxIndexCe / 2;
-    //     girdNumPulus = 2;
-    //   } else {
-    //     maxIndex += 5;
-    //     maxIndexCe = Math.ceil(maxIndex / 5) * 5;
-    //     girdNum = maxIndexCe / 5;
-    //     girdNumPulus = 5;
-    //   }
-    // }
+      // let maxIndexCe;
+      // let girdNum;
+      // let girdNumPulus;
 
-    // for (let index = girdNumPulus; index <= maxIndexCe; index += girdNumPulus) {
-    //   state.girdArry.push(index);
-    // }
+      // if (numberDigit >= 4) {
+      //   maxIndex += 100;
+      //   maxIndexCe = Math.ceil(maxIndex / 100) * 100;
+      //   girdNum = maxIndexCe / 100;
+      //   girdNumPulus = 100;
+      // } else if (numberDigit === 3) {
+      //   maxIndex += 10;
+      //   maxIndexCe = Math.ceil(maxIndex / 10) * 10;
+      //   girdNum = maxIndexCe / 10;
+      //   girdNumPulus = 10;
+      // } else if (numberDigit <= 2) {
+      //   if (maxIndex <= 20) {
+      //     maxIndexCe = maxIndex + 1;
+      //     girdNum = maxIndexCe / 1;
+      //     girdNumPulus = 1;
+      //   } else if (maxIndex <= 40) {
+      //     maxIndex += 2;
+      //     maxIndexCe = Math.ceil(maxIndex / 2) * 2;
+      //     girdNum = maxIndexCe / 2;
+      //     girdNumPulus = 2;
+      //   } else {
+      //     maxIndex += 5;
+      //     maxIndexCe = Math.ceil(maxIndex / 5) * 5;
+      //     girdNum = maxIndexCe / 5;
+      //     girdNumPulus = 5;
+      //   }
+      // }
 
-    // state.girdArry.unshift(0);
+      // for (let index = girdNumPulus; index <= maxIndexCe; index += girdNumPulus) {
+      //   state.girdArry.push(index);
+      // }
 
-    // console.log(maxIndexCe);
-    // console.log(girdNum);
-    // console.log(state.girdArry);
+      // state.girdArry.unshift(0);
 
-    // const girdNum2 = girdNum - 1;
+      // console.log(maxIndexCe);
+      // console.log(girdNum);
+      // console.log(state.girdArry);
 
-    // for (const element of this.sentEmailAccountList) {
-    //   element["ratio"] = {
-    //     "--size": `calc( ${(element["送付数"] / maxIndexCe) * 100} / 100 )`,
-    //   };
-    // }
-    // console.log(this.sentEmailAccountList);
+      // const girdNum2 = girdNum - 1;
 
-    // const tt = 16.6666;
+      // for (const element of this.sentEmailAccountList) {
+      //   element["ratio"] = {
+      //     "--size": `calc( ${(element["送付数"] / maxIndexCe) * 100} / 100 )`,
+      //   };
+      // }
+      // console.log(this.sentEmailAccountList);
 
-    // const style = {
-    //   "background-size": `calc(100% / ${girdNum}) 100%`,
-    // };
+      // const tt = 16.6666;
 
-    // const style2 = {
-    //   width: `calc(1405px / 12)`,
-    // };
+      // const style = {
+      //   "background-size": `calc(100% / ${girdNum}) 100%`,
+      // };
+
+      // const style2 = {
+      //   width: `calc(1405px / 12)`,
+      // };
     },
   },
-})
+});
 
 if (module.hot) {
-  module.hot.accept(acceptHMRUpdate(useAccountStore, module.hot))
+  module.hot.accept(acceptHMRUpdate(useAccountStore, module.hot));
 }
