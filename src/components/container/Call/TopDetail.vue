@@ -294,39 +294,19 @@ ul.list {
        background: url('~@/assets/images/callTop/cab.png') no-repeat top center;
         background-size: cover;
 
-           &.oldData {
-       background: url('~@/assets/images/callTop/cabOld.png') no-repeat top center;
-        background-size: cover;
-     }
-
      }
       &.HEM {
        background: url('~@/assets/images/callTop/hem.png') no-repeat top center;
         background-size: cover;
-
-                &.oldData {
-       background: url('~@/assets/images/callTop/hemOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.IG {
        background: url('~@/assets/images/callTop/ig.png') no-repeat top center;
         background-size: cover;
 
-                  &.oldData {
-       background: url('~@/assets/images/callTop/igOld.png') no-repeat top center;
-        background-size: cover;
-     }
-
      }
       &.HAE {
        background: url('~@/assets/images/callTop/hae.png') no-repeat top center;
         background-size: cover;
-
-                  &.oldData {
-       background: url('~@/assets/images/callTop/haeOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
     }
 
@@ -348,39 +328,18 @@ ul.list {
      &.CAB {
        background: url('~@/assets/images/callTop/cab2.png') no-repeat top center;
         background-size: cover;
-
-           &.oldData {
-       background: url('~@/assets/images/callTop/cabOld2.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.HEM {
        background: url('~@/assets/images/callTop/hem2.png') no-repeat top center;
         background-size: cover;
-
-
-           &.oldData {
-       background: url('~@/assets/images/callTop/hemOld2.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.IG {
        background: url('~@/assets/images/callTop/ig2.png') no-repeat top center;
         background-size: cover;
-
-              &.oldData {
-       background: url('~@/assets/images/callTop/igOld2.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.HAE {
        background: url('~@/assets/images/callTop/hae2.png') no-repeat top center;
         background-size: cover;
-
-              &.oldData {
-       background: url('~@/assets/images/callTop/haeOld2.png') no-repeat top center;
-        background-size: cover;
-     }
 
      }
     }

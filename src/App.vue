@@ -18,8 +18,6 @@ import 'dayjs/locale/ja'
 import MainPage from '@/views/MainPage.vue'
 import { PopupScroll } from '@/components/presentational/organisms'
 import { useApplicationStore } from '@/store/modules/applicationModule'
-import emailDataOld from "@/assets/data/emailOld.json";
-import emailDataDetailOld from "@/assets/data/emailDetailOld.json";
 import emailDataNew from "@/assets/data/email.json";
 import emailDataDetailNew from "@/assets/data/emailDetail.json";
 
@@ -67,16 +65,6 @@ export default defineComponent({
         // await Account.ACCOUNT__GET_ACCOUNT()
         // await Account.ACCOUNT__USER_MASTER(masterDataUser, masterData)
         // await Account.JSON__CALL_DATA();
-
-      const emialList = JSON.stringify(emailDataOld);
-      const emialLists = JSON.parse(emialList);
-
-        Account.JSON__EMAIL_DATA(emialLists);
-
-         const emialList2 = JSON.stringify(emailDataDetailOld);
-      const emialLists2 = JSON.parse(emialList2);
-
-        Account.JSON__EMAIL_DATA2(emialLists2);
 
       const emialListNew = JSON.stringify(emailDataNew);
       const emialListsNew = JSON.parse(emialListNew);

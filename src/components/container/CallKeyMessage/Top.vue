@@ -57,7 +57,6 @@ import {
 import { Loading } from '@/components/presentational/organisms/'
 import { useApplicationStore } from '@/store/modules/applicationModule'
 import { useAccountStore } from "@/store/modules/accountModule";
-import CallKeyMessageDataOld from "@/assets/data/callKeyMessageOld.json";
 import CallKeyMessageDataNew from "@/assets/data/callKeyMessage.json";
 
 
@@ -101,20 +100,11 @@ const propsList = reactive({ ...props })
     state.date = propsList.date
 
     onMounted(async () => {
+      const mediaList = JSON.stringify(CallKeyMessageDataNew);
+      const mediaLists = JSON.parse(mediaList);
+      console.log(mediaLists);
 
-      if (state.date === "newData") {
-    const mediaList = JSON.stringify(CallKeyMessageDataNew);
-   const mediaLists = JSON.parse(mediaList);
-console.log(mediaLists);
-
-    await Account.JSON__MEDIA_DATA_NEW(mediaLists);
-      } else {
-           const mediaList = JSON.stringify(CallKeyMessageDataOld);
-   const mediaLists = JSON.parse(mediaList);
-console.log(mediaLists);
-
-    await Account.JSON__MEDIA_DATA(mediaLists);
-      }
+      await Account.JSON__MEDIA_DATA_NEW(mediaLists);
 
 
   
@@ -247,12 +237,6 @@ ul.list {
 
      background: url('~@/assets/images/callKeyMessageTop/screen.png') no-repeat top center;
         background-size: cover;
-
-
-        &.oldData {
-            background: url('~@/assets/images/callKeyMessageTop/screenOld.png') no-repeat top center;
-        background-size: cover;
-        }
 
 
 

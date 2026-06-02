@@ -248,39 +248,18 @@ ul.list {
      &.cab {
        background: url('~@/assets/images/emailTop/cab.png') no-repeat top center;
         background-size: cover;
-
-
-           &.oldData {
-       background: url('~@/assets/images/emailTop/cabOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.hem {
        background: url('~@/assets/images/emailTop/hem.png') no-repeat top center;
         background-size: cover;
-
-             &.oldData {
-       background: url('~@/assets/images/emailTop/hemOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.ig {
        background: url('~@/assets/images/emailTop/ig.png') no-repeat top center;
         background-size: cover;
-
-             &.oldData {
-       background: url('~@/assets/images/emailTop/igOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.hae {
        background: url('~@/assets/images/emailTop/hae.png') no-repeat top center;
         background-size: cover;
-
-             &.oldData {
-       background: url('~@/assets/images/emailTop/haeOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
     }
     

@@ -1094,7 +1094,8 @@
             </ul>
           </PopupScrollOpt>
 
-          <PopupScrollOptTotal v-if="state.isPopup2" :tap-close="onTapClose2" :title="'エリア別オプトイン状況'">
+          <PopupScrollOptTotal v-if="state.isPopup2" :tap-close="onTapClose2"
+            :title="state.selectedFilterItemsOptIn.許諾製品 ? 'エリア別オプトイン状況 【許諾製品】' + state.selectedFilterItemsOptIn.許諾製品 : 'エリア別オプトイン状況'">
             <ul class="opt-value2" v-for="(obj, index) in state.optInTotaldata" :key="index">
               <li>
                 {{ obj.エリア }}
@@ -1130,8 +1131,6 @@ import { useApplicationStore } from "@/store/modules/applicationModule";
 import { useAccountStore } from "@/store/modules/accountModule";
 import optInData from "@/assets/data/optin.json";
 import optInDetailData from "@/assets/data/optinDetail.json";
-import optInDataOld from "@/assets/data/optinOld.json";
-import optInDetailDataOld from "@/assets/data/optinDetailOld.json";
 
 interface State {
   iScrollObj: null | IScroll;
@@ -1809,31 +1808,11 @@ export default defineComponent({
     let emailList3
     let optIn
     let optInDetail
+    emailList2 = Account.getsentEmailListByKeyNew(props.id);
+    emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
 
-
-
-
-
-
-
-
-
-
-    if (state.date === "newData") {
-      emailList2 = Account.getsentEmailListByKeyNew(props.id);
-      emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
-
-      optIn = JSON.stringify(optInData);
-      optInDetail = JSON.stringify(optInDetailData);
-
-
-    } else {
-      emailList2 = Account.getsentEmailListByKey(props.id);
-      emailList3 = Account.getsentEmailList2ByKey(props.id);
-
-      optIn = JSON.stringify(optInDataOld);
-      optInDetail = JSON.stringify(optInDetailDataOld);
-    }
+    optIn = JSON.stringify(optInData);
+    optInDetail = JSON.stringify(optInDetailData);
 
     optIn = JSON.parse(optIn);
     optInDetail = JSON.parse(optInDetail);
@@ -1987,7 +1966,11 @@ export default defineComponent({
 
 
     state.optInTotaldata = computed(() => {
-      const summary = summarizeByDeptAreaTotalFromProducts(state.optInDetaildata);
+      const selectedProduct = state.selectedFilterItemsOptIn.許諾製品;
+      const optInDetailRows = selectedProduct
+        ? state.optInDetaildata.filter((r) => r.製品 === selectedProduct)
+        : state.optInDetaildata;
+      const summary = summarizeByDeptAreaTotalFromProducts(optInDetailRows);
 
       const rows = summary
         .filter(r => r["営業部"] === props.id)
@@ -2409,12 +2392,7 @@ export default defineComponent({
     })
 
     let dataCont2
-
-    if (state.date === "newData") {
-      dataCont2 = computed(() => Account.getsentEmailListContentByKeyNew(props.id))
-    } else {
-      dataCont2 = computed(() => Account.getsentEmailListContentByKey(props.id))
-    }
+    dataCont2 = computed(() => Account.getsentEmailListContentByKeyNew(props.id))
 
 
     state.dataCont = computed(() => {

@@ -266,7 +266,6 @@ import dayjs from "dayjs";
 import { sleep } from "@/utils/sleep";
 import { useApplicationStore } from "@/store/modules/applicationModule";
 import { useAccountStore } from "@/store/modules/accountModule";
-import callDataOld from "@/assets/data/callOld.json";
 import callDataNew from "@/assets/data/call.json";
 interface State {
   iScrollObj: null | IScroll;
@@ -631,38 +630,17 @@ export default defineComponent({
         fadeScrollbars: true,
         mouseWheel: true,
       });
-
-    
       let callList2
 
-      
+      const callListOrg = Account.getsentCallListOrgNew;
 
-       if (propsList.date === "newData") {
-         let callListOrg = Account.getsentCallListOrgNew
-
-       
       if (callListOrg.length === 0) {
-         let callList3 = JSON.stringify(callDataNew);
-          const callList4 = JSON.parse(callList3);  
-          await Account.JSON__CALL_DATA_NEW(callList4);   
+        const callList3 = JSON.stringify(callDataNew);
+        const callList4 = JSON.parse(callList3);
+        await Account.JSON__CALL_DATA_NEW(callList4);
       }
-            callList2 = Account.getsentCallListByKeyNew(props.id);
-       } else {
-         let callListOrg = Account.getsentCallListOrg
 
-        
-        if (callListOrg.length === 0) {
-         let callList3 = JSON.stringify(callDataOld);  
-          const callList4 = JSON.parse(callList3);
-          await Account.JSON__CALL_DATA(callList4);
-       
-         }
-
-      callList2 = Account.getsentCallListByKey(props.id);
-
-       }
-        
-        
+      callList2 = Account.getsentCallListByKeyNew(props.id);
 
       state.data = computed(() => {
         const result = [];

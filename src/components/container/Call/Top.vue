@@ -273,11 +273,6 @@ cursor: pointer;
      &.cab {
        background: url('~@/assets/images/callTop/cab.png') no-repeat top center;
         background-size: cover;
-
-        &.oldData {
-       background: url('~@/assets/images/callTop/cabOld.png') no-repeat top center;
-        background-size: cover;
-     }
      
      }
 
@@ -286,31 +281,14 @@ cursor: pointer;
        background: url('~@/assets/images/callTop/hem.png') no-repeat top center;
         background-size: cover;
 
-           &.oldData {
-       background: url('~@/assets/images/callTop/hemOld.png') no-repeat top center;
-        background-size: cover;
-     }
-
      }
       &.ig {
        background: url('~@/assets/images/callTop/ig.png') no-repeat top center;
         background-size: cover;
-
-
-           &.oldData {
-       background: url('~@/assets/images/callTop/igOld.png') no-repeat top center;
-        background-size: cover;
-     }
      }
       &.hae {
        background: url('~@/assets/images/callTop/hae.png') no-repeat top center;
         background-size: cover;
-
-
-           &.oldData {
-       background: url('~@/assets/images/callTop/haeOld.png') no-repeat top center;
-        background-size: cover;
-     }
 
      }
     }

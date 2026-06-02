@@ -149,52 +149,6 @@
                 </router-link>
               </li>
             </ul>
-            <div class="date-title mt20">2024年7月〜12月</div>
-            <ul class="list">
-              <li>
-                <router-link :to="{
-                  name: 'CallTop',
-                  query: {
-                    date: 'oldData',
-                  },
-                }">
-                  <div class="tab">
-                    <div class="tab2"></div>
-                  </div>
-                  <div class="img-wrap"></div>
-                  <span class="text">事業別Call実績レポート</span>
-                </router-link>
-              </li>
-
-              <li>
-                <router-link :to="{
-                  name: 'SentEmailTop',
-                  query: {
-                    date: 'oldData',
-                  },
-                }">
-                  <div class="tab">
-                    <div class="tab2"></div>
-                  </div>
-                  <div class="img-wrap"></div>
-                  <span class="text">事業別メール送付実績レポート</span>
-                </router-link>
-              </li>
-              <li>
-                <router-link :to="{
-                  name: 'CallKeyMessageTop',
-                  query: {
-                    date: 'oldData',
-                  },
-                }">
-                  <div class="tab">
-                    <div class="tab2"></div>
-                  </div>
-                  <div class="img-wrap"></div>
-                  <span class="text">コンテンツ使用実績レポート</span>
-                </router-link>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

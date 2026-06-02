@@ -1026,14 +1026,7 @@ export default defineComponent({
         state.isHoverFlag = false;
       }
     );
-
-    let mediaList
-
-    if (state.date === "newData") {
-       mediaList = Account.getCallKeyMessageListNew;
-    } else {
-      mediaList = Account.getCallKeyMessageList;
-    }
+    const mediaList = Account.getCallKeyMessageListNew;
 
     
     
