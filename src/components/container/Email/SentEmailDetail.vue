@@ -690,8 +690,8 @@
                                                             @tap="onTapTarget2_3(MR, MRValue, $event)"
                                                             class="call-list-data-item td" data-kinds="MR">
                                                             <span class="data" style="pointer-events: none;">{{ MR.Total
-                                                              }}<span style="font-size:100%;">({{ MR.ターゲット数
-                                                                }})</span></span>
+                                                            }}<span style="font-size:100%;">({{ MR.ターゲット数
+                                                              }})</span></span>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -764,7 +764,7 @@
                                                       @tap="onTapTarget2_3(docter, docterValue, $event)"
                                                       data-kinds="Dr_name" class="call-list-data-item td">
                                                       <span class="data" style="pointer-events: none;">{{ docter.Total
-                                                        }}({{ docter.ターゲット数 }})</span>
+                                                      }}({{ docter.ターゲット数 }})</span>
                                                     </div>
                                                   </div>
 
@@ -880,7 +880,7 @@
                                                                           key["Last_Open_Date_vod__c"] ?
                                                                             dayjs(key["Last_Open_Date_vod__c"]).subtract(9,
                                                                               "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-                                                                        }}</span></div>
+                                                                            }}</span></div>
                                                                       </div>
 
                                                                       <div @mouseover="onHoverItem2_2(key, val, $event)"
@@ -893,7 +893,7 @@
                                                                           key["Last_Click_Date_vod__c"] ?
                                                                             dayjs(key["Last_Click_Date_vod__c"]).subtract(9,
                                                                               "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
-                                                                        }}</span></div>
+                                                                            }}</span></div>
                                                                       </div>
 
                                                                       <div class="call-list-data">
@@ -916,7 +916,7 @@
                                                                           data-kinds="開封回数"
                                                                           :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': key.isClickActive === true }, { on: key.isOpenActive === true }]">
                                                                           <span class="data">{{ key["Open_Count_vod__c"]
-                                                                            }}</span>
+                                                                          }}</span>
                                                                         </div>
                                                                       </div>
                                                                     </div>

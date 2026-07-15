@@ -30,7 +30,37 @@
               </li>
             </ul>
 
-            <div class="date-title">2026年1月〜</div>
+            <div class="date-title">2026年7月〜</div>
+            <ul class="list">
+              <li @tap="onTapScreen('CSL_CALL_REPORT_2027_1H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別Call実績レポート</span>
+
+              </li>
+
+              <li @tap="onTapScreen('CSL_MAIL_REPORT_2027_1H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">事業別メール送付実績レポート</span>
+
+              </li>
+
+              <li @tap="onTapScreen('CSL_CONTENTS_REPORT_2027_1H')">
+                <div class="tab">
+                  <div class="tab2"></div>
+                </div>
+                <div class="img-wrap"></div>
+                <span class="text">コンテンツ使用実績レポート</span>
+
+              </li>
+            </ul>
+
+            <div class="date-title">2026年1月〜6月</div>
             <ul class="list">
               <li @tap="onTapScreen('CSL_CALL_REPORT_2026_2H')">
                 <div class="tab">
@@ -252,6 +282,18 @@ export default defineComponent({
 
         case "CSL_CONTENTS_REPORT_2026_2H":
           window.com.veeva.clm.gotoSlide(`CSL_CONTENTS_REPORT_2026_2H_0.0.zip`, `CSL_CONTENTS_REPORT_2026_2H`)
+          break;
+
+        case "CSL_CALL_REPORT_2027_1H":
+          window.com.veeva.clm.gotoSlide(`CSL_CALL_REPORT_2027_1H_0.0.zip`, `CSL_CALL_REPORT_2027_1H`)
+          break;
+
+        case "CSL_MAIL_REPORT_2027_1H":
+          window.com.veeva.clm.gotoSlide(`CSL_MAIL_REPORT_2027_1H_0.0.zip`, `CSL_MAIL_REPORT_2027_1H`)
+          break;
+
+        case "CSL_CONTENTS_REPORT_2027_1H":
+          window.com.veeva.clm.gotoSlide(`CSL_CONTENTS_REPORT_2027_1H_0.0.zip`, `CSL_CONTENTS_REPORT_2027_1H`)
           break;
 
         default:

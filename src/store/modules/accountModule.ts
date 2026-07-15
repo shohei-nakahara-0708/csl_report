@@ -474,7 +474,7 @@ export const useAccountStore = defineStore({
           this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
         }
 
-        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")}`;
+        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(0, "h").format("YYYY/M")}`;
 
         if (!this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
           this.CallList[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
@@ -591,7 +591,7 @@ export const useAccountStore = defineStore({
           this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()] = {};
         }
 
-        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")}`;
+        const date = `${dayjs(element["Email_Sent_Date_vod__c"]).subtract(0, "h").format("YYYY/M")}`;
 
         if (!this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date]) {
           this.CallListNew[element["営業部"].trim()][element["エリア"].trim()][element["テリトリー名"].trim()][element["MR"].trim()][date] = [];
