@@ -6,15 +6,10 @@
           <div class="call-header">
             <span @click="$router.go(-1)" class="dli-arrow-left"></span>
             <ul>
-              <li><router-link to="/">TOP</router-link></li>
+              <li class="call-header-link" @tap="onTapScreen3">TOP</li>
               <li>/</li>
               <li>
-                <router-link :to="{
-                  name: 'SentEmailTop',
-                  query: {
-                    date: state.date,
-                  },
-                }">事業部別メール送付実績</router-link>
+                <router-link to="/">事業部別メール送付実績</router-link>
               </li>
               <li>/</li>
               <li>{{ state.name }}_メール送付実績</li>
@@ -81,13 +76,15 @@
                   :class="[{ 'filter-area-text2': state.isScreen === '集計画面' }, { 'filter-area-text3': state.isScreen === '送付先詳細' }]">
                   <div>
                     <template v-if="state.isScreen === '集計画面'">▼MR名 or 棒グラフをクリック後、対象のMRの実績に絞込</template>
-                    <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示</template>
+                    <template v-if="state.isScreen === '送付先詳細'">▼グラフをクリック後、メールの詳細を表示
+                      <span class="docter-text">※医師名が青色：オプトイン未取得の医師</span></template>
                   </div>
 
-                  <div class="optin-button" @tap="onTapOptInPopup()">
-                    <template v-if="state.isScreen === '集計画面'">ⓘ エリア別オプトイン状況はこちら<div data-v-7d3fd3c4=""
-                        class="select__arrow"></div></template>
-                  </div>
+                  <template v-if="state.isScreen === '集計画面'">
+                    <div class="optin-button" @tap="onTapOptInPopup()">
+                      ⓘ エリア別オプトイン状況はこちら<div data-v-7d3fd3c4="" class="select__arrow"></div>
+                    </div>
+                  </template>
 
 
 
@@ -247,26 +244,6 @@
 
                     </li> -->
                   </ul>
-                  <!-- <div @tap="onTapSortVisible('isHoverFlag6')" @mouseover="state.isHoverFlag6 = true"
-                    @mouseleave="state.isHoverFlag6 = false" class="call-content-main-header-content-right">
-
-                    <template v-if="!Object.keys(state.sortObj.セカンド).includes('DATA')">
-                      <div class="sort-button-data" @tap="onTapSort" v-if="state.isHoverFlag6" data-sort="DATA">
-                        <div class="sort-asc-data" data-sort="DATA"></div>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="sort-button-data" @tap="onTapSort" data-sort="DATA">
-                        <template v-if="state.sortObj.セカンド.DATA == 'ASC'">
-                          <div v-if="state.isHoverFlag6" class="sort-asc-data" data-sort="DATA"></div>
-                        </template>
-                        <template v-if="state.sortObj.セカンド.DATA == 'DESC'">
-                          <div v-if="state.isHoverFlag6" class="sort-desc-data" data-sort="DATA"></div>
-                        </template>
-                      </div>
-                    </template>
-                  </div> -->
-
                   <div @tap="onTapSortVisible('isHoverFlag7')" @mouseover="state.isHoverFlag7 = true"
                     @mouseleave="state.isHoverFlag7 = false" class="call-content-main-header-content-right">
                     <div class="call-content-main-header-content-right-text fwb">
@@ -295,8 +272,6 @@
                     </div>
 
                   </div>
-
-
                 </div>
                 <div class="call-content-main-header-content"
                   v-if="Object.values(state.dataDetail).length > 0 && state.isScreen === '送付先詳細'">
@@ -402,6 +377,7 @@
                         </template>
                       </div>
                     </template> -->
+
                     <div class="call-content-main-header-content-right-text fwb">
                       メール送付数
                       <template v-if="!Object.keys(state.sortObj2.セカンド).includes('DATA')">
@@ -674,13 +650,17 @@
                                                             {{ MR.オプトイン送信数 }}/{{ MR.オプトイン数 }}
                                                           </template>
                                                         </div>
-                                                        <!-- <div @mouseover="onHoverItem2_2('', MR.ユニーク, $event)"
-                                                          @mouseleave="state.isHoverFlag = false"
-                                                          @tap="onTapTarget2_2('', MRValue, $event)"
-                                                          class="call-list2 call-list-title" data-kinds="MR"
-                                                          data-kinds2="ユニーク">
-                                                          {{ MR.ユニーク }}
-                                                        </div> -->
+
+                                                        <!-- <div class="test">
+                                                          <div @mouseover="onHoverItem2_2('', MR.ユニーク, $event)"
+                                                            @mouseleave="state.isHoverFlag = false"
+                                                            @tap="onTapTarget2_2('', MRValue, $event)"
+                                                            class="call-list2 call-list-title" data-kinds="MR"
+                                                            data-kinds2="ユニーク">
+                                                            <template v-if="getOptin(MRValue)">
+                                                              {{ MR.ユニーク }}
+                                                            </template>
+                                                          </div> -->
 
 
 
@@ -691,7 +671,7 @@
                                                             class="call-list-data-item td" data-kinds="MR">
                                                             <span class="data" style="pointer-events: none;">{{ MR.Total
                                                             }}<span style="font-size:100%;">({{ MR.ターゲット数
-                                                              }})</span></span>
+                                                                }})</span></span>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -747,7 +727,8 @@
                                                 <div @mouseover="onHoverItem2_2(docter, docterValue, $event)"
                                                   @mouseleave="state.isHoverFlag = false"
                                                   @tap="onTapTarget2_2(docter, docterValue, $event)"
-                                                  data-kinds="Dr_name" class="call-list6 call-list-title">
+                                                  data-kinds="Dr_name" class="call-list6 call-list-title"
+                                                  :class="{ 'optin-denied-doctor': docter.isOptInDenied }">
                                                   {{ docterValue }}
                                                 </div>
                                                 <div class="test">
@@ -764,7 +745,8 @@
                                                       @tap="onTapTarget2_3(docter, docterValue, $event)"
                                                       data-kinds="Dr_name" class="call-list-data-item td">
                                                       <span class="data" style="pointer-events: none;">{{ docter.Total
-                                                      }}({{ docter.ターゲット数 }})</span>
+                                                        }}({{ docter.ターゲット数
+                                                        }})</span>
                                                     </div>
                                                   </div>
 
@@ -843,7 +825,8 @@
                                                             @tap="onTapTarget2_2(templateName, templateNameValue, $event)"
                                                             data-kinds="templateName" class="call-list9 call-list-title"
                                                             :class="[{ on: !state.selectObj['送付内容']['flagmentName'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName'] === templateNameValue && state.selectObj['送付内容']['Id'] === IdValue }]">
-                                                            <div class="list-wrap"><span>{{ templateNameValue }}</span>
+                                                            <div class="list-wrap"><span>{{ templateNameValue
+                                                                }}</span>
                                                             </div>
                                                           </div>
                                                           <div class="test"
@@ -866,7 +849,8 @@
                                                                         :class="[{ on: !state.selectObj['送付内容']['Last_Open_Date_vod__c'] && !state.selectObj['送付内容']['Last_Click_Date_vod__c'] && state.selectObj['送付内容']['docter'] === docterValue && state.selectObj['送付内容']['sentDate'] === sentDateValue && state.selectObj['送付内容']['templateName'] === templateNameValue && state.selectObj['送付内容']['flagmentName'] === flagmentValue && state.selectObj['送付内容']['Id'] === IdValue && state.selectObj['送付内容']['FragmentId'] === key['FragmentId'] }]">
                                                                         <div class="list-wrap"><span class="data">{{
                                                                           key["Email_Fragments_vod__r.Name"] ?
-                                                                            key["Email_Fragments_vod__r.Name"] : "NULL"
+                                                                            key["Email_Fragments_vod__r.Name"] :
+                                                                            "NULL"
                                                                             }}</span></div>
                                                                       </div>
 
@@ -878,8 +862,9 @@
                                                                         :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Open_Date_vod__c'] === true }]">
                                                                         <div class="list-wrap"><span class="data">{{
                                                                           key["Last_Open_Date_vod__c"] ?
-                                                                            dayjs(key["Last_Open_Date_vod__c"]).subtract(9,
-                                                                              "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+                                                                            dayjs(key["Last_Open_Date_vod__c"]).subtract(0,
+                                                                              "h").format("YYYY-MM-DD HH:mm:ss") :
+                                                                            "NULL"
                                                                             }}</span></div>
                                                                       </div>
 
@@ -891,8 +876,9 @@
                                                                         :class="[{ on: key.isActive === true && state.selectObj['送付内容']['Last_Click_Date_vod__c'] === true }]">
                                                                         <div class="list-wrap"><span class="data">{{
                                                                           key["Last_Click_Date_vod__c"] ?
-                                                                            dayjs(key["Last_Click_Date_vod__c"]).subtract(9,
-                                                                              "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+                                                                            dayjs(key["Last_Click_Date_vod__c"]).subtract(0,
+                                                                              "h").format("YYYY-MM-DD HH:mm:ss") :
+                                                                            "NULL"
                                                                             }}</span></div>
                                                                       </div>
 
@@ -915,8 +901,9 @@
                                                                           class="call-list-data-item call-list-back"
                                                                           data-kinds="開封回数"
                                                                           :class="[{ on: key.isActive === true && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': !key.isActive && Object.values(state.selectObj['送付内容']['docter']).length > 0 }, { 'no-active': key.isClickActive === true }, { on: key.isOpenActive === true }]">
-                                                                          <span class="data">{{ key["Open_Count_vod__c"]
-                                                                          }}</span>
+                                                                          <span class="data">{{
+                                                                            key["Open_Count_vod__c"]
+                                                                            }}</span>
                                                                         </div>
                                                                       </div>
                                                                     </div>
@@ -956,8 +943,18 @@
                 </div>
                 <template v-if="state.isScreen === '集計画面'">
                   <div @tap="onTapSortVisible('isHoverFlag7')" @mouseover="state.isHoverFlag7 = true"
-                    @mouseleave="state.isHoverFlag7 = false" class="content-footer" v-if="state.girdArry.length > 0">
+                    @mouseleave="state.isHoverFlag7 = false" class="content-footer"
+                    v-if="state.girdArry.length > 0 || optInSummaryTotal">
                     <div class="content-footer-left">
+                      <template v-if="optInSummaryTotal">
+                        <div class="content-footer-optin-label">合計</div>
+                        <div class="content-footer-optin-cell">
+                          {{ optInSummaryTotal.optInTargetText }}
+                        </div>
+                        <div class="content-footer-optin-cell">
+                          {{ optInSummaryTotal.sentOptInText }}
+                        </div>
+                      </template>
                     </div>
 
                     <div class="content-footer-right">
@@ -1131,6 +1128,9 @@ import { useApplicationStore } from "@/store/modules/applicationModule";
 import { useAccountStore } from "@/store/modules/accountModule";
 import optInData from "@/assets/data/optin.json";
 import optInDetailData from "@/assets/data/optinDetail.json";
+import targetListData from "@/assets/data/TargetList.json";
+
+
 
 interface State {
   iScrollObj: null | IScroll;
@@ -1280,12 +1280,11 @@ interface State {
   selectedFilterItemsOptIn: {
     許諾製品?: any;
   };
-  isPopup: boolean;
-  isPopup2: boolean;
+  isPopup: boolean,
+  isPopup2: boolean,
   optInDetaildata: any;
   optInDetaildataFilter: any;
   optInTotaldata: any;
-  uniqueCountTotal: number
 }
 
 export default defineComponent({
@@ -1294,7 +1293,7 @@ export default defineComponent({
     SelectBox2,
     SelectBox5,
     PopupScrollOpt,
-    PopupScrollOptTotal,
+    PopupScrollOptTotal
   },
   props: {
     id: {
@@ -1738,7 +1737,6 @@ export default defineComponent({
       optInDetaildata: [],
       optInDetaildataFilter: [],
       optInTotaldata: [],
-      uniqueCountTotal: 0
     });
 
     const isLoadComplete = computed(() => ApplicationStore.isLoadComplete);
@@ -1808,14 +1806,30 @@ export default defineComponent({
     let emailList3
     let optIn
     let optInDetail
-    emailList2 = Account.getsentEmailListByKeyNew(props.id);
-    emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
 
-    optIn = JSON.stringify(optInData);
-    optInDetail = JSON.stringify(optInDetailData);
+
+
+
+
+
+    console.log(state.date);
+
+
+
+    if (state.date === "newData") {
+      emailList2 = Account.getsentEmailListByKeyNew(props.id);
+      emailList3 = Account.getsentEmailList2ByKeyNew(props.id);
+
+      optIn = JSON.stringify(optInData);
+      optInDetail = JSON.stringify(optInDetailData);
+
+
+
+    }
 
     optIn = JSON.parse(optIn);
     optInDetail = JSON.parse(optInDetail);
+
 
 
 
@@ -1866,6 +1880,27 @@ export default defineComponent({
 
     const normalizeName = (v) =>
       String(v ?? "").replace(/\u3000/g, " ").replace(/\s+/g, " ").trim();
+
+    const isNullLikeValue = (value) => {
+      const name = normalizeName(value);
+      const upperName = name.toUpperCase();
+      return !name || upperName === "NULL" || upperName === "UNDEFINED";
+    };
+
+    const isNullDoctorName = isNullLikeValue;
+
+    const removeNullFilterOptions = (category) => {
+      const list = state.testObj?.[category]?.list;
+      if (!list) {
+        return;
+      }
+
+      for (const key of Object.keys(list)) {
+        if (key !== "すべて" && isNullLikeValue(key)) {
+          delete list[key];
+        }
+      }
+    };
 
     const toBool = (v) => {
       if (typeof v === "boolean") return v;
@@ -1964,7 +1999,6 @@ export default defineComponent({
     };
 
 
-
     state.optInTotaldata = computed(() => {
       const selectedProduct = state.selectedFilterItemsOptIn.許諾製品;
       const optInDetailRows = selectedProduct
@@ -2024,6 +2058,7 @@ export default defineComponent({
       return str
     };
 
+
     const getOptin2 = (name) => {
       let result = state.optInDetaildata.filter((x) => {
         return name === x.MR;
@@ -2041,18 +2076,535 @@ export default defineComponent({
       return uniqueUsers
     };
 
+    const normalizeProductName = (value) =>
+      normalizeName(value).replace(/\s*\(JP\)\s*$/, "");
 
+    const toFragmentArray = (value) => {
+      if (Array.isArray(value)) return value.length > 0 ? value : ["NULL"];
+      return String(value ?? "NULL").split("***").filter((v) => v).length > 0
+        ? String(value ?? "NULL").split("***").filter((v) => v)
+        : ["NULL"];
+    };
+
+    const getDetailProductName = (row) =>
+      normalizeProductName(
+        row?.["prodcut1"] ??
+        row?.["Detailed_Products_vod__c"] ??
+        row?.["製品"] ??
+        row?.["Product_name_general"] ??
+        ""
+      );
+
+    const getOptInDoctorKey = (row) =>
+      [
+        normalizeName(row?.["営業部"] ?? props.id),
+        normalizeName(row?.["HP_name"]),
+        normalizeName(row?.["Dr_name"]),
+      ].join("||");
+
+    const optInDeniedKeys = computed(() => {
+      const allowedDoctorKeys = new Set();
+      const deniedDoctorKeys = new Set();
+      const detailRows = Array.isArray(state.optInDetaildata) ? state.optInDetaildata : [];
+
+      for (const row of detailRows) {
+        if (isNullDoctorName(row?.["Dr_name"])) {
+          continue;
+        }
+
+        const doctorKey = getOptInDoctorKey(row);
+        if (toBool(row?.["許諾"])) {
+          allowedDoctorKeys.add(doctorKey);
+        } else {
+          deniedDoctorKeys.add(doctorKey);
+        }
+      }
+
+      for (const doctorKey of allowedDoctorKeys) {
+        deniedDoctorKeys.delete(doctorKey);
+      }
+
+      return deniedDoctorKeys;
+    });
+
+    const isOptInDeniedDoctor = (row) => {
+      if (isNullDoctorName(row?.["Dr_name"])) {
+        return false;
+      }
+
+      return optInDeniedKeys.value.has(getOptInDoctorKey(row));
+    };
+
+    const getTargetKey = (row) =>
+      [
+        normalizeName(row?.["営業部"]),
+        normalizeName(row?.["MR"]),
+        normalizeName(row?.["HP_name"]),
+        normalizeName(row?.["Dr_name"]),
+        getDetailProductName(row),
+      ].join("||");
+
+    const getSelectedUnsentMonth = () => {
+      const months = state.selectedFilterItems.メール送付月;
+      if (Array.isArray(months) && !months.includes("すべて") && months.length > 0) {
+        return months[0];
+      }
+      return null;
+    };
+
+    const isSentInSelectedMonth = (row) => {
+      const months = state.selectedFilterItems.メール送付月;
+      if (!Array.isArray(months) || months.includes("すべて")) return true;
+      const sentDate = row["Email_Sent_Date_vod__c2"] || row["Email_Sent_Date_vod__c"];
+      return months.includes(dayjs(sentDate).format("YYYY/M"));
+    };
+
+    const matchesSummarySelection = (row) => {
+      const selected = state.selectObj["集計画面"];
+      if (!selected?.Category || !selected?.Value) return true;
+      return normalizeName(row?.[selected.Category]) === normalizeName(selected.Value);
+    };
+
+    const createUnsentTargetRow = (row) => {
+      const selectedMonth = getSelectedUnsentMonth();
+      const product = getDetailProductName(row);
+      const detailRow = {
+        営業部: row["営業部"],
+        エリア: row["エリア"],
+        テリトリー名: row["テリトリー名"],
+        MR: row["MR"],
+        MR_ID: row["MR_ID"],
+        HP_name: row["HP_name"] || "NULL",
+        HP_DCF: row["HP_DCF"],
+        Dr_name: row["Dr_name"] || "NULL",
+        Dr_DCF: row["Dr_DCF"],
+        Email_Sent_Date_vod__c: selectedMonth ? `${selectedMonth}/1` : null,
+        Email_Sent_Date_vod__c2: selectedMonth ? `${selectedMonth}/1` : null,
+        Target: "Target",
+        分類: row["分類"] || "NULL",
+        "Email_Fragments_vod__r.Name": ["NULL"],
+        prodcut1: product,
+        Id: 0,
+        Total: 0,
+        TargetCount: 0,
+        isUnsentTarget: true,
+      };
+
+      return {
+        ...detailRow,
+        _targetKey: getTargetKey(detailRow),
+      };
+    };
+
+    const getTargetListRows = () => {
+      const targetRowMap = new Map();
+      (targetListData as any[])
+        .filter((row) => normalizeName(row["営業部"]) === normalizeName(props.id))
+        .filter(matchesSummarySelection)
+        .map(createUnsentTargetRow)
+        .filter((row) => !isNullDoctorName(row["Dr_name"]))
+        .forEach((row) => {
+          targetRowMap.set(row._targetKey, row);
+        });
+
+      return Array.from(targetRowMap.values());
+    };
+
+    const getFilterSelectionForMatch = (category) => {
+      const backupSelection = state.selectFiliterCategory?.includes(category)
+        ? state.selectedFilterItemsBK2?.[category]
+        : null;
+
+      if (Array.isArray(backupSelection) && !backupSelection.includes("すべて")) {
+        return backupSelection;
+      }
+
+      return state.selectedFilterItems?.[category];
+    };
+
+    const selectedFilterMatches = (category, value) => {
+      const selected = getFilterSelectionForMatch(category);
+      if (!Array.isArray(selected)) {
+        return true;
+      }
+      if (selected.length === 0) return false;
+      if (selected.includes("すべて")) return true;
+
+      return selected.some((item) => normalizeName(item) === normalizeName(value));
+    };
+
+    const isSelectedFilterAll = (category) => {
+      const selected = state.selectedFilterItems?.[category];
+      return !Array.isArray(selected) || selected.includes("すべて");
+    };
+
+    const normalizeFilterSelection = (selectedValue) => {
+      if (Array.isArray(selectedValue)) return [...selectedValue];
+      if (!selectedValue || selectedValue === "すべて") return ["すべて"];
+      return [selectedValue];
+    };
+
+    const setSelectedFilter = (category, selectedValue) => {
+      const nextSelection = normalizeFilterSelection(selectedValue);
+
+      state.selectedFilterItems[category] = nextSelection;
+
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = nextSelection.includes("すべて")
+          ? ["すべて"]
+          : [...nextSelection];
+      }
+    };
+
+    const getCurrentFilterSelection = (category) => {
+      const selected = state.selectedFilterItems?.[category];
+      return Array.isArray(selected) ? [...selected] : ["すべて"];
+    };
+
+    const isFilterActive = (category) => {
+      const selected = state.selectedFilterItems?.[category];
+      return Array.isArray(selected) && !selected.includes("すべて");
+    };
+
+    const removeFilterCategory = (category) => {
+      state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== category);
+    };
+
+    const ensureFilterCategory = (category) => {
+      if (!state.selectFiliterCategory.includes(category)) {
+        state.selectFiliterCategory.push(category);
+      }
+    };
+
+    const setFilterBackupSelection = (category, selection) => {
+      if (state.selectedFilterItemsBK2?.[category]) {
+        state.selectedFilterItemsBK2[category] = Array.isArray(selection)
+          ? [...selection]
+          : ["すべて"];
+      }
+    };
+
+    const resetFilterList = (category) => {
+      if (state.testObj?.[category]?.list) {
+        state.testObj[category].list = {
+          すべて: "すべて",
+        };
+      }
+    };
+
+    const resetFilterToAll = (category) => {
+      resetFilterList(category);
+      state.selectedFilterItems[category] = ["すべて"];
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = ["すべて"];
+      }
+      setFilterBackupSelection(category, ["すべて"]);
+      removeFilterCategory(category);
+    };
+
+    const prepareFilterForRebuild = (category) => {
+      resetFilterList(category);
+
+      if (isSelectedFilterAll(category)) {
+        resetFilterToAll(category);
+        return;
+      }
+
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = getCurrentFilterSelection(category);
+      }
+      setFilterBackupSelection(category, getCurrentFilterSelection(category));
+      state.selectedFilterItems[category] = ["すべて"];
+    };
+
+    const restoreFilterSelection = (category) => {
+      const backup = state.selectedFilterItems2?.[category];
+      if (Array.isArray(backup) && !backup.includes("すべて")) {
+        state.selectedFilterItems[category] = [...backup];
+        setFilterBackupSelection(category, backup);
+        ensureFilterCategory(category);
+      }
+    };
+
+    const rememberFilterSelection = (category) => {
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = getCurrentFilterSelection(category);
+      }
+    };
+
+    const rebuildFilterOptionsFromSource = (category, data, createOptions) => {
+      const previousSelection = getCurrentFilterSelection(category);
+      const wasActive = isFilterActive(category);
+
+      prepareFilterForRebuild(category);
+      createOptions(data, false);
+
+      if (previousSelection.includes("すべて")) {
+        return;
+      }
+
+      const list = state.testObj?.[category]?.list ?? {};
+      const selectedInOptions = previousSelection.filter((value) => list[value]);
+
+      state.selectedFilterItems[category] = selectedInOptions;
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = [...selectedInOptions];
+      }
+      if (wasActive) {
+        ensureFilterCategory(category);
+        setFilterBackupSelection(category, selectedInOptions);
+      }
+      syncSelectedFilterWithOptions(category);
+    };
+
+    const rebuildSummaryHierarchyFilters = (data) => {
+      const source = Array.isArray(data) ? data : [];
+
+      rebuildFilterOptionsFromSource("エリア", source, creatDataArea);
+      rebuildFilterOptionsFromSource("テリトリー名", source, creatDataTerritory);
+      rebuildFilterOptionsFromSource("MR", source, creatDataMR);
+    };
+
+    const shouldSelectNewFilterOption = (category) => {
+      const selected = state.selectedFilterItems?.[category];
+      return !Array.isArray(selected) || selected.includes("すべて");
+    };
+
+    const addFilterOption = (category, key) => {
+      if (!state.testObj?.[category]?.list || state.testObj[category].list[key]) {
+        return;
+      }
+
+      state.testObj[category].list[key] = key;
+
+      if (
+        shouldSelectNewFilterOption(category) &&
+        !state.selectedFilterItems[category].includes(key)
+      ) {
+        state.selectedFilterItems[category].push(key);
+      }
+    };
+
+    const targetRowMatchesSummaryFilters = (row, ignoredCategories = []) => {
+      const ignored = new Set(ignoredCategories);
+
+      if (!ignored.has("エリア") && !selectedFilterMatches("エリア", row["エリア"])) return false;
+      if (!ignored.has("テリトリー名") && !selectedFilterMatches("テリトリー名", row["テリトリー名"])) return false;
+      if (!ignored.has("MR") && !selectedFilterMatches("MR", row["MR"])) return false;
+      if (!ignored.has("医師名") && !selectedFilterMatches("医師名", row["Dr_name"])) return false;
+      if (!ignored.has("Target") && !selectedFilterMatches("Target", row["Target"])) return false;
+      if (!ignored.has("製品") && !selectedFilterMatches("製品", row["prodcut1"])) return false;
+
+      if (!ignored.has("フラグメント")) {
+        const selectedFragments = getFilterSelectionForMatch("フラグメント");
+        if (Array.isArray(selectedFragments) && !selectedFragments.includes("すべて")) {
+          const fragments = toFragmentArray(row["Email_Fragments_vod__r.Name"]);
+          return fragments.some((fragment) => selectedFragments.some((item) => normalizeName(item) === normalizeName(fragment)));
+        }
+      }
+
+      return true;
+    };
+
+    const getSummaryTargetRowsForFilters = (ignoredCategories = []) => {
+      if (state.isScreen !== "集計画面") {
+        return [];
+      }
+
+      return getTargetListRows().filter((row) => targetRowMatchesSummaryFilters(row, ignoredCategories));
+    };
+
+    const syncSelectedFilterWithOptions = (category) => {
+      const list = state.testObj?.[category]?.list;
+      const selected = state.selectedFilterItems?.[category];
+      if (!list || !Array.isArray(selected)) {
+        return;
+      }
+
+      const options = Object.keys(list);
+      if (selected.includes("すべて")) {
+        state.selectedFilterItems[category] = options;
+        if (state.selectedFilterItems2?.[category]) {
+          state.selectedFilterItems2[category] = ["すべて"];
+        }
+        setFilterBackupSelection(category, ["すべて"]);
+        removeFilterCategory(category);
+        return;
+      }
+
+      const selectableOptions = options.filter((option) => option !== "すべて");
+      const selectedInOptions = selected.filter((value) => options.includes(value));
+
+      if (
+        selectableOptions.length > 0 &&
+        selectableOptions.every((option) => selectedInOptions.includes(option))
+      ) {
+        state.selectedFilterItems[category] = options;
+        if (state.selectedFilterItems2?.[category]) {
+          state.selectedFilterItems2[category] = ["すべて"];
+        }
+        setFilterBackupSelection(category, ["すべて"]);
+        removeFilterCategory(category);
+        return;
+      }
+
+      state.selectedFilterItems[category] = selectedInOptions;
+      if (state.selectedFilterItems2?.[category]) {
+        state.selectedFilterItems2[category] = [...selectedInOptions];
+      }
+      if (state.selectFiliterCategory.includes(category)) {
+        setFilterBackupSelection(category, selectedInOptions);
+      }
+    };
+
+    const buildDetailSourceRows = (rows) => {
+      const targetRows = getTargetListRows();
+
+      const targetKeySet = new Set(targetRows.map((row) => row._targetKey));
+      const sentRows = (rows ?? [])
+        .flat(2)
+        .filter((row) => row)
+        .map((row) => {
+          const detailRow = {
+            ...row,
+            Target: row["Target"] || row["Dr_Target_Status"] || "NULL",
+            "Email_Fragments_vod__r.Name": toFragmentArray(row["Email_Fragments_vod__r.Name"]),
+            prodcut1: getDetailProductName(row),
+          };
+          const targetKey = getTargetKey(detailRow);
+
+          return {
+            ...detailRow,
+            Target: targetKeySet.has(targetKey) ? "Target" : detailRow.Target,
+            _targetKey: targetKey,
+          };
+        });
+
+      const sentTargetKeys = new Set(sentRows.filter(isSentInSelectedMonth).map((row) => row._targetKey));
+      const unsentTargetRows = targetRows.filter((row) => !sentTargetKeys.has(row._targetKey));
+
+      return [...sentRows, ...unsentTargetRows];
+    };
+
+    const normalizeSummaryEmailRow = (row, targetKeySet) => {
+      const summaryRow = {
+        ...row,
+        Target: row["Target"] || row["Dr_Target_Status"] || "NULL",
+        "Email_Fragments_vod__r.Name": toFragmentArray(row["Email_Fragments_vod__r.Name"]),
+        prodcut1: getDetailProductName(row),
+      };
+      const targetKey = getTargetKey(summaryRow);
+
+      return {
+        ...summaryRow,
+        Target: targetKeySet.has(targetKey) ? "Target" : summaryRow.Target,
+        _targetKey: targetKey,
+      };
+    };
+
+    const isFilterNarrowed = (category) => {
+      const selected = state.selectedFilterItems?.[category];
+      return Array.isArray(selected) && selected.length > 0 && !selected.includes("すべて");
+    };
+
+    const getSummaryRecordKey = (row) =>
+      [
+        normalizeName(row?.["営業部"]),
+        normalizeName(row?.["エリア"]),
+        normalizeName(row?.["テリトリー名"]),
+        normalizeName(row?.["MR"]),
+      ].join("||");
+
+    const createZeroSummaryTargetRecord = (row) => ({
+      営業部: row["営業部"],
+      エリア: row["エリア"],
+      テリトリー名: row["テリトリー名"],
+      MR: row["MR"],
+      data: [],
+      dataOrg: [],
+      dataDetail: [],
+      dataDetail2: [],
+      Total: 0,
+      Target: ["Target"],
+      "Email_Fragments_vod__r.Name": ["NULL"],
+      prodcut1: [row["prodcut1"]],
+      ユニーク: 0,
+      ターゲット数: 0,
+      オプトイン数: 0,
+      オプトイン送信数: 0,
+      オプトイン数_ターゲット数: "",
+      Dr_name: [row["Dr_name"]],
+    });
+
+    const appendMissingSummaryTargetRows = (records) => {
+      if (!isFilterNarrowed("医師名") && !isFilterNarrowed("Target")) {
+        return records;
+      }
+
+      const existingKeys = new Set(records.map(getSummaryRecordKey));
+      const zeroRows = new Map();
+
+      for (const row of getSummaryTargetRowsForFilters()) {
+        const key = getSummaryRecordKey(row);
+
+        if (existingKeys.has(key) || zeroRows.has(key)) {
+          continue;
+        }
+
+        zeroRows.set(key, createZeroSummaryTargetRecord(row));
+      }
+
+      return [...records, ...zeroRows.values()];
+    };
+
+    const getRowTotal = (row) => {
+      const count = Number(row?.Id);
+      return Number.isFinite(count) ? count : 1;
+    };
+
+    const applyDetailTotals = (rows) => {
+      const grouped = {};
+
+      for (const row of rows) {
+        const key = [
+          normalizeName(row["MR"]),
+          normalizeName(row["HP_name"]),
+          normalizeName(row["Dr_name"]),
+        ].join("||");
+
+        if (!grouped[key]) {
+          grouped[key] = [];
+        }
+        grouped[key].push(row);
+      }
+
+      for (const key in grouped) {
+        const total = grouped[key].reduce((sum, row) => {
+          return sum + getRowTotal(row);
+        }, 0);
+
+        const targetCount = grouped[key]
+          .filter((row) => row.Target === "Target")
+          .reduce((sum, row) => sum + getRowTotal(row), 0);
+
+        for (const row of grouped[key]) {
+          row.Total = total;
+          row.TargetCount = targetCount;
+        }
+      }
+
+      return rows;
+    };
 
 
     state.data = computed(() => {
       const result = [];
       const result3 = [];
 
-      let uniqueTotal = 0;
-
 
 
       const emailList = { ...emailList2 };
+      const summaryTargetKeySet = new Set(getTargetListRows().map((row) => row._targetKey));
       console.log('emailList');
 
       console.log(emailList);
@@ -2060,33 +2612,15 @@ export default defineComponent({
 
       for (const key in emailList2) {
 
-        if (state.selectFiliterCategory.includes('エリア')) {
-          if (!state.selectedFilterItemsBK2.エリア.includes(key)) {
-            continue
-          }
-        } else {
-
-          if (!state.selectedFilterItems.エリア.includes("すべて")) {
-            if (!state.selectedFilterItems.エリア.includes(key)) {
-              continue
-            }
-          }
+        if (!selectedFilterMatches("エリア", key)) {
+          continue
         }
 
 
         for (const key2 in emailList[key]) {
 
-          if (state.selectFiliterCategory.includes('テリトリー名')) {
-            if (!state.selectedFilterItemsBK2.テリトリー名.includes(key2)) {
-              continue
-            }
-          } else {
-
-            if (!state.selectedFilterItems.テリトリー名.includes("すべて")) {
-              if (!state.selectedFilterItems.テリトリー名.includes(key2)) {
-                continue
-              }
-            }
+          if (!selectedFilterMatches("テリトリー名", key2)) {
+            continue
           }
 
 
@@ -2108,17 +2642,8 @@ export default defineComponent({
             let targetCount = 0
             let docters = []
 
-            if (state.selectFiliterCategory.includes('MR')) {
-              if (!state.selectedFilterItemsBK2.MR.includes(key3)) {
-                continue
-              }
-            } else {
-
-              if (!state.selectedFilterItems.MR.includes("すべて")) {
-                if (!state.selectedFilterItems.MR.includes(key3)) {
-                  continue
-                }
-              }
+            if (!selectedFilterMatches("MR", key3)) {
+              continue
             }
 
 
@@ -2130,6 +2655,10 @@ export default defineComponent({
 
 
             for (const element in emailList[key][key2][key3]) {
+              emailList[key][key2][key3][element] = normalizeSummaryEmailRow(
+                emailList[key][key2][key3][element],
+                summaryTargetKeySet
+              );
 
 
 
@@ -2138,12 +2667,15 @@ export default defineComponent({
               }
 
               if (!state.selectedFilterItems.メール送付月.includes("すべて")) {
-                if (!state.selectedFilterItems.メール送付月.includes(dayjs(emailList[key][key2][key3][element].Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+                if (!state.selectedFilterItems.メール送付月.includes(dayjs(emailList[key][key2][key3][element].Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/M"))) {
                   continue
                 }
               }
 
-              if (!state.selectedFilterItems.Target.includes("すべて")) {
+
+
+
+              if (!isSelectedFilterAll("Target")) {
                 if (!state.selectedFilterItems.Target.includes(emailList[key][key2][key3][element]["Target"])) {
                   continue
                 }
@@ -2191,7 +2723,7 @@ export default defineComponent({
               }
 
 
-              if (!state.selectedFilterItems.医師名.includes("すべて")) {
+              if (!isSelectedFilterAll("医師名")) {
 
 
                 if (!state.selectedFilterItems.医師名.includes(emailList[key][key2][key3][element]["Dr_name"])) {
@@ -2199,6 +2731,7 @@ export default defineComponent({
                 }
 
               }
+
 
 
               if (emailList[key][key2][key3][element]["Id"]) {
@@ -2217,9 +2750,9 @@ export default defineComponent({
 
 
 
-              // produts.push(emailList[key][key2][key3][element]["prodcut1"])
+
               docters.push(emailList[key][key2][key3][element]["Dr_name"])
-              const e2 = dayjs(emailList[key][key2][key3][element]["Email_Sent_Date_vod__c"]).subtract(9, "h").format("YYYY/M")
+              const e2 = dayjs(emailList[key][key2][key3][element]["Email_Sent_Date_vod__c"]).subtract(0, "h").format("YYYY/M")
               if (!unique[e2]) {
                 unique[e2] = {}
               }
@@ -2239,7 +2772,7 @@ export default defineComponent({
               //     dataObj.push(emailList[key][key2][key3][element]);
               //   }
               // } else {
-              //   if (state.selectedFilterItems.メール送付月.includes(dayjs(emailList[key][key2][key3][element].Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+              //   if (state.selectedFilterItems.メール送付月.includes(dayjs(emailList[key][key2][key3][element].Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/M"))) {
               //     if (emailList[key][key2][key3][element]["Dr_DCF"] || emailList[key][key2][key3][element]["Dr_Target_Status"]) {
               //       dataObj.push(emailList[key][key2][key3][element]);
               //     }
@@ -2254,8 +2787,11 @@ export default defineComponent({
 
             let optNumberStr = getOptin(key3)
 
+
+
             let optNumber
             let optNumberCount = 0
+
 
             if (optNumberStr) {
               optNumber = optNumberStr.split("/")[0]
@@ -2268,7 +2804,18 @@ export default defineComponent({
                 drNameSet.has(item.Dr_name)
               ).length
 
+              // 製品でも絞り込む場合
+              // const drProductSet = new Set(
+              //   dataObj.map(item => `${item.Dr_name}__${item.prodcut1}`)
+              // )
+
+
+              // const matchCount = (optInList as any[]).filter(item =>
+              //   drProductSet.has(`${item.Dr_name}__${item.製品}`)
+              // ).length
+
               optNumberCount = matchCount
+
             } else {
               optNumber = 0
             }
@@ -2294,9 +2841,6 @@ export default defineComponent({
               オプトイン数_ターゲット数: optNumberStr,
               Dr_name: docters
             };
-
-            uniqueTotal += uniqueCount
-
             if (Targets.length > 0) {
               result3.push(rec);
             }
@@ -2305,14 +2849,9 @@ export default defineComponent({
         }
       }
 
-      console.log("result3");
-
       console.log(result3);
 
-
-
-
-      return result3
+      return appendMissingSummaryTargetRows(result3)
 
         .sort((a, b) => {
           if (state.isScreen === "集計画面") {
@@ -2368,6 +2907,7 @@ export default defineComponent({
                 if (a.オプトイン送信数 < b.オプトイン送信数) return 1;
               }
 
+
               if (state.sortObj["セカンド"]["ユニーク"] == "ASC") {
                 if (a.ユニーク > b.ユニーク) return 1;
                 if (a.ユニーク < b.ユニーク) return -1;
@@ -2392,7 +2932,12 @@ export default defineComponent({
     })
 
     let dataCont2
-    dataCont2 = computed(() => Account.getsentEmailListContentByKeyNew(props.id))
+
+    if (state.date === "newData") {
+      dataCont2 = computed(() => Account.getsentEmailListContentByKeyNew(props.id))
+    } else {
+      dataCont2 = computed(() => Account.getsentEmailListContentByKey(props.id))
+    }
 
 
     state.dataCont = computed(() => {
@@ -2431,6 +2976,10 @@ export default defineComponent({
           //        element.Dr_name = "NULL"
           //       }
 
+          if (!element.Id || isNullDoctorName(element["Dr_name"])) {
+            continue;
+          }
+
           if (Object.values(state.selectObj["送付先詳細"]["Value"]).length > 0) {
             if (element.MR !== state.selectObj["送付先詳細"]["MR"]) {
               continue
@@ -2457,7 +3006,7 @@ export default defineComponent({
               result3.push(e);
             }
             else {
-              if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+              if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/M"))) {
                 result3.push(e);
               }
             }
@@ -2466,7 +3015,7 @@ export default defineComponent({
 
 
 
-          //      let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
+          //      let sentDate = dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD")
 
           //       if (sentDate === "Invalid Date") {
           //         sentDate = "NULL"
@@ -2506,7 +3055,7 @@ export default defineComponent({
 
 
 
-          //     let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+          //     let Last_Open_Date_vod__c = dayjs(element["Last_Open_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")
           //     if (Last_Open_Date_vod__c === "Invalid Date") {
           //         Last_Open_Date_vod__c = "NULL"
           //       }
@@ -2515,7 +3064,7 @@ export default defineComponent({
           //       dataObj2[element["Dr_name"]][sentDate][templateName][FragmentsName][Last_Open_Date_vod__c] = {}
           //     }
 
-          //     let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")
+          //     let Last_Click_Date_vod__c = dayjs(element["Last_Click_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")
           //      if (Last_Click_Date_vod__c === "Invalid Date") {
           //         Last_Click_Date_vod__c = "NULL"
           //       }
@@ -2532,7 +3081,7 @@ export default defineComponent({
           //          result3.push(element);
           //       }
           //      else {
-          //   if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))) {
+          //   if (state.selectedFilterItems.メール送付月.includes(dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/M"))) {
           //       result3.push(element);
           //   }
           // }
@@ -2586,7 +3135,7 @@ export default defineComponent({
 
         }).filter((x) => {
           if (state.selectObj[state.isScreen]["sentDate"]) {
-            return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
+            return dayjs(x.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
           } else {
             return true
           }
@@ -2631,7 +3180,7 @@ export default defineComponent({
 
       return result3
         .filter((x) => {
-          if (state.selectedFilterItems.医師名.includes("すべて")) {
+          if (isSelectedFilterAll("医師名")) {
             return true;
           } else {
             return state.selectedFilterItems.医師名.includes(x.Dr_name);
@@ -2652,7 +3201,7 @@ export default defineComponent({
           }
         })
         .filter((x) => {
-          if (state.selectedFilterItems.Target.includes("すべて")) {
+          if (isSelectedFilterAll("Target")) {
             return true;
           } else {
             return state.selectedFilterItems.Target.includes(
@@ -2688,14 +3237,14 @@ export default defineComponent({
             if (!a.Email_Sent_Date_vod__c) return 1;
             if (!b.Email_Sent_Date_vod__c) return -1;
 
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return -1;
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return 1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return -1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return 1;
           } else if (state.sortObj3["メール送付日"] == "ASC") {
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return 1;
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return -1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return 1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return -1;
           } else if (state.sortObj3["メール送付日"] == "DESC") {
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return -1;
-            if (dayjs(a.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD")) return 1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") > dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return -1;
+            if (dayjs(a.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD") < dayjs(b.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD")) return 1;
           }
 
 
@@ -2758,33 +3307,33 @@ export default defineComponent({
 
               if (!a.Last_Open_Date_vod__c) return 1;
               if (!b.Last_Open_Date_vod__c) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
 
             } else if (state.sortObj3["セカンド"]["最終開封日時"] == "DESC") {
               if (!a.Last_Open_Date_vod__c) return -1;
               if (!b.Last_Open_Date_vod__c) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
             }
 
             if (state.sortObj3["セカンド"]["最終クリック日時"] == "ASC") {
 
 
 
-              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
 
 
             } else if (state.sortObj3["セカンド"]["最終クリック日時"] == "DESC") {
 
 
-              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-              if (dayjs(a.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Click_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
 
 
 
@@ -2797,8 +3346,8 @@ export default defineComponent({
 
               if (a.Click_Count_vod__c > b.Click_Count_vod__c) return -1;
               if (a.Click_Count_vod__c < b.Click_Count_vod__c) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
 
 
             } else if (state.sortObj3["セカンド"]["クリック回数"] == "DESC") {
@@ -2806,8 +3355,8 @@ export default defineComponent({
 
               if (a.Click_Count_vod__c > b.Click_Count_vod__c) return 1;
               if (a.Click_Count_vod__c < b.Click_Count_vod__c) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
 
 
 
@@ -2820,8 +3369,8 @@ export default defineComponent({
 
               if (a.Open_Count_vod__c > b.Open_Count_vod__c) return -1;
               if (a.Open_Count_vod__c < b.Open_Count_vod__c) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
 
 
             } else if (state.sortObj3["セカンド"]["開封回数"] == "DESC") {
@@ -2829,8 +3378,8 @@ export default defineComponent({
 
               if (a.Open_Count_vod__c > b.Open_Count_vod__c) return 1;
               if (a.Open_Count_vod__c < b.Open_Count_vod__c) return -1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-              if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+              if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
 
 
 
@@ -2843,8 +3392,8 @@ export default defineComponent({
 
             if (!a.Last_Open_Date_vod__c) return -1;
             if (!b.Last_Open_Date_vod__c) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
-            if (dayjs(a.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
+            if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") > dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return 1;
+            if (dayjs(a.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") < dayjs(b.Last_Open_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss")) return -1;
           }
 
           return 0;
@@ -2901,22 +3450,23 @@ export default defineComponent({
         if (itemParent) {
           const items = itemParent.children;
           const item = itemParent.lastElementChild;
-          const itemChild = item.lastElementChild;
+          const itemChild = item?.lastElementChild;
+          const itemChildLast = itemChild?.lastElementChild;
+
+          if (item && itemChild && itemChildLast) {
+            const childWidth = item.clientWidth * items.length
+            console.log(itemParent.clientWidth);
+            console.log(childWidth);
 
 
+            const itemPostion = childWidth + (itemChild.clientWidth / 2)
+            console.log(itemPostion);
 
-          const childWidth = item.clientWidth * items.length
-          console.log(itemParent.clientWidth);
-          console.log(childWidth);
-
-
-          const itemPostion = childWidth + (itemChild.clientWidth / 2)
-          console.log(itemPostion);
-
-          if (itemParent.clientWidth < itemPostion) {
-            itemChild.lastElementChild.classList.add('gridnone')
-          } else {
-            itemChild.lastElementChild.classList.remove('gridnone')
+            if (itemParent.clientWidth < itemPostion) {
+              itemChildLast.classList.add('gridnone')
+            } else {
+              itemChildLast.classList.remove('gridnone')
+            }
           }
 
         }
@@ -2957,22 +3507,23 @@ export default defineComponent({
         if (itemParent) {
           const items = itemParent.children;
           const item = itemParent.lastElementChild;
-          const itemChild = item.lastElementChild;
+          const itemChild = item?.lastElementChild;
+          const itemChildLast = itemChild?.lastElementChild;
+
+          if (item && itemChild && itemChildLast) {
+            const childWidth = item.clientWidth * items.length
+            console.log(itemParent.clientWidth);
+            console.log(childWidth);
 
 
+            const itemPostion = childWidth + (itemChild.clientWidth / 2)
+            console.log(itemPostion);
 
-          const childWidth = item.clientWidth * items.length
-          console.log(itemParent.clientWidth);
-          console.log(childWidth);
-
-
-          const itemPostion = childWidth + (itemChild.clientWidth / 2)
-          console.log(itemPostion);
-
-          if (itemParent.clientWidth < itemPostion) {
-            itemChild.lastElementChild.classList.add('gridnone')
-          } else {
-            itemChild.lastElementChild.classList.remove('gridnone')
+            if (itemParent.clientWidth < itemPostion) {
+              itemChildLast.classList.add('gridnone')
+            } else {
+              itemChildLast.classList.remove('gridnone')
+            }
           }
 
         }
@@ -3008,10 +3559,10 @@ export default defineComponent({
         totalArray = state.data.map((p) => p["Total"]).filter((v) => v);
       } else if (state.isScreen === "送付先詳細") {
 
-        let emailList2 = dataCont2.value
+        let emailList2 = buildDetailSourceRows(dataCont2.value)
         console.log(emailList2);
 
-        const totalArray2 = emailList2
+        const totalArray2 = applyDetailTotals(emailList2
           .flat(2)
           .filter((x) => {
             if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
@@ -3051,7 +3602,7 @@ export default defineComponent({
             }
           })
           .filter((x) => {
-            if (state.selectedFilterItems.Target.includes("すべて")) {
+            if (isSelectedFilterAll("Target")) {
               return true;
             } else {
               return state.selectedFilterItems.Target.includes(
@@ -3079,7 +3630,7 @@ export default defineComponent({
             }
           })
           .filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
+            if (isSelectedFilterAll("医師名")) {
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(x.Dr_name);
@@ -3098,7 +3649,7 @@ export default defineComponent({
             } else {
               return state.selectedFilterItems3.施設名.includes(x.HP_name);
             }
-          })
+          }))
         let dataObj2 = {};
         for (const element of totalArray2) {
 
@@ -3143,9 +3694,15 @@ export default defineComponent({
 
 
               const totals = dataObj2[key][key2][key3].map((p) => p["Id"])
+              const targetTotals = dataObj2[key][key2][key3]
+                .filter((p) => p.Target === "Target")
+                .map((p) => p["Id"])
 
 
-              const sum = totals.reduce((sum, num) => Number(sum) + Number(num), 0);
+              const sum = totals.reduce((sum, num) => {
+                const count = Number(num);
+                return Number(sum) + (Number.isFinite(count) ? count : 1);
+              }, 0);
               for (const element of dataObj2[key][key2][key3]) {
 
                 // if (element.Dr_name === "NULL") {
@@ -3153,6 +3710,10 @@ export default defineComponent({
                 // }
 
                 element.Total = sum
+                element.TargetCount = targetTotals.reduce((sum, num) => {
+                  const count = Number(num);
+                  return Number(sum) + (Number.isFinite(count) ? count : 1);
+                }, 0)
 
 
                 totalArray3.push(element.Total);
@@ -3520,8 +4081,6 @@ export default defineComponent({
           }
         }
 
-
-
         if (state.isScreen === "集計画面") {
           state.girdArry = [];
 
@@ -3595,7 +4154,7 @@ export default defineComponent({
           const rankObj2 = {};
           const rankObj3 = {};
 
-          let emailList2 = dataCont2.value
+          let emailList2 = buildDetailSourceRows(dataCont2.value)
           console.log("emailList2");
 
           console.log(emailList2);
@@ -3642,7 +4201,7 @@ export default defineComponent({
               }
             })
             .filter((x) => {
-              if (state.selectedFilterItems.Target.includes("すべて")) {
+              if (isSelectedFilterAll("Target")) {
                 return true;
               } else {
                 return state.selectedFilterItems.Target.includes(
@@ -3669,7 +4228,7 @@ export default defineComponent({
               }
             })
             .filter((x) => {
-              if (state.selectedFilterItems.医師名.includes("すべて")) {
+              if (isSelectedFilterAll("医師名")) {
                 return true;
               } else {
                 return state.selectedFilterItems.医師名.includes(x.Dr_name);
@@ -3689,6 +4248,8 @@ export default defineComponent({
                 return state.selectedFilterItems3.施設名.includes(x.HP_name);
               }
             })
+
+          totalArray2 = applyDetailTotals(totalArray2)
             .sort((a, b) => {
               if (state.sortObj2["MR"] == "default") {
                 const firstKeySortResult = a["MR"].localeCompare(b["MR"], "ja");
@@ -3797,6 +4358,9 @@ export default defineComponent({
               rankObj2["data"][element2.MR][element2.HP_name][element2.Dr_name];
             }
 
+            const currentDoctor = rankObj2["data"][element2.MR][element2.HP_name][element2.Dr_name];
+            const isOptInDenied = Boolean(currentDoctor?.isOptInDenied) || isOptInDeniedDoctor(element2);
+
             rankObj2["data"][element2.MR][element2.HP_name][element2.Dr_name] = {
               MR: element2.MR,
               HP_name: element2.HP_name,
@@ -3804,7 +4368,8 @@ export default defineComponent({
               分類: element2.分類,
               Total: element2.Total,
               Target: element2.Target,
-              ターゲット数: element2.Target == "Target" ? element2.Total : 0,
+              isOptInDenied,
+              ターゲット数: element2.TargetCount ?? (element2.Target == "Target" ? element2.Total : 0),
               "Email_Fragments_vod__r.Name": element2["Email_Fragments_vod__r.Name"],
               ratio: {
                 "--size": `calc( ${(element2.Total / maxIndex80) * 100} / 100 )`,
@@ -3870,7 +4435,10 @@ export default defineComponent({
               }
             })
 
+          totalArray3 = applyDetailTotals(totalArray3)
+
           state.dataDetailOrg = [...totalArray3]
+          creatDatDocter(totalArray3, "goScreen");
 
           state.dataDetail = Object.entries(rankObj2)
             .map(([key, value]) => ({ [key]: value }))
@@ -4023,6 +4591,8 @@ export default defineComponent({
 
         data = state.dataOrg
 
+        rebuildSummaryHierarchyFilters(state.dataOrg);
+
       }
 
       console.log(state.selectedFilterItems["フラグメント"]);
@@ -4041,7 +4611,7 @@ export default defineComponent({
             );
           }
         }).filter((x) => {
-          if (state.selectedFilterItems.医師名.includes("すべて")) {
+          if (isSelectedFilterAll("医師名")) {
             return true;
           } else {
             return state.selectedFilterItems.医師名.includes(
@@ -4051,16 +4621,10 @@ export default defineComponent({
         })
       }
 
-      state.testObj["フラグメント"].list = {
-        すべて: "すべて",
-      };
-
-
+      prepareFilterForRebuild("フラグメント");
       if (state.selectFiliterCategory.includes("フラグメント")) {
-        state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
         creatDataFlagment(data2, "goScreen");
       } else {
-        state.selectedFilterItems["フラグメント"] = ["すべて"]
         creatDataFlagment(data2, false);
       }
 
@@ -4074,7 +4638,7 @@ export default defineComponent({
             return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
           }
         }).filter((x) => {
-          if (state.selectedFilterItems.医師名.includes("すべて")) {
+          if (isSelectedFilterAll("医師名")) {
             return true;
           } else {
             return state.selectedFilterItems.医師名.includes(
@@ -4089,16 +4653,10 @@ export default defineComponent({
 
 
 
-      state.testObj["製品"].list = {
-        すべて: "すべて",
-      };
-
-
+      prepareFilterForRebuild("製品");
       if (state.selectFiliterCategory.includes("製品")) {
-        state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
         creatDataProduct(data2, "goScreen");
       } else {
-        state.selectedFilterItems["製品"] = ["すべて"]
         creatDataProduct(data2, false);
       }
 
@@ -4128,16 +4686,10 @@ export default defineComponent({
 
 
 
-      state.testObj["医師名"].list = {
-        すべて: "すべて",
-      };
-
-
+      prepareFilterForRebuild("医師名");
       if (state.selectFiliterCategory.includes("医師名")) {
-        state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
         creatDatDocter(data2, "goScreen");
       } else {
-        state.selectedFilterItems["医師名"] = ["すべて"]
         creatDatDocter(data2, false);
       }
 
@@ -4162,7 +4714,7 @@ export default defineComponent({
             );
           }
         }).filter((x) => {
-          if (state.selectedFilterItems.医師名.includes("すべて")) {
+          if (isSelectedFilterAll("医師名")) {
             return true;
           } else {
             return state.selectedFilterItems.医師名.includes(
@@ -4177,16 +4729,10 @@ export default defineComponent({
 
 
 
-      state.testObj["Target"].list = {
-        すべて: "すべて",
-      };
-
-
+      prepareFilterForRebuild("Target");
       if (state.selectFiliterCategory.includes("Target")) {
-        state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
         creatDataTarget(data2, "goScreen");
       } else {
-        state.selectedFilterItems["Target"] = ["すべて"]
         creatDataTarget(data2, false);
       }
 
@@ -4243,7 +4789,7 @@ export default defineComponent({
 
     const onTapSelectBoxItemCall = async (_obj) => {
       onTapClearButton();
-      state.selectedFilterItems[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
+      setSelectedFilter(_obj.category, _obj.selectedValue);
       // state.selectedFilterItems['MR'] = ["すべて"];
 
 
@@ -4259,19 +4805,7 @@ export default defineComponent({
 
 
 
-        if (state.selectedFilterItems[element].includes("すべて")) {
-          state.selectedFilterItems[element] = ["すべて"];
-          state.selectedFilterItems2[element] = ["すべて"];
-          state.testObj[element].list = {
-            すべて: "すべて",
-          };
-        } else {
-          state.testObj[element].list = {
-            すべて: "すべて",
-          };
-          state.selectedFilterItems2[element] = state.selectedFilterItems[element];
-          state.selectedFilterItems[element] = ["すべて"];
-        }
+        prepareFilterForRebuild(element);
       }
 
 
@@ -4303,19 +4837,7 @@ export default defineComponent({
 
 
 
-          if (state.selectedFilterItems[element].includes("すべて")) {
-            state.selectedFilterItems[element] = ["すべて"];
-            state.selectedFilterItems2[element] = ["すべて"];
-            state.testObj[element].list = {
-              すべて: "すべて",
-            };
-          } else {
-            state.testObj[element].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems2[element] = state.selectedFilterItems[element];
-            state.selectedFilterItems[element] = ["すべて"];
-          }
+          prepareFilterForRebuild(element);
         }
 
         creatDataMR(state.data, "メール送付月");
@@ -4409,65 +4931,10 @@ export default defineComponent({
       }
 
 
-      if (state.selectedFilterItems["Target"].includes("すべて")) {
-        state.selectedFilterItems["Target"] = ["すべて"];
-        state.selectedFilterItems2["Target"] = ["すべて"];
-
-        state.testObj["Target"].list = {
-          すべて: "すべて",
-        };
-      } else {
-        state.testObj["Target"].list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-        state.selectedFilterItems["Target"] = ["すべて"];
-      }
-
-      if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
-        state.selectedFilterItems["フラグメント"] = ["すべて"];
-        state.selectedFilterItems2["フラグメント"] = ["すべて"];
-
-        state.testObj["フラグメント"].list = {
-          すべて: "すべて",
-        };
-      } else {
-        state.testObj["フラグメント"].list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-        state.selectedFilterItems["フラグメント"] = ["すべて"];
-      }
-
-      if (state.selectedFilterItems["医師名"].includes("すべて")) {
-        state.selectedFilterItems["医師名"] = ["すべて"];
-        state.selectedFilterItems2["医師名"] = ["すべて"];
-
-        state.testObj["医師名"].list = {
-          すべて: "すべて",
-        };
-      } else {
-        state.testObj["医師名"].list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
-        state.selectedFilterItems["医師名"] = ["すべて"];
-      }
-
-      if (state.selectedFilterItems["製品"].includes("すべて")) {
-        state.selectedFilterItems["製品"] = ["すべて"];
-        state.selectedFilterItems2["製品"] = ["すべて"];
-
-        state.testObj["製品"].list = {
-          すべて: "すべて",
-        };
-      } else {
-        state.testObj["製品"].list = {
-          すべて: "すべて",
-        };
-        state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
-        state.selectedFilterItems["製品"] = ["すべて"];
-      }
+      prepareFilterForRebuild("Target");
+      prepareFilterForRebuild("フラグメント");
+      prepareFilterForRebuild("医師名");
+      prepareFilterForRebuild("製品");
 
 
       console.log("tate.selectedFilterItems2");
@@ -4487,7 +4954,7 @@ export default defineComponent({
     const onTapSelectBoxItem = async (_obj) => {
       onTapClearButton();
 
-      state.selectedFilterItems[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
+      setSelectedFilter(_obj.category, _obj.selectedValue);
 
       let flg = false
       let selectFiliterCategoryBK = []
@@ -4499,13 +4966,15 @@ export default defineComponent({
           state.selectFiliterCategory.push(_obj.category);
         }
 
-        const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+        const newArray = getCurrentFilterSelection(_obj.category);
         console.log(newArray);
 
-        if (newArray.includes("すべて")) {
-          state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+        if (!isFilterActive(_obj.category)) {
+          removeFilterCategory(_obj.category);
+          setFilterBackupSelection(_obj.category, ["すべて"]);
         } else {
-          state.selectedFilterItemsBK[_obj.category] = newArray;
+          state.selectedFilterItemsBK[_obj.category] = [...newArray];
+          setFilterBackupSelection(_obj.category, newArray);
         }
 
         let target = [...state.data]
@@ -4513,10 +4982,7 @@ export default defineComponent({
         creatData(target, false);
 
         if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-          state.testObj.フラグメント.list = {
-            すべて: "すべて",
-          };
-          state.selectedFilterItems.フラグメント = ["すべて"]
+          resetFilterToAll("フラグメント");
 
           let data = state.dataContentOrg3.filter((x) => {
             if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -4539,10 +5005,7 @@ export default defineComponent({
 
 
         if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-          state.testObj.製品.list = {
-            すべて: "すべて",
-          };
-          state.selectedFilterItems.製品 = ["すべて"]
+          resetFilterToAll("製品");
           let data = state.dataContentOrg3.filter((x) => {
             if (state.selectedFilterItems.フラグメント.includes("すべて")) {
               return true;
@@ -4569,13 +5032,14 @@ export default defineComponent({
             state.selectFiliterCategory.push(_obj.category);
           }
 
-          const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+          const newArray = getCurrentFilterSelection(_obj.category);
           console.log("newArray");
           console.log(newArray);
 
 
-          if (newArray.includes("すべて")) {
-            state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+          if (!isFilterActive(_obj.category)) {
+            removeFilterCategory(_obj.category);
+            setFilterBackupSelection(_obj.category, ["すべて"]);
           }
 
 
@@ -4604,13 +5068,14 @@ export default defineComponent({
 
             console.log(state.dataDetailOrg);
 
-            const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+            const newArray = getCurrentFilterSelection(_obj.category);
             console.log("newArray");
             console.log(newArray);
 
 
-            if (newArray.includes("すべて")) {
-              state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+            if (!isFilterActive(_obj.category)) {
+              removeFilterCategory(_obj.category);
+              setFilterBackupSelection(_obj.category, ["すべて"]);
               state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
 
               await onResize();
@@ -4618,7 +5083,8 @@ export default defineComponent({
               state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
 
               await onResize();
-              state.selectedFilterItemsBK[_obj.category] = newArray;
+              state.selectedFilterItemsBK[_obj.category] = [...newArray];
+              setFilterBackupSelection(_obj.category, newArray);
 
 
 
@@ -4705,10 +5171,7 @@ export default defineComponent({
 
 
           if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-            state.testObj.フラグメント.list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems.フラグメント = ["すべて"]
+            prepareFilterForRebuild("フラグメント");
 
             let data = state.dataDetailOrg.filter((x) => {
               if (state.selectedFilterItems.製品.includes("すべて")) {
@@ -4731,10 +5194,7 @@ export default defineComponent({
 
 
           if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-            state.testObj.製品.list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems.製品 = ["すべて"]
+            prepareFilterForRebuild("製品");
             let data = state.dataDetailOrg.filter((x) => {
               if (state.selectedFilterItems.フラグメント.includes("すべて")) {
                 return true;
@@ -4746,10 +5206,7 @@ export default defineComponent({
           }
 
           if (_obj.category !== "Target" && !state.selectFiliterCategory.includes("Target")) {
-            state.testObj.Target.list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems.Target = ["すべて"]
+            prepareFilterForRebuild("Target");
             let data = state.dataDetailOrg.filter((x) => {
               if (state.selectedFilterItems.フラグメント.includes("すべて")) {
                 return true;
@@ -4772,10 +5229,7 @@ export default defineComponent({
           }
 
           if (_obj.category !== "医師名" && !state.selectFiliterCategory.includes("医師名")) {
-            state.testObj.医師名.list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems.医師名 = ["すべて"]
+            prepareFilterForRebuild("医師名");
             let data = state.dataDetailOrg.filter((x) => {
               if (state.selectedFilterItems.フラグメント.includes("すべて")) {
                 return true;
@@ -4816,7 +5270,7 @@ export default defineComponent({
       const selectFiliterCategoryNumber = state.selectFiliterCategory.indexOf(_obj.category)
       const agoNum = selectFiliterCategoryNumber - 1
 
-      const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
+      const newArray = getCurrentFilterSelection(_obj.category);
       let orgList
       if (selectFiliterCategoryNumber === 0) {
         orgList = state.selectedFilterItemsBK[_obj.category]
@@ -4829,12 +5283,13 @@ export default defineComponent({
 
 
 
-      if (newArray.includes('すべて') && orgList.length === newArray.length) {
-        state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
+      if (!isFilterActive(_obj.category)) {
+        removeFilterCategory(_obj.category);
+        setFilterBackupSelection(_obj.category, ["すべて"]);
         flg = true
       } else {
-        state.selectedFilterItemsBK2[_obj.category] = newArray
-        state.testObjBK[_obj.category].list = state.testObj[_obj.category].list
+        setFilterBackupSelection(_obj.category, newArray);
+        state.testObjBK[_obj.category].list = { ...state.testObj[_obj.category].list }
       }
 
       for (const key in state.selectedFilterItems) {
@@ -4885,24 +5340,21 @@ export default defineComponent({
               if (selectFiliterCategoryBK.length === 0) {
                 selectFiliterCategoryBK = [...state.selectFiliterCategory]
               }
-              state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== key);
-              state.testObj[key].list = { "すべて": "すべて" }
-              state.selectedFilterItems[key] = ["すべて"];
+              resetFilterToAll(key);
             } else if (targetNum < selectFiliterCategoryNumber) {
-              state.selectedFilterItems[key] = ["すべて"];
-              state.testObj[key].list = { "すべて": "すべて" }
+              // Keep upstream filters active so later filters narrow within them.
 
             }
 
 
 
-            if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
+            const selectableCount = Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length;
+            if (selectableCount > 0 && selectableCount === state.selectedFilterItems[key].length) {
               state.selectedFilterItems[key].unshift('すべて')
             }
 
           } else {
-            state.selectedFilterItems[key] = ["すべて"];
-            state.testObj[key].list = { "すべて": "すべて" }
+            resetFilterToAll(key);
           }
 
 
@@ -4944,8 +5396,8 @@ export default defineComponent({
                   return { ...acc, [value]: value };
                 }, {});
               } else {
-                state.testObj[key].list = state.testObjBK[key].list
-                state.selectedFilterItems[key] = state.selectedFilterItemsBK2[key]
+                state.testObj[key].list = { ...state.testObjBK[key].list }
+                state.selectedFilterItems[key] = [...state.selectedFilterItemsBK2[key]]
               }
 
             } else if (targetNum > selectFiliterCategoryNumber) {
@@ -4962,15 +5414,15 @@ export default defineComponent({
 
 
 
-            if (Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length === state.selectedFilterItems[key].length) {
+            const selectableCount = Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length;
+            if (selectableCount > 0 && selectableCount === state.selectedFilterItems[key].length) {
               state.selectedFilterItems[key].unshift('すべて')
             }
 
           } else {
 
 
-            state.selectedFilterItems[key] = ["すべて"];
-            state.testObj[key].list = { "すべて": "すべて" }
+            resetFilterToAll(key);
           }
 
         }
@@ -5028,6 +5480,7 @@ export default defineComponent({
               return Object.values(state.testObj[element].list).includes(x)
 
             })
+            setFilterBackupSelection(element, state.selectedFilterItems[element]);
           }
         }
 
@@ -5487,7 +5940,7 @@ export default defineComponent({
     const creatDataMR = (data, category) => {
       const mrList = data
         // .filter((x) => {
-        //   if (x.Total === 0 && state.isScreen === "集計画面") {
+        //   if (state.isScreen === "集計画面") {
         //     return false;
         //   } else {
         //     return true;
@@ -5495,12 +5948,8 @@ export default defineComponent({
         // })
         .map((p) => p["MR"])
 
-
       for (const key of mrList) {
-        if (!state.testObj.MR.list[key]) {
-          state.testObj.MR.list[key] = key;
-          state.selectedFilterItems.MR.push(key);
-        }
+        addFilterOption("MR", key);
         // state.selectedFilterItems.MR.push(key);
       }
 
@@ -5518,9 +5967,11 @@ export default defineComponent({
       // }
       // }
       if (state.selectedFilterItemsBK.MR.length === 0) {
-        state.selectedFilterItemsBK.MR = state.selectedFilterItems.MR
+        state.selectedFilterItemsBK.MR = [...state.selectedFilterItems.MR]
 
       }
+
+      syncSelectedFilterWithOptions("MR");
 
 
       return mrList;
@@ -5538,10 +5989,7 @@ export default defineComponent({
         .map((p) => p["エリア"])
 
       for (const key of mrList) {
-        if (!state.testObj.エリア.list[key]) {
-          state.testObj.エリア.list[key] = key;
-          state.selectedFilterItems.エリア.push(key);
-        }
+        addFilterOption("エリア", key);
       }
 
       // if (category === "メール送付月") {
@@ -5552,9 +6000,11 @@ export default defineComponent({
 
       // }
       if (state.selectedFilterItemsBK.エリア.length === 0) {
-        state.selectedFilterItemsBK.エリア = state.selectedFilterItems.エリア
+        state.selectedFilterItemsBK.エリア = [...state.selectedFilterItems.エリア]
 
       }
+
+      syncSelectedFilterWithOptions("エリア");
 
       return mrList;
     };
@@ -5571,10 +6021,7 @@ export default defineComponent({
         .map((p) => p["テリトリー名"])
 
       for (const key of territoryList) {
-        if (!state.testObj.テリトリー名.list[key]) {
-          state.testObj.テリトリー名.list[key] = key;
-          state.selectedFilterItems.テリトリー名.push(key);
-        }
+        addFilterOption("テリトリー名", key);
       }
 
       // if (category === "メール送付月") {
@@ -5584,9 +6031,11 @@ export default defineComponent({
       // }
 
       if (state.selectedFilterItemsBK.テリトリー名.length === 0) {
-        state.selectedFilterItemsBK.テリトリー名 = state.selectedFilterItems.テリトリー名
+        state.selectedFilterItemsBK.テリトリー名 = [...state.selectedFilterItems.テリトリー名]
 
       }
+
+      syncSelectedFilterWithOptions("テリトリー名");
 
       return territoryList;
     };
@@ -5626,11 +6075,15 @@ export default defineComponent({
     const creatDataTarget = (data, category) => {
       // state.testObj.Target.list["すべて"] = "すべて"
       // state.selectedFilterItems.Target = ["すべて"]
+      removeNullFilterOptions("Target");
 
       console.log('data');
 
       console.log(data);
-      const mrList = data
+      const targetFilterSource = state.isScreen === "集計画面"
+        ? [...data, ...getSummaryTargetRowsForFilters(["Target"])]
+        : data;
+      const mrList = targetFilterSource
         .filter((x) => {
           if (x.Total === 0 && state.isScreen === "半期実績") {
             return false;
@@ -5640,6 +6093,7 @@ export default defineComponent({
         })
         .map((p) => p["Target"])
         .flat(2)
+        .filter((target) => !isNullLikeValue(target))
         .sort((a, b) => {
           if (a > b) return 1;
           if (a < b) return -1;
@@ -5650,10 +6104,7 @@ export default defineComponent({
       if (category !== "goScreen") {
 
         for (const key of mrList) {
-          if (!state.testObj.Target.list[key]) {
-            state.testObj.Target.list[key] = key;
-            state.selectedFilterItems.Target.push(key);
-          }
+          addFilterOption("Target", key);
           // state.selectedFilterItems.MR.push(key);
         }
       } else {
@@ -5664,15 +6115,7 @@ export default defineComponent({
           // state.selectedFilterItems.MR.push(key);
         }
 
-        if (!state.selectedFilterItems2.Target.includes("すべて")) {
-          console.log(state.selectedFilterItems2.Target);
-
-          if (state.selectedFilterItems2.Target.length > 0) {
-            state.selectedFilterItems.Target = state.selectedFilterItems2.Target;
-          }
-
-
-        }
+        restoreFilterSelection("Target");
 
       }
 
@@ -5681,21 +6124,18 @@ export default defineComponent({
 
 
       if (state.selectedFilterItemsBK.Target.length === 0) {
-        state.selectedFilterItemsBK.Target = state.selectedFilterItems.Target
+        state.selectedFilterItemsBK.Target = [...state.selectedFilterItems.Target]
 
       }
 
 
       if (category === "メール送付月") {
-        if (!state.selectedFilterItems2.Target.includes("すべて")) {
-          if (state.selectedFilterItems2.Target.length > 0) {
-            state.selectedFilterItems.Target = state.selectedFilterItems2.Target;
-          }
-
-
-        }
+        restoreFilterSelection("Target");
       }
 
+
+      removeNullFilterOptions("Target");
+      syncSelectedFilterWithOptions("Target");
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5751,10 +6191,7 @@ export default defineComponent({
 
       if (category !== "goScreen") {
         for (const key of mrList) {
-          if (!state.testObj.フラグメント.list[key]) {
-            state.testObj.フラグメント.list[key] = key;
-            state.selectedFilterItems.フラグメント.push(key);
-          }
+          addFilterOption("フラグメント", key);
           // state.selectedFilterItems.MR.push(key);
         }
       } else {
@@ -5765,15 +6202,7 @@ export default defineComponent({
           // state.selectedFilterItems.MR.push(key);
         }
 
-        if (!state.selectedFilterItems2.フラグメント.includes("すべて")) {
-          console.log(state.selectedFilterItems2.フラグメント);
-
-          if (state.selectedFilterItems2.フラグメント.length > 0) {
-            state.selectedFilterItems.フラグメント = state.selectedFilterItems2.フラグメント;
-          }
-
-
-        }
+        restoreFilterSelection("フラグメント");
 
       }
 
@@ -5785,20 +6214,15 @@ export default defineComponent({
 
 
       if (state.selectedFilterItemsBK.フラグメント.length === 0) {
-        state.selectedFilterItemsBK.フラグメント = state.selectedFilterItems.フラグメント
+        state.selectedFilterItemsBK.フラグメント = [...state.selectedFilterItems.フラグメント]
       }
 
 
       if (category === "メール送付月") {
-        if (!state.selectedFilterItems2.フラグメント.includes("すべて")) {
-          if (state.selectedFilterItems2.フラグメント.length > 0) {
-            state.selectedFilterItems.フラグメント = state.selectedFilterItems2.フラグメント;
-          }
-
-
-        }
+        restoreFilterSelection("フラグメント");
       }
 
+      syncSelectedFilterWithOptions("フラグメント");
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -5853,10 +6277,7 @@ export default defineComponent({
 
       if (category !== "goScreen") {
         for (const key of mrList) {
-          if (!state.testObj.製品.list[key]) {
-            state.testObj.製品.list[key] = key;
-            state.selectedFilterItems.製品.push(key);
-          }
+          addFilterOption("製品", key);
           // state.selectedFilterItems.MR.push(key);
         }
       } else {
@@ -5867,15 +6288,7 @@ export default defineComponent({
           // state.selectedFilterItems.MR.push(key);
         }
 
-        if (!state.selectedFilterItems2.製品.includes("すべて")) {
-          console.log(state.selectedFilterItems2.製品);
-
-          if (state.selectedFilterItems2.製品.length > 0) {
-            state.selectedFilterItems.製品 = state.selectedFilterItems2.製品;
-          }
-
-
-        }
+        restoreFilterSelection("製品");
 
       }
 
@@ -5887,19 +6300,15 @@ export default defineComponent({
 
 
       if (state.selectedFilterItemsBK.製品.length === 0) {
-        state.selectedFilterItemsBK.製品 = state.selectedFilterItems.製品
+        state.selectedFilterItemsBK.製品 = [...state.selectedFilterItems.製品]
       }
 
 
       if (category === "メール送付月") {
-        if (!state.selectedFilterItems2.製品.includes("すべて")) {
-          if (state.selectedFilterItems2.製品.length > 0) {
-            state.selectedFilterItems.製品 = state.selectedFilterItems2.製品;
-          }
-
-
-        }
+        restoreFilterSelection("製品");
       }
+
+      syncSelectedFilterWithOptions("製品");
 
 
       // if (category === "Target") {
@@ -5932,8 +6341,12 @@ export default defineComponent({
     const creatDatDocter = (data, category) => {
       // state.testObj.Target.list["すべて"] = "すべて"
       // state.selectedFilterItems.Target = ["すべて"]
+      removeNullFilterOptions("医師名");
 
-      const mrList = data
+      const doctorFilterSource = state.isScreen === "集計画面"
+        ? [...data, ...getSummaryTargetRowsForFilters(["医師名"])]
+        : data;
+      const mrList = doctorFilterSource
         .filter((x) => {
           if (x.Total === 0 && state.isScreen === "半期実績") {
             return false;
@@ -5943,6 +6356,7 @@ export default defineComponent({
         })
         .map((p) => p["Dr_name"])
         .flat(2)
+        .filter((name) => !isNullDoctorName(name))
         .sort((a, b) => {
           if (a > b) return 1;
           if (a < b) return -1;
@@ -5955,10 +6369,7 @@ export default defineComponent({
 
       if (category !== "goScreen") {
         for (const key of mrList) {
-          if (!state.testObj.医師名.list[key]) {
-            state.testObj.医師名.list[key] = key;
-            state.selectedFilterItems.医師名.push(key);
-          }
+          addFilterOption("医師名", key);
           // state.selectedFilterItems.MR.push(key);
         }
       } else {
@@ -5969,15 +6380,7 @@ export default defineComponent({
           // state.selectedFilterItems.MR.push(key);
         }
 
-        if (!state.selectedFilterItems2.医師名.includes("すべて")) {
-          console.log(state.selectedFilterItems2.医師名);
-
-          if (state.selectedFilterItems2.医師名.length > 0) {
-            state.selectedFilterItems.医師名 = state.selectedFilterItems2.医師名;
-          }
-
-
-        }
+        restoreFilterSelection("医師名");
 
       }
 
@@ -5988,20 +6391,16 @@ export default defineComponent({
 
 
       if (state.selectedFilterItemsBK.医師名.length === 0) {
-        state.selectedFilterItemsBK.医師名 = state.selectedFilterItems.医師名
+        state.selectedFilterItemsBK.医師名 = [...state.selectedFilterItems.医師名]
       }
 
 
       if (category === "メール送付月") {
-        if (!state.selectedFilterItems2.医師名.includes("すべて")) {
-          if (state.selectedFilterItems2.医師名.length > 0) {
-            state.selectedFilterItems.医師名 = state.selectedFilterItems2.医師名;
-          }
-
-
-        }
+        restoreFilterSelection("医師名");
       }
 
+      removeNullFilterOptions("医師名");
+      syncSelectedFilterWithOptions("医師名");
 
       // if (category === "Target") {
       //   for (const element of state.selectedFilterItems.Target) {
@@ -6037,10 +6436,7 @@ export default defineComponent({
       }
 
       for (const key of state.monthArryOrg) {
-        if (!state.testObj.メール送付月.list[key]) {
-          state.testObj.メール送付月.list[key] = key;
-          state.selectedFilterItems.メール送付月.push(key);
-        }
+        addFilterOption("メール送付月", key);
       }
     };
 
@@ -6070,7 +6466,7 @@ export default defineComponent({
           .map((p) => Object.values(p["dataOrg"]))
           .filter((v) => v.length > 0)
           .flat(2)
-          .map((p) => dayjs(p.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/M"))
+          .map((p) => dayjs(p.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/M"))
 
         monthData = [...new Set(monthData)];
 
@@ -6192,7 +6588,7 @@ export default defineComponent({
 
 
 
-          let sentDate = dayjs(element2.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD")
+          let sentDate = dayjs(element2.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD")
           if (sentDate === "Invalid Date") {
             sentDate = "NULL"
           }
@@ -6296,16 +6692,7 @@ export default defineComponent({
       }
     };
 
-    const onTapOutside2 = async (evt) => {
-
-      state.isHoverFlag25 = false
-
-    }
-
-
     const onTapOutside = async (evt) => {
-
-
 
 
 
@@ -6316,7 +6703,8 @@ export default defineComponent({
         evt.target.classList.contains("select__value") ||
         evt.target.classList.contains("select__item") ||
         evt.target.classList.contains('title-wrap') ||
-        evt.target.classList.contains('sort-button')
+        evt.target.classList.contains('sort-button') ||
+        evt.target.classList.contains('optin-button')
       ) {
         return;
       }
@@ -6499,13 +6887,6 @@ export default defineComponent({
             _obj = `<span class="fwb">${items2.length}</span>個の項目を選択済み・カウント(移行済みデータ)の合計:<span class="fwb">${sum.toLocaleString()}</span>`;
           }
 
-          const sum = number.reduce((sum, num) => Number(sum) + Number(num), 0);
-          if (sum === 0) {
-            return;
-          }
-
-
-
           (state.selectObj[state.isScreen] = {
             Category: evt.target.dataset.kinds,
             Value: evt.target.textContent,
@@ -6593,7 +6974,7 @@ export default defineComponent({
               );
             }
           }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
+            if (isSelectedFilterAll("医師名")) {
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
@@ -6603,15 +6984,12 @@ export default defineComponent({
           })
 
 
-          if (!state.selectedFilterItems.Target.includes("すべて")) {
-            state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
+          if (!isSelectedFilterAll("Target")) {
+            rememberFilterSelection("Target");
             creatDataTarget(data, "goScreen");
           } else {
 
-            state.testObj["Target"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems["Target"] = ["すべて"]
+            resetFilterToAll("Target");
             creatDataTarget(data, false);
           }
 
@@ -6633,7 +7011,7 @@ export default defineComponent({
               );
             }
           }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
+            if (isSelectedFilterAll("医師名")) {
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
@@ -6645,10 +7023,10 @@ export default defineComponent({
 
 
           if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-            state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+            rememberFilterSelection("フラグメント");
             creatDataFlagment(data, "goScreen");
           } else {
-            state.selectedFilterItems["フラグメント"] = ["すべて"]
+            resetFilterToAll("フラグメント");
             creatDataFlagment(data, false);
           }
 
@@ -6662,7 +7040,7 @@ export default defineComponent({
               return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
             }
           }).filter((x) => {
-            if (state.selectedFilterItems.医師名.includes("すべて")) {
+            if (isSelectedFilterAll("医師名")) {
               return true;
             } else {
               return state.selectedFilterItems.医師名.includes(
@@ -6677,13 +7055,10 @@ export default defineComponent({
 
 
           if (!state.selectedFilterItems.製品.includes("すべて")) {
-            state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
+            rememberFilterSelection("製品");
             creatDataProduct(data, "goScreen");
           } else {
-            state.testObj["製品"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems["製品"] = ["すべて"]
+            resetFilterToAll("製品");
             creatDataProduct(data, false);
           }
 
@@ -6710,14 +7085,11 @@ export default defineComponent({
 
 
 
-          if (!state.selectedFilterItems.医師名.includes("すべて")) {
-            state.selectedFilterItems2["医師名"] = state.selectedFilterItems["医師名"];
+          if (!isSelectedFilterAll("医師名")) {
+            rememberFilterSelection("医師名");
             creatDatDocter(data, "goScreen");
           } else {
-            state.testObj["医師名"].list = {
-              すべて: "すべて",
-            };
-            state.selectedFilterItems["医師名"] = ["すべて"]
+            resetFilterToAll("医師名");
             creatDatDocter(data, false);
           }
 
@@ -6874,12 +7246,12 @@ export default defineComponent({
 
 
         if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-          state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
+          rememberFilterSelection("フラグメント");
           creatDataFlagment(state.dataContentOrg3, "goScreen");
         } else {
 
 
-          state.selectedFilterItems["フラグメント"] = ["すべて"]
+          resetFilterToAll("フラグメント");
           creatDataFlagment(state.dataContentOrg3, false);
         }
 
@@ -6889,13 +7261,10 @@ export default defineComponent({
 
 
         if (!state.selectedFilterItems.製品.includes("すべて")) {
-          state.selectedFilterItems2["製品"] = state.selectedFilterItems["製品"];
+          rememberFilterSelection("製品");
           creatDataProduct(state.dataContentOrg3, "goScreen");
         } else {
-          state.testObj["製品"].list = {
-            すべて: "すべて",
-          };
-          state.selectedFilterItems["製品"] = ["すべて"]
+          resetFilterToAll("製品");
           creatDataProduct(state.dataContentOrg3, false);
         }
 
@@ -7038,7 +7407,7 @@ export default defineComponent({
               for (const element of _obj[key]) {
                 (state.selectObj[state.isScreen] = {
                   docter: element.Dr_name,
-                  sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+                  sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
                   templateName: text,
                   Id: element.Id,
                 })
@@ -7048,7 +7417,7 @@ export default defineComponent({
             //  for (const element of _obj) {
             //   (state.selectObj[state.isScreen] = {
             //       docter: element.Dr_name,
-            //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
             //        templateName: element["Approved_Email_Template_vod__r.Name"],
             //       flagmentName: text,
             //         Id: element.Id,
@@ -7057,7 +7426,7 @@ export default defineComponent({
 
             (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
               flagmentName: _obj["Email_Fragments_vod__r.Name"],
               Id: _obj.Id,
@@ -7069,7 +7438,7 @@ export default defineComponent({
           } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
             (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
               flagmentName: _obj["Email_Fragments_vod__r.Name"],
               Last_Click_Date_vod__c: false,
@@ -7079,12 +7448,12 @@ export default defineComponent({
             })
 
             //  _obj.isActive = true
-            text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+            text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
           }
           else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
             (state.selectObj[state.isScreen] = {
               docter: _obj.Dr_name,
-              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+              sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
               templateName: _obj["Approved_Email_Template_vod__r.Name"],
               flagmentName: _obj["Email_Fragments_vod__r.Name"],
               Last_Click_Date_vod__c: true,
@@ -7094,7 +7463,7 @@ export default defineComponent({
             })
 
             //  _obj.isActive = true
-            text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+            text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
           }
 
 
@@ -7119,7 +7488,7 @@ export default defineComponent({
 
           }).filter((x) => {
             if (state.selectObj[state.isScreen]["sentDate"]) {
-              return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
+              return dayjs(x.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD") === state.selectObj[state.isScreen]["sentDate"]
             } else {
               return true
             }
@@ -7222,10 +7591,13 @@ export default defineComponent({
         }
 
 
+
       }
+
       if (flg === true) {
         setPouUp2_2(_obj, text, evt);
       }
+
 
 
       // }
@@ -7422,6 +7794,7 @@ export default defineComponent({
         }
 
         state.isHoverFlag = false;
+
       } else if (state.isScreen === "送付内容") {
 
         console.log(_obj);
@@ -7503,6 +7876,8 @@ export default defineComponent({
 
 
       }
+
+
 
 
       // }
@@ -7627,7 +8002,7 @@ export default defineComponent({
             for (const element of _obj[key]) {
               (state.selectObj2[state.isScreen] = {
                 docter: element.Dr_name,
-                sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+                sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
                 templateName: text,
                 Id: element.Id,
               })
@@ -7637,7 +8012,7 @@ export default defineComponent({
           //  for (const element of _obj) {
           //   (state.selectObj2[state.isScreen] = {
           //       docter: element.Dr_name,
-          //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+          //       sentDate: dayjs(element.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
           //        templateName: element["Approved_Email_Template_vod__r.Name"],
           //       flagmentName: text,
           //        Id: element.Id,
@@ -7646,7 +8021,7 @@ export default defineComponent({
 
           (state.selectObj2[state.isScreen] = {
             docter: _obj.Dr_name,
-            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
             templateName: _obj["Approved_Email_Template_vod__r.Name"],
             flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Id: _obj.Id,
@@ -7658,7 +8033,7 @@ export default defineComponent({
         } else if (evt.target.dataset.kinds === "Last_Open_Date_vod__c") {
           (state.selectObj2[state.isScreen] = {
             docter: _obj.Dr_name,
-            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
             templateName: _obj["Approved_Email_Template_vod__r.Name"],
             flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Id: _obj.Id,
@@ -7666,12 +8041,12 @@ export default defineComponent({
           })
 
           //  _obj.isActive = true
-          text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+          text = _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
         }
         else if (evt.target.dataset.kinds === "Last_Click_Date_vod__c") {
           (state.selectObj2[state.isScreen] = {
             docter: _obj.Dr_name,
-            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD"),
+            sentDate: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD"),
             templateName: _obj["Approved_Email_Template_vod__r.Name"],
             flagmentName: _obj["Email_Fragments_vod__r.Name"],
             Id: _obj.Id,
@@ -7679,7 +8054,7 @@ export default defineComponent({
           })
 
           //  _obj.isActive = true
-          text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
+          text = _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "NULL"
         }
 
 
@@ -7707,7 +8082,7 @@ export default defineComponent({
 
         }).filter((x) => {
           if (state.selectObj2[state.isScreen]["sentDate"]) {
-            return dayjs(x.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY-MM-DD") === state.selectObj2[state.isScreen]["sentDate"]
+            return dayjs(x.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY-MM-DD") === state.selectObj2[state.isScreen]["sentDate"]
           } else {
             return true
           }
@@ -7835,9 +8210,9 @@ export default defineComponent({
         if (evt.target.dataset.kinds == "クリック回数") {
           state.popupData = {
             メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
-            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
-            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD"),
+            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "",
             医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
             フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
             Dr_DCF: _obj.Dr_DCF,
@@ -7850,9 +8225,9 @@ export default defineComponent({
         } else {
           state.popupData = {
             メールテンプレート: _obj["Approved_Email_Template_vod__r.Name"],
-            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(9, "h").format("YYYY/MM/DD"),
-            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
-            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(9, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            メール送付日: dayjs(_obj.Email_Sent_Date_vod__c).subtract(0, "h").format("YYYY/MM/DD"),
+            最終クリック日時: _obj.Last_Click_Date_vod__c ? dayjs(_obj["Last_Click_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "",
+            最終開封日時: _obj.Last_Open_Date_vod__c ? dayjs(_obj["Last_Open_Date_vod__c"]).subtract(0, "h").format("YYYY-MM-DD HH:mm:ss") : "",
             医師名: _obj.Dr_name == "NULL" ? "" : _obj.Dr_name,
             フラグメント: _obj["Email_Fragments_vod__r.Name"] == "NULL" ? "" : _obj["Email_Fragments_vod__r.Name"],
             Dr_DCF: _obj.Dr_DCF,
@@ -7865,80 +8240,6 @@ export default defineComponent({
         }
 
       }
-
-
-    };
-
-    const onHoverItemq = (evt) => {
-      state.isHoverFlag25 = true;
-
-      const ua = navigator.userAgent;
-
-      if (state.isHoverFlagCount === 0 && ua.indexOf("iPad") <= 0) {
-        state.isHoverFlag25 = false;
-      } else {
-        setPouUpq(evt)
-      }
-
-
-    };
-
-
-    const setPouUpq = async (evt) => {
-      if (!state.isHoverFlag25) {
-        state.isHoverFlag25 = true;
-      }
-
-
-
-      const stalker = document.getElementById("stalker2");
-      const button = document.getElementById("question-button");
-      const stalker3 = document.getElementById("stalker3");
-      const stalker4 = document.getElementById("stalker4");
-      let x
-      let x2
-
-
-      const windowSize = window.innerWidth;
-
-      x = button.getBoundingClientRect().left - 45;
-
-
-      if (windowSize < x + stalker.clientWidth) {
-        x = window.innerWidth - stalker.clientWidth - 15;
-
-        x2 = button.getBoundingClientRect().left - x - 2
-        stalker3.style.left = x2 + "px";
-        stalker4.style.left = x2 + "px";
-      } else {
-        x = button.getBoundingClientRect().left - 45;
-        x2 = 10
-
-        stalker3.style.left = x2 + "%";
-        stalker4.style.left = x2 + "%";
-      }
-
-      const y = button.getBoundingClientRect().top - stalker.offsetHeight - 35;
-
-
-
-
-
-      stalker.style.transform = "translate(" + x + "px, " + y + "px)";
-
-
-    };
-
-
-    const onTapTargetq = async (evt) => {
-      const ua = navigator.userAgent;
-
-
-
-
-
-
-      setPouUpq(evt)
 
 
     };
@@ -8430,7 +8731,6 @@ export default defineComponent({
       state.isPopup2 = false
     }
 
-
     const onTapTargetPopup = async (mr, evt) => {
       if (!state.selectedFilterItemsOptIn.許諾製品) {
         return
@@ -8451,7 +8751,6 @@ export default defineComponent({
         if (a.HP_name > b.HP_name) return 1;
         if (a.HP_name < b.HP_name) return -1;
       });
-
       const uniqueUsers = Array.from(
         new Map(result.map((user) => [user.uniqueID, user])).values()
       );
@@ -8465,22 +8764,217 @@ export default defineComponent({
     const onTapOptInPopup = async () => {
 
       state.isPopup2 = true
+
+      // if (!state.selectedFilterItemsOptIn.許諾製品) {
+      //   return null
+      // }
+      console.log(state.optInTotaldata);
+
+      // let result = state.optInDetaildata.filter((x) => {
+      //   return mr === x.MR;
+      // }).filter((x) => {
+      //   return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+      // }).sort((a, b) => {
+
+      //   if (a.HP_name > b.HP_name) return 1;
+      //   if (a.HP_name < b.HP_name) return -1;
+      // });
+      // const uniqueUsers = Array.from(
+      //   new Map(result.map((user) => [user.uniqueID, user])).values()
+      // );
+
+      // console.log(uniqueUsers);
+
+
+      // state.optInDetaildataFilter = uniqueUsers
     }
+
+    const onTapScreen3 = async () => {
+      window.com.veeva.clm.gotoSlide(`CSL_REPORT_0.0.zip`, `CSL_MULTICHANNEL_REPORT`)
+
+
+      // }
+    };
+
+    const onTapOutside2 = async (evt) => {
+
+      state.isHoverFlag25 = false
+
+    }
+
+
+    const onHoverItemq = (evt) => {
+      state.isHoverFlag25 = true;
+
+      const ua = navigator.userAgent;
+
+      if (state.isHoverFlagCount === 0 && ua.indexOf("iPad") <= 0) {
+        state.isHoverFlag25 = false;
+      } else {
+        setPouUpq(evt)
+      }
+
+
+    };
+
+
+    const setPouUpq = async (evt) => {
+      if (!state.isHoverFlag25) {
+        state.isHoverFlag25 = true;
+      }
+
+
+
+      const stalker = document.getElementById("stalker2");
+      const button = document.getElementById("question-button");
+      const stalker3 = document.getElementById("stalker3");
+      const stalker4 = document.getElementById("stalker4");
+      let x
+      let x2
+
+
+      const windowSize = window.innerWidth;
+
+      x = button.getBoundingClientRect().left - 45;
+
+
+      if (windowSize < x + stalker.clientWidth) {
+        x = window.innerWidth - stalker.clientWidth - 15;
+
+        x2 = button.getBoundingClientRect().left - x - 2
+        stalker3.style.left = x2 + "px";
+        stalker4.style.left = x2 + "px";
+      } else {
+        x = button.getBoundingClientRect().left - 45;
+        x2 = 10
+
+        stalker3.style.left = x2 + "%";
+        stalker4.style.left = x2 + "%";
+      }
+
+      const y = button.getBoundingClientRect().top - stalker.offsetHeight - 35;
+
+
+
+
+
+      stalker.style.transform = "translate(" + x + "px, " + y + "px)";
+
+
+    };
+
+
+    const onTapTargetq = async (evt) => {
+      const ua = navigator.userAgent;
+
+
+
+
+
+
+      setPouUpq(evt)
+
+
+    };
+
 
     const uniqueTotal = computed(() => {
       const uniqueValues = new Set(
         state.data.map(item => item.ユニーク)
       )
 
-      console.log('state.data');
-      console.log(state.data);
-
-      console.log('uniqueValues');
-      console.log(uniqueValues);
-
       return Array.from(uniqueValues)
         .reduce((sum, v) => Number(sum) + Number(v), 0)
     })
+
+    const parseOptInCountText = (value) => {
+      const text = String(value ?? "").trim();
+      const [optInCount, targetCount] = text.split("/");
+      return {
+        text,
+        optInCount: Number(optInCount) || 0,
+        targetCount: Number(targetCount) || 0,
+      };
+    };
+
+    const getOptionalNumber = (value) => {
+      if (value === null || value === undefined || value === "") {
+        return null;
+      }
+
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
+    };
+
+    const collectVisibleSummaryRows = (node, rows) => {
+      if (!node || typeof node !== "object") {
+        return;
+      }
+
+      if (
+        Object.prototype.hasOwnProperty.call(node, "MR") &&
+        Object.prototype.hasOwnProperty.call(node, "Total")
+      ) {
+        rows.push(node);
+        return;
+      }
+
+      for (const value of Object.values(node)) {
+        collectVisibleSummaryRows(value, rows);
+      }
+    };
+
+    const getVisibleSummaryRows = () => {
+      const rows = [];
+
+      for (const obj of state.data2 ?? []) {
+        collectVisibleSummaryRows(obj?.data, rows);
+      }
+
+      return rows;
+    };
+
+    const optInSummaryTotal = computed(() => {
+      if (!state.selectedFilterItemsOptIn.許諾製品) {
+        return null;
+      }
+
+      const visibleRows = getVisibleSummaryRows();
+
+      if (visibleRows.length === 0) {
+        return null;
+      }
+
+      const total = visibleRows.reduce(
+        (acc, row) => {
+          const displayedOptInCounts = parseOptInCountText(getOptin(row?.["MR"]));
+          const sentOptInCount = getOptionalNumber(row?.["オプトイン数"]) ?? displayedOptInCounts.optInCount;
+
+          acc.optInCount += displayedOptInCounts.optInCount;
+          acc.targetCount += displayedOptInCounts.targetCount;
+
+          if (displayedOptInCounts.text) {
+            acc.sentCount += getOptionalNumber(row?.["オプトイン送信数"]) ?? 0;
+            acc.sentOptInCount += sentOptInCount;
+          }
+
+          return acc;
+        },
+        {
+          optInCount: 0,
+          targetCount: 0,
+          sentCount: 0,
+          sentOptInCount: 0,
+        }
+      );
+
+      return {
+        ...total,
+        optInTargetText: `${total.optInCount}/${total.targetCount}`,
+        sentOptInText: `${total.sentCount}/${total.sentOptInCount}`,
+      };
+    });
+
 
 
     return {
@@ -8490,12 +8984,12 @@ export default defineComponent({
       dayjs,
       isLoadComplete,
       uniqueTotal,
+      optInSummaryTotal,
       onTapSelectBoxItem,
       onTapSelectBoxItem2,
       onTapClearButton,
       getShareName,
       onTapOutside,
-      onTapOutside2,
       getSpareClass,
       onHoverItem2_2,
       onHoverItem2_2_2,
@@ -8515,12 +9009,15 @@ export default defineComponent({
       onTapClose2,
       onTapTargetPopup,
       onTapOptInPopup,
+      onTapScreen3,
+      onTapOutside2,
       onHoverItemq,
       onTapTargetq
     };
   },
 });
 </script>
+
 <style lang="scss" scoped>
 @import "~@/assets/css/colors";
 
@@ -8720,8 +9217,12 @@ export default defineComponent({
 
     &3 {
       min-width: 810px;
-      max-width: 1265px;
       width: 100%;
+
+      .docter-text {
+        margin-left: 10px;
+      }
+
     }
 
     &-note {
@@ -8909,6 +9410,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     padding: 0 125px;
+    min-width: 800px;
 
     & ul {
       display: flex;
@@ -9184,6 +9686,10 @@ export default defineComponent({
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
+
+      &.optin-denied-doctor {
+        color: #64aee8;
+      }
     }
 
 
@@ -9557,6 +10063,25 @@ export default defineComponent({
       width: 130px;
       padding-top: 10px;
     }
+  }
+
+  &-optin-label {
+    width: 531px;
+    color: #666666;
+    font-weight: 600;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+  }
+
+  &-optin-cell {
+    width: 100px;
+    color: #666666;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
   }
 
   &2 {
@@ -9948,6 +10473,7 @@ export default defineComponent({
 
   }
 }
+
 
 .opt-value2 {
   display: flex;
