@@ -29,8 +29,8 @@
                   <div class="filter-screen-text">←前画面に戻る際に選択</div>
                 </div>
 
-                <div class="pr20" :style="state.isScreen === '集計画面' ? 'justify-content: space-between;' : ''"
-                  style="display: flex;">
+                <div class="pr20 filter-control-row" :key="state.isScreen"
+                  :class="{ 'filter-control-row--summary': state.isScreen === '集計画面' }">
                   <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'メール送付月'"
                     :select-obj="state.testObj" :selected-value="state.selectedFilterItems.メール送付月" />
 
@@ -60,12 +60,32 @@
                   <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'150px'" :category="'フラグメント'"
                     :select-obj="state.testObj" :selected-value="state.selectedFilterItems.フラグメント" />
 
-                  <SelectBox3 class="mb20 mr10" @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'製品'"
-                    :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+                  <div class="filter-with-info mb20 mr10">
+                    <SelectBox3 @tap-item="onTapSelectBoxItem" :width="'90px'" :category="'製品'"
+                      :select-obj="state.testObj" :selected-value="state.selectedFilterItems.製品" />
+                    <button type="button" class="filter-info-button" aria-label="製品の説明"
+                      :aria-expanded="state.activeFilterInfo === '製品'" aria-controls="product-filter-info"
+                      @pointerdown.stop @mousedown.stop @tap.stop @click="onTapFilterInfo('製品')">
+                      <span aria-hidden="true">?</span>
+                    </button>
+                    <div id="product-filter-info" class="filter-info-pop" v-if="state.activeFilterInfo === '製品'">
+                      メール送付実績のある製品での絞り込みが可能。
+                    </div>
+                  </div>
 
-                  <SelectBox5 class="mb20 mr10" @tap-item="onTapSelectBoxItemOptIn" :width="'90px'" :category="'許諾製品'"
-                    :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品"
-                    v-if="state.isScreen === '集計画面'" />
+                  <div class="filter-with-info mb20 mr10" v-if="state.isScreen === '集計画面'">
+                    <SelectBox3 @tap-item="onTapSelectBoxItemOptIn" :width="'90px'" :category="'許諾製品'"
+                      :select-obj="state.optInObj" :selected-value="state.selectedFilterItemsOptIn.許諾製品" />
+                    <button type="button" class="filter-info-button" aria-label="許諾製品の説明"
+                      :aria-expanded="state.activeFilterInfo === '許諾製品'" aria-controls="consent-filter-info"
+                      @pointerdown.stop @mousedown.stop @tap.stop @click="onTapFilterInfo('許諾製品')">
+                      <span aria-hidden="true">?</span>
+                    </button>
+                    <div id="consent-filter-info" class="filter-info-pop filter-info-pop--wide"
+                      v-if="state.activeFilterInfo === '許諾製品'">
+                      選択した製品のメール配信許諾状況の確認が可能（選択でオプトイン数、ターゲット数が表示）
+                    </div>
+                  </div>
                 </div>
 
 
@@ -1091,8 +1111,7 @@
             </ul>
           </PopupScrollOpt>
 
-          <PopupScrollOptTotal v-if="state.isPopup2" :tap-close="onTapClose2"
-            :title="state.selectedFilterItemsOptIn.許諾製品 ? 'エリア別オプトイン状況 【許諾製品】' + state.selectedFilterItemsOptIn.許諾製品 : 'エリア別オプトイン状況'">
+          <PopupScrollOptTotal v-if="state.isPopup2" :tap-close="onTapClose2" :title="getOptInPopupTitle()">
             <ul class="opt-value2" v-for="(obj, index) in state.optInTotaldata" :key="index">
               <li>
                 {{ obj.エリア }}
@@ -1118,9 +1137,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, reactive, onMounted, onUpdated, onUnmounted, watch, nextTick } from "vue";
+import { buildEmailFilterOptions, matchesEmailFilter, normalizeFilterSelection } from "@/utils/emailFilters";
 // import IScroll from "iscroll";
 import IScroll from "iscroll/build/iscroll-probe.js";
-import { SelectBox, SelectBox3, Loading, SelectBox5, PopupScrollOpt, PopupScrollOptTotal } from "@/components/presentational/organisms";
+import { SelectBox, SelectBox3, Loading, PopupScrollOpt, PopupScrollOptTotal } from "@/components/presentational/organisms";
 import { SelectBox2 } from "@/components/presentational/organisms";
 import dayjs from "dayjs";
 import { sleep } from "@/utils/sleep";
@@ -1285,13 +1305,13 @@ interface State {
   optInDetaildata: any;
   optInDetaildataFilter: any;
   optInTotaldata: any;
+  activeFilterInfo: any;
 }
 
 export default defineComponent({
   components: {
     SelectBox3,
     SelectBox2,
-    SelectBox5,
     PopupScrollOpt,
     PopupScrollOptTotal
   },
@@ -1400,12 +1420,14 @@ export default defineComponent({
       optInObj: {
         許諾製品: {
           name: "許諾製品",
-          list: ["デフォルトに戻す"],
+          list: {
+            すべて: "すべて",
+          },
         },
       },
 
       selectedFilterItemsOptIn: {
-        許諾製品: "",
+        許諾製品: ["すべて"],
       },
 
       testObj: {
@@ -1737,6 +1759,7 @@ export default defineComponent({
       optInDetaildata: [],
       optInDetaildataFilter: [],
       optInTotaldata: [],
+      activeFilterInfo: null,
     });
 
     const isLoadComplete = computed(() => ApplicationStore.isLoadComplete);
@@ -1868,7 +1891,7 @@ export default defineComponent({
       for (const element of optInDetail) {
 
         if (props.id === element["営業部"]) {
-          element["uniqueID"] = element.Dr_name + element.HP_name
+          element["uniqueID"] = element.Dr_DCF || (element.Dr_name + element.HP_name)
           result.push(element)
         }
 
@@ -1889,6 +1912,140 @@ export default defineComponent({
 
     const isNullDoctorName = isNullLikeValue;
 
+    const toBool = (v) => {
+      if (typeof v === "boolean") return v;
+      const s = String(v ?? "").trim().toLowerCase();
+      return s === "true" || s === "1" || s === "yes";
+    };
+
+    const getOptInProductOptions = () => {
+      const list = state.optInObj?.許諾製品?.list ?? {};
+      return Object.keys(list).filter((value) => value !== "すべて");
+    };
+
+    const getOptInProductSelection = () => {
+      const selected = state.selectedFilterItemsOptIn?.許諾製品;
+      if (Array.isArray(selected)) return selected;
+      if (!selected) return [];
+      return [selected];
+    };
+
+    const syncSelectedOptInProductsWithOptions = () => {
+      state.selectedFilterItemsOptIn.許諾製品 = normalizeFilterSelection(getOptInProductSelection());
+    };
+
+    const setSelectedOptInProducts = (selectedValue) => {
+      const nextSelection = normalizeFilterSelection(selectedValue);
+      state.selectedFilterItemsOptIn.許諾製品 = nextSelection;
+      syncSelectedOptInProductsWithOptions();
+    };
+
+    const getSelectedOptInProducts = () => {
+      const selected = getOptInProductSelection();
+      const options = getOptInProductOptions();
+
+      if (selected.includes("すべて")) {
+        return options;
+      }
+
+      return selected.filter((value) => options.includes(value));
+    };
+
+    const hasSelectedOptInProducts = () => getSelectedOptInProducts().length > 0;
+
+    const optInProductMatches = (product) => {
+      const selectedProducts = getSelectedOptInProducts();
+      if (selectedProducts.length === 0) {
+        return false;
+      }
+
+      return selectedProducts.some((selectedProduct) => normalizeName(selectedProduct) === normalizeName(product));
+    };
+
+    const getDoctorFallbackKey = (row) =>
+      [
+        normalizeName(row?.["Dr_name"]),
+        normalizeName(row?.["HP_name"]),
+      ].join("||");
+
+    const getOptInDetailUniqueId = (row) => {
+      const drDcf = normalizeName(row?.["Dr_DCF"]);
+      return isNullLikeValue(drDcf) ? getDoctorFallbackKey(row) : drDcf;
+    };
+
+    const getDoctorMatchKeys = (row) => {
+      const keys = [getOptInDetailUniqueId(row), getDoctorFallbackKey(row)]
+        .filter((key) => !isNullLikeValue(key));
+
+      return [...new Set(keys)];
+    };
+
+    const dedupeOptInDetailRows = (rows) => {
+      const uniq = new Map();
+
+      for (const row of rows ?? []) {
+        if (isNullDoctorName(row?.["Dr_name"])) {
+          continue;
+        }
+
+        const key = getOptInDetailUniqueId(row);
+        const consent = toBool(row?.["許諾"]);
+        const prev = uniq.get(key);
+
+        if (!prev) {
+          uniq.set(key, {
+            ...row,
+            uniqueID: key,
+            許諾: consent,
+          });
+        } else {
+          prev.許諾 = prev.許諾 || consent;
+          if (consent) {
+            prev.PersonEmail = row?.["PersonEmail"] ?? prev.PersonEmail;
+          }
+        }
+      }
+
+      return Array.from(uniq.values());
+    };
+
+    const summarizeOptInDetailRows = (rows) => {
+      const uniqueRows = dedupeOptInDetailRows(rows);
+
+      return {
+        targetCount: uniqueRows.length,
+        optInCount: uniqueRows.filter((row) => toBool(row?.["許諾"])).length,
+        rows: uniqueRows,
+      };
+    };
+
+    const getOptInProductLabel = () => {
+      const selected = getOptInProductSelection();
+      const selectedProducts = getSelectedOptInProducts();
+      const optionCount = getOptInProductOptions().length;
+
+      if (selectedProducts.length === 0 || selected.includes("すべて")) {
+        return "";
+      }
+
+      if (selectedProducts.length === 1) {
+        return selectedProducts[0];
+      }
+
+      if (selectedProducts.length === optionCount) {
+        return "";
+      }
+
+      return selectedProducts.join("、");
+    };
+
+    const getOptInPopupTitle = () => {
+      const label = getOptInProductLabel();
+      return label
+        ? `エリア別オプトイン状況 【許諾製品】 ${label}`
+        : "エリア別オプトイン状況";
+    };
+
     const removeNullFilterOptions = (category) => {
       const list = state.testObj?.[category]?.list;
       if (!list) {
@@ -1902,27 +2059,18 @@ export default defineComponent({
       }
     };
 
-    const toBool = (v) => {
-      if (typeof v === "boolean") return v;
-      const s = String(v ?? "").trim().toLowerCase();
-      return s === "true" || s === "1" || s === "yes";
-    };
-
-    // 製品別に計算 → エリアでトータル（製品合算＝Drは製品跨ぎで二重カウント）
+    // 選択された許諾製品内で、同一医師は1件として集計する。
     const summarizeByDeptAreaTotalFromProducts = (rows) => {
       const uniq = new Map();
 
       for (const r of rows ?? []) {
         const dept = String(r["営業部"] ?? "").trim();
         const area = String(r["エリア"] ?? "").trim();
-        const product = String(r["製品"] ?? "").trim();
-        const dr = normalizeName(r["Dr_name"]);
-        const hp = normalizeName(r["HP_name"]);  // ← 追加
+        const doctorKey = getOptInDetailUniqueId(r);
 
-        if (!dept || !area || !product || !dr || !hp) continue;
+        if (!dept || !area || isNullLikeValue(doctorKey)) continue;
 
-
-        const k = `${dept}||${area}||${product}||${dr}||${hp}`;
+        const k = `${dept}||${area}||${doctorKey}`;
         const consent = toBool(r["許諾"]);
 
         const prev = uniq.get(k);
@@ -1930,9 +2078,7 @@ export default defineComponent({
           uniq.set(k, {
             営業部: dept,
             エリア: area,
-            製品: product,
-            Dr_name: dr,
-            HP_name: hp,
+            doctorKey,
             許諾: consent
           });
         } else {
@@ -1940,52 +2086,20 @@ export default defineComponent({
         }
       }
 
-      // 製品別集計
-      const prodAgg = new Map();
+      const areaAgg = new Map();
 
       for (const v of uniq.values()) {
-        const k = `${v.営業部}||${v.エリア}||${v.製品}`;
+        const k = `${v.営業部}||${v.エリア}`;
 
-        const cur = prodAgg.get(k) ?? {
+        const cur = areaAgg.get(k) ?? {
           営業部: v.営業部,
           エリア: v.エリア,
-          製品: v.製品,
           総数: 0,
           許諾数: 0
         };
 
         cur.総数 += 1;
         if (v.許諾) cur.許諾数 += 1;
-
-        prodAgg.set(k, cur);
-      }
-
-      const products = Array.from(prodAgg.values()).map(p => ({
-        ...p,
-        許諾割合: Number(((p.許諾数 / p.総数) * 100).toFixed(1))
-      }));
-
-      // エリア合算（製品別を足し上げ）
-      const areaAgg = new Map();
-
-      for (const p of products) {
-        const k = `${p.営業部}||${p.エリア}`;
-        const cur = areaAgg.get(k) ?? {
-          営業部: p.営業部,
-          エリア: p.エリア,
-          総数: 0,
-          許諾数: 0,
-          products: []
-        };
-
-        cur.総数 += p.総数;
-        cur.許諾数 += p.許諾数;
-        cur.products.push({
-          製品: p.製品,
-          総数: p.総数,
-          許諾数: p.許諾数,
-          許諾割合: p.許諾割合
-        });
 
         areaAgg.set(k, cur);
       }
@@ -2000,25 +2114,21 @@ export default defineComponent({
 
 
     state.optInTotaldata = computed(() => {
-      const selectedProduct = state.selectedFilterItemsOptIn.許諾製品;
-      const optInDetailRows = selectedProduct
-        ? state.optInDetaildata.filter((r) => r.製品 === selectedProduct)
-        : state.optInDetaildata;
+      const optInDetailRows = hasSelectedOptInProducts()
+        ? state.optInDetaildata.filter((r) => optInProductMatches(r.製品))
+        : [];
       const summary = summarizeByDeptAreaTotalFromProducts(optInDetailRows);
+      const deptRows = optInDetailRows.filter((r) => r["営業部"] === props.id);
 
       const rows = summary
         .filter(r => r["営業部"] === props.id)
         .sort((a, b) => String(a["エリア"]).localeCompare(String(b["エリア"]), "ja"));
 
-      // エリア合算の総計（これも製品合算の足し上げ）
-      const total = rows.reduce(
-        (acc, r) => {
-          acc.総数 += Number(r.総数 ?? 0);
-          acc.許諾数 += Number(r.許諾数 ?? 0);
-          return acc;
-        },
-        { 総数: 0, 許諾数: 0 }
-      );
+      const totalSummary = summarizeOptInDetailRows(deptRows);
+      const total = {
+        総数: totalSummary.targetCount,
+        許諾数: totalSummary.optInCount,
+      };
 
       if (total.総数 > 0) {
         rows.push({
@@ -2039,41 +2149,36 @@ export default defineComponent({
     console.log(state.optIndata);
 
     const getOptin = (name) => {
-      if (!state.selectedFilterItemsOptIn.許諾製品) {
+      if (!hasSelectedOptInProducts()) {
         return null
       }
-      let result = state.optIndata.filter((x) => {
+      let result = state.optInDetaildata.filter((x) => {
         return name === x.MR;
       }).filter((x) => {
-        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+        return optInProductMatches(x.製品);
       })
 
-      let str
-      if (result.length === 0) {
-        str = ""
-      } else {
-        str = `${result[0]["オプトイン数"]}/${result[0]["ターゲット数"]}`
-      }
+      const summary = summarizeOptInDetailRows(result);
+      const str = summary.targetCount === 0
+        ? ""
+        : `${summary.optInCount}/${summary.targetCount}`;
 
       return str
     };
 
 
     const getOptin2 = (name) => {
+      if (!hasSelectedOptInProducts()) {
+        return [];
+      }
+
       let result = state.optInDetaildata.filter((x) => {
         return name === x.MR;
       }).filter((x) => {
-        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
-      })
-        .filter((x) => {
-          return x.許諾 === true;
-        })
+        return optInProductMatches(x.製品);
+      });
 
-      const uniqueUsers = Array.from(
-        new Map(result.map((user) => [user.uniqueID, user])).values()
-      );
-
-      return uniqueUsers
+      return dedupeOptInDetailRows(result).filter((x) => toBool(x.許諾));
     };
 
     const normalizeProductName = (value) =>
@@ -2098,8 +2203,7 @@ export default defineComponent({
     const getOptInDoctorKey = (row) =>
       [
         normalizeName(row?.["営業部"] ?? props.id),
-        normalizeName(row?.["HP_name"]),
-        normalizeName(row?.["Dr_name"]),
+        getOptInDetailUniqueId(row),
       ].join("||");
 
     const optInDeniedKeys = computed(() => {
@@ -2108,7 +2212,7 @@ export default defineComponent({
       const detailRows = Array.isArray(state.optInDetaildata) ? state.optInDetaildata : [];
 
       for (const row of detailRows) {
-        if (isNullDoctorName(row?.["Dr_name"])) {
+        if (isNullDoctorName(row?.["Dr_name"]) || !optInProductMatches(row?.["製品"])) {
           continue;
         }
 
@@ -2200,7 +2304,7 @@ export default defineComponent({
       const targetRowMap = new Map();
       (targetListData as any[])
         .filter((row) => normalizeName(row["営業部"]) === normalizeName(props.id))
-        .filter(matchesSummarySelection)
+        .filter((row) => state.isScreen === "集計画面" || matchesSummarySelection(row))
         .map(createUnsentTargetRow)
         .filter((row) => !isNullDoctorName(row["Dr_name"]))
         .forEach((row) => {
@@ -2210,178 +2314,59 @@ export default defineComponent({
       return Array.from(targetRowMap.values());
     };
 
-    const getFilterSelectionForMatch = (category) => {
-      const backupSelection = state.selectFiliterCategory?.includes(category)
-        ? state.selectedFilterItemsBK2?.[category]
-        : null;
-
-      if (Array.isArray(backupSelection) && !backupSelection.includes("すべて")) {
-        return backupSelection;
-      }
-
-      return state.selectedFilterItems?.[category];
-    };
+    const getFilterSelectionForMatch = (category) => state.selectedFilterItems[category];
 
     const selectedFilterMatches = (category, value) => {
-      const selected = getFilterSelectionForMatch(category);
-      if (!Array.isArray(selected)) {
-        return true;
-      }
-      if (selected.length === 0) return false;
-      if (selected.includes("すべて")) return true;
-
-      return selected.some((item) => normalizeName(item) === normalizeName(value));
+      const selected = normalizeFilterSelection(state.selectedFilterItems[category]);
+      return selected.includes("すべて") || selected.some((item) => normalizeName(item) === normalizeName(value));
     };
 
-    const isSelectedFilterAll = (category) => {
-      const selected = state.selectedFilterItems?.[category];
-      return !Array.isArray(selected) || selected.includes("すべて");
-    };
-
-    const normalizeFilterSelection = (selectedValue) => {
-      if (Array.isArray(selectedValue)) return [...selectedValue];
-      if (!selectedValue || selectedValue === "すべて") return ["すべて"];
-      return [selectedValue];
-    };
+    const isSelectedFilterAll = (category) =>
+      normalizeFilterSelection(state.selectedFilterItems[category]).includes("すべて");
 
     const setSelectedFilter = (category, selectedValue) => {
-      const nextSelection = normalizeFilterSelection(selectedValue);
-
-      state.selectedFilterItems[category] = nextSelection;
-
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = nextSelection.includes("すべて")
-          ? ["すべて"]
-          : [...nextSelection];
-      }
+      state.selectedFilterItems[category] = normalizeFilterSelection(selectedValue);
     };
 
-    const getCurrentFilterSelection = (category) => {
-      const selected = state.selectedFilterItems?.[category];
-      return Array.isArray(selected) ? [...selected] : ["すべて"];
-    };
-
-    const isFilterActive = (category) => {
-      const selected = state.selectedFilterItems?.[category];
-      return Array.isArray(selected) && !selected.includes("すべて");
-    };
-
-    const removeFilterCategory = (category) => {
-      state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== category);
-    };
-
-    const ensureFilterCategory = (category) => {
-      if (!state.selectFiliterCategory.includes(category)) {
-        state.selectFiliterCategory.push(category);
-      }
-    };
-
-    const setFilterBackupSelection = (category, selection) => {
-      if (state.selectedFilterItemsBK2?.[category]) {
-        state.selectedFilterItemsBK2[category] = Array.isArray(selection)
-          ? [...selection]
-          : ["すべて"];
-      }
-    };
-
-    const resetFilterList = (category) => {
-      if (state.testObj?.[category]?.list) {
-        state.testObj[category].list = {
-          すべて: "すべて",
-        };
-      }
-    };
-
-    const resetFilterToAll = (category) => {
-      resetFilterList(category);
-      state.selectedFilterItems[category] = ["すべて"];
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = ["すべて"];
-      }
-      setFilterBackupSelection(category, ["すべて"]);
-      removeFilterCategory(category);
-    };
-
-    const prepareFilterForRebuild = (category) => {
-      resetFilterList(category);
-
-      if (isSelectedFilterAll(category)) {
-        resetFilterToAll(category);
-        return;
-      }
-
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = getCurrentFilterSelection(category);
-      }
-      setFilterBackupSelection(category, getCurrentFilterSelection(category));
-      state.selectedFilterItems[category] = ["すべて"];
-    };
-
-    const restoreFilterSelection = (category) => {
-      const backup = state.selectedFilterItems2?.[category];
-      if (Array.isArray(backup) && !backup.includes("すべて")) {
-        state.selectedFilterItems[category] = [...backup];
-        setFilterBackupSelection(category, backup);
-        ensureFilterCategory(category);
-      }
-    };
-
-    const rememberFilterSelection = (category) => {
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = getCurrentFilterSelection(category);
-      }
-    };
-
-    const rebuildFilterOptionsFromSource = (category, data, createOptions) => {
-      const previousSelection = getCurrentFilterSelection(category);
-      const wasActive = isFilterActive(category);
-
-      prepareFilterForRebuild(category);
-      createOptions(data, false);
-
-      if (previousSelection.includes("すべて")) {
-        return;
-      }
-
-      const list = state.testObj?.[category]?.list ?? {};
-      const selectedInOptions = previousSelection.filter((value) => list[value]);
-
-      state.selectedFilterItems[category] = selectedInOptions;
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = [...selectedInOptions];
-      }
-      if (wasActive) {
-        ensureFilterCategory(category);
-        setFilterBackupSelection(category, selectedInOptions);
-      }
-      syncSelectedFilterWithOptions(category);
-    };
-
-    const rebuildSummaryHierarchyFilters = (data) => {
-      const source = Array.isArray(data) ? data : [];
-
-      rebuildFilterOptionsFromSource("エリア", source, creatDataArea);
-      rebuildFilterOptionsFromSource("テリトリー名", source, creatDataTerritory);
-      rebuildFilterOptionsFromSource("MR", source, creatDataMR);
-    };
-
-    const shouldSelectNewFilterOption = (category) => {
-      const selected = state.selectedFilterItems?.[category];
-      return !Array.isArray(selected) || selected.includes("すべて");
-    };
-
-    const addFilterOption = (category, key) => {
-      if (!state.testObj?.[category]?.list || state.testObj[category].list[key]) {
-        return;
-      }
-
-      state.testObj[category].list[key] = key;
-
-      if (
-        shouldSelectNewFilterOption(category) &&
-        !state.selectedFilterItems[category].includes(key)
-      ) {
-        state.selectedFilterItems[category].push(key);
+    const refreshFilterOptions = () => {
+      const targetRows = getTargetListRows();
+      const targetKeys = new Set(targetRows.map((row) => row._targetKey));
+      const inScreen = (row) => {
+        if (state.isScreen === "集計画面") return true;
+        if (!matchesSummarySelection(row)) return false;
+        const detail = state.selectObj["送付先詳細"];
+        return state.isScreen !== "送付内容" || !detail?.Value ||
+          (row.MR === detail.MR && row[detail.Category] === detail.Value);
+      };
+      const sourceRows = state.isScreen === "送付先詳細"
+        ? buildDetailSourceRows(dataCont2.value)
+        : state.isScreen === "送付内容"
+          ? (emailList3 ?? []).filter((row) => !isNullDoctorName(row.Dr_name))
+          : Object.values(emailList2 ?? {}).flatMap((territories) =>
+            Object.values(territories).flatMap((mrs) =>
+              Object.values(mrs).flatMap((rows) => Object.values(rows))
+            )
+          );
+      const sentRows = sourceRows.filter((row: any) => row.Id)
+        .map((row) => normalizeSummaryEmailRow(row, targetKeys))
+        .filter(inScreen);
+      const unsentRows = state.isScreen === "送付先詳細"
+        ? sourceRows.filter((row: any) => row.isUnsentTarget)
+        : state.isScreen === "送付内容" ? [] : targetRows;
+      const options = buildEmailFilterOptions(
+        sentRows,
+        unsentRows.filter(inScreen),
+        {
+          ...state.selectedFilterItems,
+          施設名: state.isScreen === "集計画面" ? ["すべて"] : state.selectedFilterItems3.施設名,
+        }
+      );
+      for (const category of Object.keys(options)) {
+        if (category === "施設名") {
+          state.selectedObj.施設名.list = options[category];
+        } else {
+          state.testObj[category].list = options[category];
+        }
       }
     };
 
@@ -2407,54 +2392,11 @@ export default defineComponent({
     };
 
     const getSummaryTargetRowsForFilters = (ignoredCategories = []) => {
-      if (state.isScreen !== "集計画面") {
+      if (state.isScreen !== "集計画面" || state.selectedFilterItems.メール送付月.length === 0) {
         return [];
       }
 
       return getTargetListRows().filter((row) => targetRowMatchesSummaryFilters(row, ignoredCategories));
-    };
-
-    const syncSelectedFilterWithOptions = (category) => {
-      const list = state.testObj?.[category]?.list;
-      const selected = state.selectedFilterItems?.[category];
-      if (!list || !Array.isArray(selected)) {
-        return;
-      }
-
-      const options = Object.keys(list);
-      if (selected.includes("すべて")) {
-        state.selectedFilterItems[category] = options;
-        if (state.selectedFilterItems2?.[category]) {
-          state.selectedFilterItems2[category] = ["すべて"];
-        }
-        setFilterBackupSelection(category, ["すべて"]);
-        removeFilterCategory(category);
-        return;
-      }
-
-      const selectableOptions = options.filter((option) => option !== "すべて");
-      const selectedInOptions = selected.filter((value) => options.includes(value));
-
-      if (
-        selectableOptions.length > 0 &&
-        selectableOptions.every((option) => selectedInOptions.includes(option))
-      ) {
-        state.selectedFilterItems[category] = options;
-        if (state.selectedFilterItems2?.[category]) {
-          state.selectedFilterItems2[category] = ["すべて"];
-        }
-        setFilterBackupSelection(category, ["すべて"]);
-        removeFilterCategory(category);
-        return;
-      }
-
-      state.selectedFilterItems[category] = selectedInOptions;
-      if (state.selectedFilterItems2?.[category]) {
-        state.selectedFilterItems2[category] = [...selectedInOptions];
-      }
-      if (state.selectFiliterCategory.includes(category)) {
-        setFilterBackupSelection(category, selectedInOptions);
-      }
     };
 
     const buildDetailSourceRows = (rows) => {
@@ -2502,11 +2444,6 @@ export default defineComponent({
       };
     };
 
-    const isFilterNarrowed = (category) => {
-      const selected = state.selectedFilterItems?.[category];
-      return Array.isArray(selected) && selected.length > 0 && !selected.includes("すべて");
-    };
-
     const getSummaryRecordKey = (row) =>
       [
         normalizeName(row?.["営業部"]),
@@ -2515,32 +2452,33 @@ export default defineComponent({
         normalizeName(row?.["MR"]),
       ].join("||");
 
-    const createZeroSummaryTargetRecord = (row) => ({
-      営業部: row["営業部"],
-      エリア: row["エリア"],
-      テリトリー名: row["テリトリー名"],
-      MR: row["MR"],
-      data: [],
-      dataOrg: [],
-      dataDetail: [],
-      dataDetail2: [],
-      Total: 0,
-      Target: ["Target"],
-      "Email_Fragments_vod__r.Name": ["NULL"],
-      prodcut1: [row["prodcut1"]],
-      ユニーク: 0,
-      ターゲット数: 0,
-      オプトイン数: 0,
-      オプトイン送信数: 0,
-      オプトイン数_ターゲット数: "",
-      Dr_name: [row["Dr_name"]],
-    });
+    const createZeroSummaryTargetRecord = (row) => {
+      const optInText = getOptin(row["MR"]);
+      const optInCount = Number(String(optInText ?? "").split("/")[0]) || 0;
+
+      return {
+        営業部: row["営業部"],
+        エリア: row["エリア"],
+        テリトリー名: row["テリトリー名"],
+        MR: row["MR"],
+        data: [],
+        dataOrg: [],
+        dataDetail: [],
+        dataDetail2: [],
+        Total: 0,
+        Target: ["Target"],
+        "Email_Fragments_vod__r.Name": ["NULL"],
+        prodcut1: [row["prodcut1"]],
+        ユニーク: 0,
+        ターゲット数: 0,
+        オプトイン数: optInCount,
+        オプトイン送信数: 0,
+        オプトイン数_ターゲット数: optInText,
+        Dr_name: [row["Dr_name"]],
+      };
+    };
 
     const appendMissingSummaryTargetRows = (records) => {
-      if (!isFilterNarrowed("医師名") && !isFilterNarrowed("Target")) {
-        return records;
-      }
-
       const existingKeys = new Set(records.map(getSummaryRecordKey));
       const zeroRows = new Map();
 
@@ -2798,21 +2736,13 @@ export default defineComponent({
 
               let optInList = getOptin2(key3)
 
-              const drNameSet = new Set(dataObj.map(item => item.Dr_name));
+              const sentDoctorKeySet = new Set(
+                dataObj.flatMap(item => getDoctorMatchKeys(item))
+              );
 
               const matchCount = (optInList as any[]).filter(item =>
-                drNameSet.has(item.Dr_name)
+                getDoctorMatchKeys(item).some((key) => sentDoctorKeySet.has(key))
               ).length
-
-              // 製品でも絞り込む場合
-              // const drProductSet = new Set(
-              //   dataObj.map(item => `${item.Dr_name}__${item.prodcut1}`)
-              // )
-
-
-              // const matchCount = (optInList as any[]).filter(item =>
-              //   drProductSet.has(`${item.Dr_name}__${item.製品}`)
-              // ).length
 
               optNumberCount = matchCount
 
@@ -2977,6 +2907,11 @@ export default defineComponent({
           //       }
 
           if (!element.Id || isNullDoctorName(element["Dr_name"])) {
+            continue;
+          }
+          if (!matchesSummarySelection(element) ||
+            !targetRowMatchesSummaryFilters(normalizeSummaryEmailRow(element, new Set())) ||
+            !matchesEmailFilter(element, "施設名", state.selectedFilterItems3.施設名)) {
             continue;
           }
 
@@ -4081,6 +4016,17 @@ export default defineComponent({
           }
         }
 
+        if (maxIndexCe && girdNumPulus) {
+          const maxGridCount = windowSize <= 1300 ? 6 : windowSize <= 1500 ? 8 : 12;
+          const gridCount = Math.ceil(maxIndexCe / girdNumPulus);
+
+          if (gridCount > maxGridCount) {
+            const gridStepMultiplier = Math.ceil(gridCount / maxGridCount);
+            girdNumPulus *= gridStepMultiplier;
+            girdNum = maxIndexCe / girdNumPulus;
+          }
+        }
+
         if (state.isScreen === "集計画面") {
           state.girdArry = [];
 
@@ -4438,7 +4384,7 @@ export default defineComponent({
           totalArray3 = applyDetailTotals(totalArray3)
 
           state.dataDetailOrg = [...totalArray3]
-          creatDatDocter(totalArray3, "goScreen");
+
 
           state.dataDetail = Object.entries(rankObj2)
             .map(([key, value]) => ({ [key]: value }))
@@ -4446,8 +4392,7 @@ export default defineComponent({
 
 
 
-          creatDataFacility(totalArray2);
-          creatDataKinds(totalArray2);
+
 
 
           console.log('state.dataDetail');
@@ -4479,23 +4424,23 @@ export default defineComponent({
       }
     };
 
+    const onTapFilterInfo = (category) => {
+      state.activeFilterInfo = state.activeFilterInfo === category ? null : category;
+    };
+
     const onTapSelectBoxItemOptIn = async (_obj) => {
 
 
-      state.selectedFilterItemsOptIn[_obj.category] = _obj.selectedValue !== "デフォルトに戻す" ? _obj.selectedValue : null;
+      setSelectedOptInProducts(_obj.selectedValue);
       creatData(state.data, false);
     }
 
     const onTapSelectBoxItemScreen = async (_obj) => {
       state.iScrollObj.scrollTo(0, 0, 0);
 
-      let targetData
-
       state.selectedFilterScreenItems[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
 
       state.isScreen = _obj.selectedValue;
-
-      let data = []
 
       if (_obj.selectedValue === "送付先詳細") {
         if (Object.values(state.selectObj["集計画面"]["Value"]).length > 0) {
@@ -4529,18 +4474,11 @@ export default defineComponent({
 
         }
 
-        data = state.dataDetailOrg
-
-
-
-
       } else if (_obj.selectedValue === "送付内容") {
         if (state.dataContent.length === 0 && Object.values(state.selectObj["送付先詳細"]["Value"]).length === 0) {
           creatData(state.data, false);
         }
-        data = state.dataOrg
       } else if (_obj.selectedValue === "集計画面") {
-        targetData = state.selectedFilterItems
         creatData(state.data, false);
         await nextTick()
         const item2 = document.querySelectorAll("#my-chart .call-list-data-item.no-active");
@@ -4589,1875 +4527,44 @@ export default defineComponent({
 
         }
 
-        data = state.dataOrg
-
-        rebuildSummaryHierarchyFilters(state.dataOrg);
-
       }
 
-      console.log(state.selectedFilterItems["フラグメント"]);
-
-      let data2
-
-      if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
-        data2 = data
-      } else {
-        data2 = data.filter((x) => {
-          if (state.selectedFilterItems.製品.includes("すべて")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.製品.includes(
-              x["prodcut1"]
-            );
-          }
-        }).filter((x) => {
-          if (isSelectedFilterAll("医師名")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.医師名.includes(
-              x["Dr_name"]
-            );
-          }
-        })
-      }
-
-      prepareFilterForRebuild("フラグメント");
-      if (state.selectFiliterCategory.includes("フラグメント")) {
-        creatDataFlagment(data2, "goScreen");
-      } else {
-        creatDataFlagment(data2, false);
-      }
-
-      if (_obj.selectedValue === "集計画面" || _obj.selectedValue === "送付内容") {
-        data2 = data
-      } else {
-        data2 = data.filter((x) => {
-          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-            return true;
-          } else {
-            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-          }
-        }).filter((x) => {
-          if (isSelectedFilterAll("医師名")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.医師名.includes(
-              x["Dr_name"]
-            );
-          }
-        })
-      }
-
-
-
-
-
-
-      prepareFilterForRebuild("製品");
-      if (state.selectFiliterCategory.includes("製品")) {
-        creatDataProduct(data2, "goScreen");
-      } else {
-        creatDataProduct(data2, false);
-      }
-
-
-      if (_obj.selectedValue === "集計画面") {
-        data2 = data
-      } else {
-        data2 = data.filter((x) => {
-          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-            return true;
-          } else {
-            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-          }
-        }).filter((x) => {
-          if (state.selectedFilterItems.製品.includes("すべて")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.製品.includes(
-              x["prodcut1"]
-            );
-          }
-        })
-      }
-
-
-
-
-
-
-      prepareFilterForRebuild("医師名");
-      if (state.selectFiliterCategory.includes("医師名")) {
-        creatDatDocter(data2, "goScreen");
-      } else {
-        creatDatDocter(data2, false);
-      }
-
-
-
-
-      if (_obj.selectedValue === "集計画面") {
-        data2 = data
-      } else {
-        data2 = data.filter((x) => {
-          if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-            return true;
-          } else {
-            return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-          }
-        }).filter((x) => {
-          if (state.selectedFilterItems.製品.includes("すべて")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.製品.includes(
-              x["prodcut1"]
-            );
-          }
-        }).filter((x) => {
-          if (isSelectedFilterAll("医師名")) {
-            return true;
-          } else {
-            return state.selectedFilterItems.医師名.includes(
-              x["Dr_name"]
-            );
-          }
-        })
-      }
-
-
-
-
-
-
-      prepareFilterForRebuild("Target");
-      if (state.selectFiliterCategory.includes("Target")) {
-        creatDataTarget(data2, "goScreen");
-      } else {
-        creatDataTarget(data2, false);
-      }
-
-
-
-
-      console.log(state.selectedFilterItems);
-      console.log(state.selectedFilterItems2);
-
-
-
-      //     for (const element in state.selectedFilterItems) {
-      //         if (element === "チャネル" || element === "メール送付月" ) {
-      //           continue;
-      //         }
-
-      //         // if (state.selectedFilterItems[element].length === 0) {
-      //         //   continue
-      //         // }
-
-      //         if (state.selectedFilterItems[element].includes("すべて")) {
-      //           state.selectedFilterItems[element] = ["すべて"];
-      //           state.selectedFilterItems2[element] = ["すべて"];
-      //           state.testObj[element].list = {
-      //             すべて: "すべて",
-      //           };
-      //         } else {
-      //           state.testObj[element].list = {
-      //             すべて: "すべて",
-      //           };
-      //           state.selectedFilterItems2[element] = state.selectedFilterItems[element];
-      //           state.selectedFilterItems[element] = ["すべて"];
-      //         }
-
-
-      // }
-
-      // creatDataMR(state.data, "メール送付月");
-      //       creatDataTerritory(state.data, "メール送付月");
-      //       creatDataArea(state.data, "メール送付月");
-
-      //              if (data.length > 0) {
-      //          creatDataTarget(data,  "メール送付月");
-      //       }
-
-
-      // creatDataMR(state.data, false);
-      // creatDataTerritory(state.data, false);
-      //   creatDataArea(state.data, false);
-
-
-
-    };
-
-    const onTapSelectBoxItemCall = async (_obj) => {
-      onTapClearButton();
-      setSelectedFilter(_obj.category, _obj.selectedValue);
-      // state.selectedFilterItems['MR'] = ["すべて"];
-
-
-
-      for (const element in state.selectedFilterItems) {
-        if (element === "チャネル" || element === "メール送付月") {
-          continue;
-        }
-
-        if (state.selectFiliterCategory[0] === element) {
-          continue
-        }
-
-
-
-        prepareFilterForRebuild(element);
-      }
-
-
-
-
-      state.selectedObj.施設名.list = {
-        すべて: "すべて",
-      };
-
-      if (!state.selectedFilterItems3.施設名.includes('すべて')) {
-        state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名
-      }
-
-      state.selectedFilterItems3.施設名 = ["すべて"];
-
+      refreshFilterOptions();
       creatData(state.data, false);
-      await nextTick()
-
-
-      if (
-        state.selectFiliterCategory[0] === "チャネル") {
-        for (const element in state.selectedFilterItems) {
-          if (element === "チャネル" || element === "メール送付月") {
-            continue;
-          }
-
-          console.log(element);
-          console.log(state.selectedFilterItems[element]);
-
-
-
-          prepareFilterForRebuild(element);
-        }
-
-        creatDataMR(state.data, "メール送付月");
-        creatDataTerritory(state.data, "メール送付月");
-        creatDataArea(state.data, "メール送付月");
-      } else {
-        const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target");
-
-        for (let index = 0; index < test.length; index++) {
-          let element = test[index];
-          let target;
-          let target2;
-          if (index === 0) {
-            target = "メール送付月";
-            target2 = state.dataOrg3;
-          } else {
-            target = "メール送付月";
-            target2 = state.dataOrg3;
-          }
-
-          // state.selectedFilterItems[element] = state.selectedFilterItems2[element];
-
-          if (element === "MR") {
-            creatDataMR(target2, target);
-          } else if (element === "テリトリー名") {
-            creatDataTerritory(target2, target);
-          } else if (element === "エリア") {
-            creatDataArea(target2, target);
-          }
-        }
-
-        creatData(state.data, false);
-
-        if (!state.selectFiliterCategory.includes("MR")) {
-          creatDataMR(state.data, false);
-        }
-        if (!state.selectFiliterCategory.includes("テリトリー名")) {
-          creatDataTerritory(state.data, false);
-        }
-        if (!state.selectFiliterCategory.includes("エリア")) {
-          creatDataArea(state.data, false);
-        }
-
-        if (state.isScreen === '集計画面') {
-          creatDataTarget(state.data, "メール送付月");
-        } else {
-          creatDataTarget(state.dataDetailOrg, "メール送付月");
-        }
-
-        if (state.isScreen === '集計画面') {
-          creatDataFlagment(state.data, "メール送付月");
-        } else {
-          creatDataFlagment(state.dataDetailOrg, "メール送付月");
-        }
-
-        if (state.isScreen === '集計画面') {
-          creatDataProduct(state.data, "メール送付月");
-        } else {
-          creatDataProduct(state.dataDetailOrg, "メール送付月");
-        }
-
-
-
-
-
-      }
     };
 
     const onTapSelectBoxItem2 = async (_obj) => {
       onTapClearButton();
-      state.selectedFilterItems3[_obj.category] = _obj.selectedValue !== "すべて" ? _obj.selectedValue : null;
-
-      // if (_obj.category === "医師名" && state.selectedFilterItems3.施設名.includes("すべて")) {
-      //   state.selectedObj.施設名.list = {
-      //     すべて: "すべて",
-      //   };
-
-      //   state.selectedFilterItems3.施設名 = ["すべて"];
-      // }
-
-
-
-
-
-
-      await onResize();
-
-
-      if (_obj.category === "施設名") {
-        state.selectedFilterItems3.施設名BK = state.selectedFilterItems3.施設名
-      }
-
-
-      prepareFilterForRebuild("Target");
-      prepareFilterForRebuild("フラグメント");
-      prepareFilterForRebuild("医師名");
-      prepareFilterForRebuild("製品");
-
-
-      console.log("tate.selectedFilterItems2");
-
-      console.log(state.selectedFilterItems2);
-
-
-      creatDataTarget(state.dataDetailOrg, "メール送付月");
-      creatDataFlagment(state.dataDetailOrg, "メール送付月");
-      creatDataProduct(state.dataDetailOrg, "メール送付月");
-      creatDatDocter(state.dataDetailOrg, "メール送付月");
-
-
-
+      state.selectedFilterItems3[_obj.category] = normalizeFilterSelection(_obj.selectedValue);
+      refreshFilterOptions();
+      creatData(state.data, false);
     };
 
     const onTapSelectBoxItem = async (_obj) => {
       onTapClearButton();
-
       setSelectedFilter(_obj.category, _obj.selectedValue);
-
-      let flg = false
-      let selectFiliterCategoryBK = []
-
-      if (state.isScreen === "送付内容") {
-
-
-        if (!state.selectFiliterCategory.includes(_obj.category)) {
-          state.selectFiliterCategory.push(_obj.category);
-        }
-
-        const newArray = getCurrentFilterSelection(_obj.category);
-        console.log(newArray);
-
-        if (!isFilterActive(_obj.category)) {
-          removeFilterCategory(_obj.category);
-          setFilterBackupSelection(_obj.category, ["すべて"]);
-        } else {
-          state.selectedFilterItemsBK[_obj.category] = [...newArray];
-          setFilterBackupSelection(_obj.category, newArray);
-        }
-
-        let target = [...state.data]
-
-        creatData(target, false);
-
-        if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-          resetFilterToAll("フラグメント");
-
-          let data = state.dataContentOrg3.filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                x["prodcut1"]
-              );
-            }
-          })
-
-          creatDataFlagment(data, false);
-        }
-
-        console.log(_obj.category);
-        console.log(state.selectFiliterCategory);
-
-
-
-
-
-        if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-          resetFilterToAll("製品");
-          let data = state.dataContentOrg3.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.フラグメント.includes(
-                x["Email_Fragments_vod__r.Name"]
-              );
-            }
-          })
-          creatDataProduct(data, false);
-        }
-
-
-
-        console.log(state.selectedFilterItems);
-        console.log(state.testObj);
-        return
-      }
-
-      if (state.isScreen === "送付先詳細") {
-        if (_obj.category === "Target" || _obj.category === "メール送付月" || _obj.category === "フラグメント" || _obj.category === "医師名" || _obj.category === "製品") {
-
-          if (!state.selectFiliterCategory.includes(_obj.category)) {
-            state.selectFiliterCategory.push(_obj.category);
-          }
-
-          const newArray = getCurrentFilterSelection(_obj.category);
-          console.log("newArray");
-          console.log(newArray);
-
-
-          if (!isFilterActive(_obj.category)) {
-            removeFilterCategory(_obj.category);
-            setFilterBackupSelection(_obj.category, ["すべて"]);
-          }
-
-
-          if (state.selectedFilterItems3.施設名.includes("すべて")) {
-            state.selectedObj.施設名.list = {
-              すべて: "すべて",
-            };
-
-            state.selectedFilterItems3.施設名 = ["すべて"];
-
-            await onResize();
-          } else {
-
-            // state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名;
-            // state.selectedObj.施設名.list = {
-            //     すべて: "すべて",
-            // };
-
-            //       state.selectedFilterItems3.施設名 = ["すべて"];
-
-
-
-
-            await onResize();
-            console.log("state.dataDetailOrg");
-
-            console.log(state.dataDetailOrg);
-
-            const newArray = getCurrentFilterSelection(_obj.category);
-            console.log("newArray");
-            console.log(newArray);
-
-
-            if (!isFilterActive(_obj.category)) {
-              removeFilterCategory(_obj.category);
-              setFilterBackupSelection(_obj.category, ["すべて"]);
-              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
-
-              await onResize();
-            } else {
-              state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK
-
-              await onResize();
-              state.selectedFilterItemsBK[_obj.category] = [...newArray];
-              setFilterBackupSelection(_obj.category, newArray);
-
-
-
-              let mrList = state.dataDetailOrg
-                .filter((x) => {
-
-                  let target
-
-                  if (_obj.category === "メール送付月") {
-                    target = dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M")
-                  } else if (_obj.category === "フラグメント") {
-                    target = x["Email_Fragments_vod__r.Name"]
-                  } else if (_obj.category === "製品") {
-                    target = x["prodcut1"]
-                  } else if (_obj.category === "医師名") {
-                    target = x["Dr_name"]
-                  }
-                  else {
-                    target = x[_obj.category]
-                  }
-
-
-                  return newArray.includes(target);
-                })
-                .map((p) => p["HP_name"])
-                .flat()
-                .sort((a, b) => {
-                  if (a > b) return 1;
-                  if (a < b) return -1;
-                });
-
-              //   let targetArry = ["Target","フラグメント","製品"]
-
-              //   for (const element of targetArry) {
-              //     if (state.selectFiliterCategory(element)) {
-              //       continue
-              //     }
-
-              //      let mrList = state.dataDetailOrg
-              //   .filter((x) => {
-
-              //     let target
-
-              //      if (_obj.category === "メール送付月") {
-              //   target =  dayjs(x.Email_Sent_Date_vod__c2).format("YYYY/M")
-              //      } else if (_obj.category === "フラグメント") {
-              //        target = x["Email_Fragments_vod__r.Name"]
-              //       }else if (_obj.category === "製品") {
-              //        target = x["prodcut1"]
-              //       }
-              //      else {
-              //    target = x[_obj.category]
-              // }
-
-
-              //     return newArray.includes(target);
-              //   })
-              //   .map((p) => p[_obj.category])
-              //   .flat()
-              //   .sort((a, b) => {
-              //     if (a > b) return 1;
-              //     if (a < b) return -1;
-              //   });
-
-              //   mrList = [...new Set(mrList)];
-              // state.selectedFilterItems3[element] = mrList
-
-              //   }
-
-              mrList = [...new Set(mrList)];
-              state.selectedFilterItems3.施設名 = mrList
-              console.log(state.dataDetailOrg);
-            }
-
-
-
-
-
-
-          }
-
-
-          console.log(state.selectedFilterItems);
-
-
-          if (_obj.category !== "フラグメント" && !state.selectFiliterCategory.includes("フラグメント")) {
-            prepareFilterForRebuild("フラグメント");
-
-            let data = state.dataDetailOrg.filter((x) => {
-              if (state.selectedFilterItems.製品.includes("すべて")) {
-                return true;
-              } else {
-                return state.selectedFilterItems.製品.includes(
-                  x["prodcut1"]
-                );
-              }
-            })
-
-            creatDataFlagment(data, false);
-          }
-
-          console.log(_obj.category);
-          console.log(state.selectFiliterCategory);
-
-
-
-
-
-          if (_obj.category !== "製品" && !state.selectFiliterCategory.includes("製品")) {
-            prepareFilterForRebuild("製品");
-            let data = state.dataDetailOrg.filter((x) => {
-              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-                return true;
-              } else {
-                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-              }
-            })
-            creatDataProduct(data, false);
-          }
-
-          if (_obj.category !== "Target" && !state.selectFiliterCategory.includes("Target")) {
-            prepareFilterForRebuild("Target");
-            let data = state.dataDetailOrg.filter((x) => {
-              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-                return true;
-              } else {
-                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-              }
-            }).filter((x) => {
-              if (state.selectedFilterItems.製品.includes("すべて")) {
-                return true;
-              } else {
-                return state.selectedFilterItems.製品.includes(
-                  x["prodcut1"]
-                );
-              }
-            })
-
-            creatDataTarget(data, false);
-
-
-          }
-
-          if (_obj.category !== "医師名" && !state.selectFiliterCategory.includes("医師名")) {
-            prepareFilterForRebuild("医師名");
-            let data = state.dataDetailOrg.filter((x) => {
-              if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-                return true;
-              } else {
-                return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-              }
-            }).filter((x) => {
-              if (state.selectedFilterItems.製品.includes("すべて")) {
-                return true;
-              } else {
-                return state.selectedFilterItems.製品.includes(
-                  x["prodcut1"]
-                );
-              }
-            })
-
-
-
-            creatDatDocter(data, false);
-          }
-
-        }
-        return
-
-      }
-
-      console.log('console.log(state.selectedFilterItemsBK);');
-
-
-      console.log(state.selectedFilterItemsBK);
-
-
-      if (!state.selectFiliterCategory.includes(_obj.category)) {
-
-        state.selectFiliterCategory.push(_obj.category);
-      }
-
-      const selectFiliterCategoryNumber = state.selectFiliterCategory.indexOf(_obj.category)
-      const agoNum = selectFiliterCategoryNumber - 1
-
-      const newArray = getCurrentFilterSelection(_obj.category);
-      let orgList
-      if (selectFiliterCategoryNumber === 0) {
-        orgList = state.selectedFilterItemsBK[_obj.category]
-      } else {
-        orgList = Object.values(state.testObj[_obj.category].list)
-      }
-      console.log("orgList");
-      console.log(orgList);
-      console.log(newArray);
-
-
-
-      if (!isFilterActive(_obj.category)) {
-        removeFilterCategory(_obj.category);
-        setFilterBackupSelection(_obj.category, ["すべて"]);
-        flg = true
-      } else {
-        setFilterBackupSelection(_obj.category, newArray);
-        state.testObjBK[_obj.category].list = { ...state.testObj[_obj.category].list }
-      }
-
-      for (const key in state.selectedFilterItems) {
-
-        if (key === "メール送付月") {
-          continue
-        }
-
-
-
-
-
-
-        if (!flg) {
-          console.log("flg");
-          console.log(flg);
-
-          if (_obj.category === key) {
-            continue
-          }
-
-
-
-
-
-          if (state.selectFiliterCategory.includes(key)) {
-
-            if (key === "Target") {
-              continue
-            }
-
-            if (key === "フラグメント") {
-              continue
-            }
-
-
-            if (key === "製品") {
-              continue
-            }
-
-
-            let targetNum = state.selectFiliterCategory.indexOf(key)
-            console.log(key);
-
-            console.log(targetNum);
-            console.log(selectFiliterCategoryNumber);
-            if (targetNum > selectFiliterCategoryNumber) {
-              if (selectFiliterCategoryBK.length === 0) {
-                selectFiliterCategoryBK = [...state.selectFiliterCategory]
-              }
-              resetFilterToAll(key);
-            } else if (targetNum < selectFiliterCategoryNumber) {
-              // Keep upstream filters active so later filters narrow within them.
-
-            }
-
-
-
-            const selectableCount = Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length;
-            if (selectableCount > 0 && selectableCount === state.selectedFilterItems[key].length) {
-              state.selectedFilterItems[key].unshift('すべて')
-            }
-
-          } else {
-            resetFilterToAll(key);
-          }
-
-
-        } else {
-          console.log("flg");
-          console.log(flg);
-          if (state.selectFiliterCategory.includes(key)) {
-
-
-            if (key === "Target") {
-              continue
-            }
-
-
-            if (key === "フラグメント") {
-              continue
-            }
-
-
-            if (key === "製品") {
-              continue
-            }
-
-
-
-            let targetNum = state.selectFiliterCategory.indexOf(key)
-            console.log(key);
-
-            console.log(targetNum);
-            console.log(selectFiliterCategoryNumber);
-
-            if (targetNum === agoNum) {
-              if (targetNum === 0) {
-                console.log(state.selectedFilterItemsBK2);
-
-                state.selectedFilterItems[key] = state.selectedFilterItemsBK2[key].filter((n) => n !== "すべて")
-
-                state.testObj[key].list = state.selectedFilterItemsBK[key].reduce((acc, value, index) => {
-                  return { ...acc, [value]: value };
-                }, {});
-              } else {
-                state.testObj[key].list = { ...state.testObjBK[key].list }
-                state.selectedFilterItems[key] = [...state.selectedFilterItemsBK2[key]]
-              }
-
-            } else if (targetNum > selectFiliterCategoryNumber) {
-              console.log("1");
-              console.log(key);
-
-            } else if (targetNum < selectFiliterCategoryNumber) {
-              console.log("2");
-              console.log(key);
-
-            } else {
-              state.testObj[key].list = { "すべて": "すべて" }
-            }
-
-
-
-            const selectableCount = Object.values(state.testObj[key].list).filter((n) => n !== "すべて").length;
-            if (selectableCount > 0 && selectableCount === state.selectedFilterItems[key].length) {
-              state.selectedFilterItems[key].unshift('すべて')
-            }
-
-          } else {
-
-
-            resetFilterToAll(key);
-          }
-
-        }
-
-
-
-      }
-
-
-
-      console.log(state.selectedFilterItems);
-      console.log(state.testObj);
-      console.log(state.data);
-
-      let target = [...state.data]
-
-
-      creatData(target, false);
-      await nextTick()
-
-
-
-
-
-
-      creatDataMR(target, false);
-
-      creatDataArea(target, false);
-
-      creatDataTerritory(target, false);
-
-      creatDataTarget(target, false);
-
-
-
-      creatDataFlagment(target, false);
-
-      creatDataProduct(target, false);
-      creatDatDocter(target, false)
-      //   creatDataSales(target) 
-
-      // creatDataChanel(target)
-
-      // creatDataDataMonth();
-
-
-      if (selectFiliterCategoryBK.length !== 0) {
-        state.selectFiliterCategory = selectFiliterCategoryBK
-
-        for (const element of state.selectFiliterCategory) {
-          let targetNum = state.selectFiliterCategory.indexOf(element)
-
-          if (targetNum > selectFiliterCategoryNumber) {
-            state.selectedFilterItems[element] = state.selectedFilterItemsBK2[element].filter((x) => {
-              return Object.values(state.testObj[element].list).includes(x)
-
-            })
-            setFilterBackupSelection(element, state.selectedFilterItems[element]);
-          }
-        }
-
-        creatData(target, false);
-      }
-
-
-
-      //   let flg = false;
-      //   let flg2 = false;
-
-      //   if (state.isScreen === "送付先詳細") {
-      //     if (_obj.category === "Target") {
-
-      //       if (!state.selectFiliterCategory.includes(_obj.category)) {
-      //     if (_obj.category === "チャネル") {
-      //       state.selectFiliterCategory.unshift(_obj.category);
-      //     } else {
-      //       state.selectFiliterCategory.push(_obj.category);
-      //     }
-      //       }
-
-
-      //       if (state.selectedFilterItems3.施設名.includes("すべて")) {
-      //         state.selectedObj.施設名.list = {
-      //       すべて: "すべて",
-      //     };
-
-      //   state.selectedFilterItems3.施設名 = ["すべて"];
-
-      //    await onResize();
-      //       } else {
-
-      //         // state.selectedFilterItems3.施設名2 = state.selectedFilterItems3.施設名;
-      //   // state.selectedObj.施設名.list = {
-      //   //     すべて: "すべて",
-      //   // };
-
-      //         //       state.selectedFilterItems3.施設名 = ["すべて"];
-
-
-
-
-      //         await onResize();
-      //   console.log("state.dataDetailOrg");
-
-      //         console.log(state.dataDetailOrg);
-
-      //           const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-      //         console.log(newArray);
-
-      //         if (newArray.includes("すべて")) {
-      //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-      //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
-
-      //            await onResize();
-      //         } else {
-      //           state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名BK   
-
-      //            await onResize();      
-      //           state.selectedFilterItemsBK[_obj.category] = newArray;
-      //           let mrList = state.dataDetailOrg
-      //             .filter((x) => {
-      //               return newArray.includes(x[_obj.category]);
-      //             })
-      //             .map((p) => p["HP_name"])
-      //             .flat()
-      //             .sort((a, b) => {
-      //               if (a > b) return 1;
-      //               if (a < b) return -1;
-      //             });
-
-      //         mrList = [...new Set(mrList)];
-      //         state.selectedFilterItems3.施設名 = mrList
-
-      //         console.log(mrList);      
-      //   }
-
-
-
-
-
-
-      //       } 
-
-
-      //       console.log(state.selectedFilterItems);
-
-      //     }
-
-      // return 
-
-      //   }
-
-
-
-
-
-
-      // if (!state.selectFiliterCategory.includes(_obj.category)) {
-      //     if (_obj.category === "チャネル") {
-      //       state.selectFiliterCategory.unshift(_obj.category);
-      //     } else {
-      //       state.selectFiliterCategory.push(_obj.category);
-      //     }
-      //   } else {
-      //     const targetList = Object.keys(state.testObj[_obj.category].list).length;
-
-      //     console.log(targetList);
-
-      //     console.log(_obj.selectedValue);
-      //     console.log(state.selectFiliterCategory);
-
-
-
-
-      //     if (state.selectFiliterCategory[0] === _obj.category && _obj.selectedValue.length === targetList) {
-
-      //       // if (state.selectFiliterCategory.includes('チャネル')) {
-      //       // console.log('チャネル');
-
-      //       // } else {
-      //       //   state.selectFiliterCategory = [];
-      //       // }
-      //       //  state.selectFiliterCategory = [];
-      //       // state.dataOrgFilter = [];
-      //       //  state.dataOrg3 = []
-
-      //       state.selectFiliterCategory.shift();
-
-      //       // console.log(state.testObj[state.selectFiliterCategory[0]].list);
-      //       // console.log(state.selectedFilterItems[state.selectFiliterCategory[0]]);
-
-      //       for (const element of state.selectFiliterCategory) {
-      //         if (state.selectFiliterCategory[0] === element) {
-      //           if (!state.selectedFilterItems[element].includes("すべて")) {
-      //             const lists = Object.values(state.testObj[element].list).filter((n) => n !== "すべて");
-      //             console.log(lists);
-
-      //             const selectList = state.selectedFilterItems[element];
-
-      //             const diff = lists.filter((i) => selectList.indexOf(i) == -1);
-      //             console.log(diff);
-
-      //             const mrList = state.dataOrg
-      //               .filter((x) => {
-      //                 return !diff.includes(x[element]);
-      //               })
-      //               .map((p) => p[element])
-      //               .flat()
-      //               .sort((a, b) => {
-      //                 if (a > b) return 1;
-      //                 if (a < b) return -1;
-      //               });
-
-      //             const mrListOrg = state.dataOrg
-      //               .map((p) => p[element])
-      //               .flat()
-      //               .sort((a, b) => {
-      //                 if (a > b) return 1;
-      //                 if (a < b) return -1;
-      //               });
-
-      //             state.selectedFilterItems[element] = [];
-      //             state.selectedFilterItems[element] = mrList;
-      //             console.log(mrList);
-
-      //             state.dataOrgFilter = [...state.data];
-      //             state.dataOrg3 = [...state.data];
-      //             state.testObj[element].list = mrListOrg.reduce((acc, value, index) => {
-      //               return { ...acc, [value]: value };
-      //             }, {});
-      //             state.testObj[element].list["すべて"] = "すべて";
-      //             flg = true;
-      //           }
-      //         }
-      //       }
-
-      //       // let mrList = state.data
-      //       //     .map((p) => p[state.selectFiliterCategory[0]])
-      //       //   .sort((a, b) => {
-      //       //     if (a > b) return 1;
-      //       //     if (a < b) return -1;
-      //       //     });
-      //     }
-      //   }
-
-      //    await nextTick();
-
-      //   if (state.selectFiliterCategory[0] === _obj.category) {
-      //     if (_obj.category === "チャネル") {
-      //       for (const element of state.selectFiliterCategory) {
-      //         if (element === "チャネル") {
-      //           continue;
-      //         }
-
-      //         state.selectedFilterItems[element] = ["すべて"];
-      //       }
-      //       await nextTick();
-      //     }
-
-      //     if (state.selectFiliterCategory[0]  === "Target") {
-      //       state.dataOrgFilter = [...state.data];
-      //     } else {
-      //       state.dataOrgFilter = [...state.data];
-      //     }
-
-
-      //     state.dataOrg3 = [...state.data];
-      //   }
-
-
-
-      //   const test = state.selectFiliterCategory.filter((n) => n !== "チャネル"  && n !== "Target");
-
-      //   if (test.includes(_obj.category)) {
-      //     const i = state.selectFiliterCategory.indexOf(_obj.category) + 1;
-
-      //     const i2 = state.selectFiliterCategory.indexOf(_obj.category);
-
-      //     for (let index = i; index < state.selectFiliterCategory.length; index++) {
-      //       if (state.selectFiliterCategory[index] === "チャネル" || state.selectFiliterCategory[index] === "Target") {
-      //         continue;
-      //       }
-      //       state.selectedFilterItems[state.selectFiliterCategory[index]] = ["すべて"];
-      //       state.testObj[state.selectFiliterCategory[index]].list = {
-      //         すべて: "すべて",
-      //       };
-
-      //       state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== state.selectFiliterCategory[index]);
-      //     }
-
-      //     if (test[0] === _obj.category) {
-      //       state.dataOrgFilter2 = [...state.data];
-      //     }
-      //   }
-
-      //   await nextTick();
-      //   const newArray = state.selectedFilterItems[_obj.category].filter((n) => n !== _obj.selectedValue);
-
-      //   console.log(newArray);
-
-      //   if (newArray.includes("すべて")) {
-      //     state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== _obj.category);
-
-      //     flg2 = true;
-      //     // state.selectedFilterItemsBK[_obj.category] = []
-
-      //     // continue
-      //   } else {
-      //     state.selectedFilterItemsBK[_obj.category] = newArray;
-      //   }
-
-
-      //   for (const element of state.selectFiliterCategory) {
-      //     console.log("あり");
-      //     console.log(element);
-
-
-      //     // if (state.selectedFilterItems[_obj.category].length === 0) {
-      //     //       if ( _obj.category !== element) {
-      //     //   state.testObj[element].list = {}
-      //     //   state.testObj[element].list["すべて"] = "すべて";
-      //     // }
-
-      //     //  continue;
-      //     // }
-
-
-
-      //     if ((_obj.category === element && flg) || _obj.category === element) {
-      //       continue;
-      //     }
-
-      //     console.log("実行");
-      //     console.log(flg2);
-
-      //     if (flg2 && element !== "チャネル") {
-      //       state.selectedFilterItems[element] = state.selectedFilterItemsBK[element];
-      //     } else {
-      //       console.log(_obj.category);
-      //       console.log(state.dataOrgFilter);
-      //       let mrList;
-
-      //       if (_obj.category === "チャネル" || element === "チャネル" ) {
-      //         //  state.selectedFilterItemsBK[_obj.category] = state.selectedFilterItems[element]
-      //         state.selectedFilterItems[element] = ["すべて"];
-      //         mrList = state.dataOrgFilter
-      //           .map((p) => p[element])
-      //           .flat()
-      //           .sort((a, b) => {
-      //             if (a > b) return 1;
-      //             if (a < b) return -1;
-      //           });
-
-      //         mrList = [...new Set(mrList)];
-
-      //         state.selectedFilterItems[element] = state.selectedFilterItemsBK[element].filter((n) => mrList.includes(n));
-      //         if (element === "チャネル") {
-      //           continue
-      //         }
-      //         state.testObj[element].list = mrList.reduce((acc, value, index) => {
-      //           return { ...acc, [value]: value };
-      //         }, {});
-      //         if (state.selectedFilterItems[element].length === Object.values(state.testObj[element].list).length && state.selectedFilterItems[element].length > 0) {
-      //           state.selectedFilterItems[element].unshift("すべて");
-      //           state.selectFiliterCategory = state.selectFiliterCategory.filter((n) => n !== element);
-      //         }
-      //         state.testObj[element].list["すべて"] = "すべて";
-      //       } else if (element === "Target" || _obj.category === "Target") {
-      //         console.log("a");
-
-
-      //       } else {
-      //         const test = state.selectFiliterCategory.filter((n) => n !== "チャネル" && n !== "Target");
-      //         let data;
-      //         if (state.dataOrgFilter2.length > 0) {
-      //           data = state.dataOrgFilter2;
-      //         } else {
-      //           data = state.dataOrgFilter;
-      //         }
-
-      //         if (test.length <= 2) {
-      //           mrList = data
-      //             .filter((x) => {
-      //               return newArray.includes(x[_obj.category]);
-      //             })
-      //             .map((p) => p[element])
-      //             .flat()
-      //             .sort((a, b) => {
-      //               if (a > b) return 1;
-      //               if (a < b) return -1;
-      //             });
-      //         } else if (test.length === 3) {
-      //           console.log(test[1]);
-
-      //           mrList = data
-      //             .filter((x) => {
-      //               return newArray.includes(x[_obj.category]);
-      //             })
-      //             .filter((x) => {
-      //               return state.selectedFilterItems[test[1]].includes(x[test[1]]);
-      //             })
-      //             .map((p) => p[element])
-      //             .flat()
-      //             .sort((a, b) => {
-      //               if (a > b) return 1;
-      //               if (a < b) return -1;
-      //             });
-      //         }
-
-
-      //         console.log(state.dataOrgFilter);
-
-      //         console.log("mrList");
-      //         console.log(mrList);
-      //         state.selectedFilterItems[element] = [];
-      //         state.selectedFilterItems[element] = mrList;
-
-      //         if (Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length === 0) {
-      //           state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
-      //             return { ...acc, [value]: value };
-      //           }, {});
-      //           state.testObj[element].list["すべて"] = "すべて";
-      //         }
-
-      //         if (mrList.length === Object.values(state.testObj[element].list).filter((n) => n !== "すべて").length && mrList.length > 0) {
-      //           state.selectedFilterItems[element].unshift("すべて");
-      //         }
-      //       }
-      //     }
-      //   }
-
-
-      //   await nextTick();
-
-      //   for (const element in state.selectedFilterItems) {
-      //     if (element === "メール送付月") {
-      //       continue;
-      //     }
-
-
-      //     if (!state.selectFiliterCategory.includes(element)) {
-      //       // if (state.selectFiliterCategory.length === 0) {
-      //       //   continue
-      //       // }
-
-      //       state.selectedFilterItems[element] = ["すべて"];
-      //       await nextTick();
-
-      //       console.log(state.data);
-      //       let mrList
-
-      //          if (element === "チャネル") {
-      //       mrList = state.data
-      //         .filter((x) => {
-      //           if (x.Total === 0 && state.isScreen === "半期実績") {
-      //             return false;
-      //           } else {
-      //             return true;
-      //           }
-      //         })
-      //         .map((p) => p["チャネル2"])
-      //         .flat()
-      //         .sort((a, b) => {
-      //           if (a > b) return 1;
-      //           if (a < b) return -1;
-      //         });
-      //          } else {
-      //         mrList = state.data
-      //         .filter((x) => {
-      //           if (x.Total === 0 && state.isScreen === "半期実績") {
-      //             return false;
-      //           } else {
-      //             return true;
-      //           }
-      //         })
-      //         .map((p) => p[element])
-      //         .flat()
-      //         .sort((a, b) => {
-      //           if (a > b) return 1;
-      //           if (a < b) return -1;
-      //         });
-      //     }
-
-
-
-
-
-
-      //       mrList = [...new Set(mrList)];
-
-      //       console.log(mrList);
-
-      //       state.selectedFilterItems[element] = [];
-      //       state.selectedFilterItems[element] = mrList;
-      //       state.selectedFilterItems[element].unshift("すべて");
-
-      //       state.testObj[element].list = state.selectedFilterItems[element].reduce((acc, value, index) => {
-      //         return { ...acc, [value]: value };
-      //       }, {});
-      //     }
-      //   }
-
-      //   let target = [...state.data]
-
-      //   creatData(target, false);
-
-
-
-      //  creatDataMR(target, _obj.category);
-      // creatDataArea(target, _obj.category);
-      // creatDataTerritory(target, _obj.category);
-
-    };
-
-    const creatDataMR = (data, category) => {
-      const mrList = data
-        // .filter((x) => {
-        //   if (state.isScreen === "集計画面") {
-        //     return false;
-        //   } else {
-        //     return true;
-        //   }
-        // })
-        .map((p) => p["MR"])
-
-      for (const key of mrList) {
-        addFilterOption("MR", key);
-        // state.selectedFilterItems.MR.push(key);
-      }
-
-      // if (category === "メール送付月") {
-      //   if (!state.selectedFilterItems2.MR.includes("すべて")) {
-      //     state.selectedFilterItems.MR = state.selectedFilterItems2.MR;
-      //   }
-      // }
-
-      // if (category === "MR") {
-      //            for (const element of state.selectedFilterItems.MR) {
-      //   if (!mrList.includes(element) && element !== "すべて") {
-      //   state.selectedFilterItems.MR  = state.selectedFilterItems.MR.filter(n => n !== element);
-      // }
-      // }
-      // }
-      if (state.selectedFilterItemsBK.MR.length === 0) {
-        state.selectedFilterItemsBK.MR = [...state.selectedFilterItems.MR]
-
-      }
-
-      syncSelectedFilterWithOptions("MR");
-
-
-      return mrList;
-    };
-
-    const creatDataArea = (data, category) => {
-      const mrList = data
-        // .filter((x) => {
-        //   if (x.Total === 0 && state.isScreen === "集計画面") {
-        //     return false;
-        //   } else {
-        //     return true;
-        //   }
-        // })
-        .map((p) => p["エリア"])
-
-      for (const key of mrList) {
-        addFilterOption("エリア", key);
-      }
-
-      // if (category === "メール送付月") {
-      //   if (!state.selectedFilterItems2.エリア.includes("すべて")) {
-      //     state.selectedFilterItems.エリア = state.selectedFilterItems2.エリア;
-      //   }
-      // }
-
-      // }
-      if (state.selectedFilterItemsBK.エリア.length === 0) {
-        state.selectedFilterItemsBK.エリア = [...state.selectedFilterItems.エリア]
-
-      }
-
-      syncSelectedFilterWithOptions("エリア");
-
-      return mrList;
-    };
-
-    const creatDataTerritory = (data, category) => {
-      const territoryList = data
-        // .filter((x) => {
-        //   if (x.Total === 0 && state.isScreen === "集計画面") {
-        //     return false;
-        //   } else {
-        //     return true;
-        //   }
-        // })
-        .map((p) => p["テリトリー名"])
-
-      for (const key of territoryList) {
-        addFilterOption("テリトリー名", key);
-      }
-
-      // if (category === "メール送付月") {
-      //   if (!state.selectedFilterItems2.テリトリー名.includes("すべて")) {
-      //     state.selectedFilterItems.テリトリー名 = state.selectedFilterItems2.テリトリー名;
-      //   }
-      // }
-
-      if (state.selectedFilterItemsBK.テリトリー名.length === 0) {
-        state.selectedFilterItemsBK.テリトリー名 = [...state.selectedFilterItems.テリトリー名]
-
-      }
-
-      syncSelectedFilterWithOptions("テリトリー名");
-
-      return territoryList;
-    };
-
-    const creatDataFacility = (data) => {
-      let totalArray2 = data
-        .map((p) => p["HP_name"])
-        .filter((v) => v);
-
-      for (const key of totalArray2) {
-        if (!state.selectedObj.施設名?.list[key]) {
-          state.selectedObj.施設名.list[key] = key;
-          state.selectedFilterItems3.施設名.push(key);
-        }
-      }
-
-      if (state.selectedFilterItems3.施設名2.length > 0) {
-        state.selectedFilterItems3.施設名 = state.selectedFilterItems3.施設名2
-        state.selectedFilterItems3.施設名2 = []
-      }
-    };
-
-    const creatDataKinds = (data) => {
-      let totalArray2 = data
-        .map((p) => p["分類"])
-        .filter((v) => v);
-
-      for (const key of totalArray2) {
-        if (!state.selectedObj.分類?.list[key]) {
-          state.selectedObj.分類.list[key] = key;
-          state.selectedFilterItems3.分類.push(key);
-        }
-      }
-
-    };
-
-    const creatDataTarget = (data, category) => {
-      // state.testObj.Target.list["すべて"] = "すべて"
-      // state.selectedFilterItems.Target = ["すべて"]
-      removeNullFilterOptions("Target");
-
-      console.log('data');
-
-      console.log(data);
-      const targetFilterSource = state.isScreen === "集計画面"
-        ? [...data, ...getSummaryTargetRowsForFilters(["Target"])]
-        : data;
-      const mrList = targetFilterSource
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "半期実績") {
-            return false;
-          } else {
-            return true;
-          }
-        })
-        .map((p) => p["Target"])
-        .flat(2)
-        .filter((target) => !isNullLikeValue(target))
-        .sort((a, b) => {
-          if (a > b) return 1;
-          if (a < b) return -1;
-        });
-
-      console.log(mrList);
-
-      if (category !== "goScreen") {
-
-        for (const key of mrList) {
-          addFilterOption("Target", key);
-          // state.selectedFilterItems.MR.push(key);
-        }
-      } else {
-        for (const key of mrList) {
-          if (!state.testObj.Target.list[key]) {
-            state.testObj.Target.list[key] = key;
-          }
-          // state.selectedFilterItems.MR.push(key);
-        }
-
-        restoreFilterSelection("Target");
-
-      }
-
-
-
-
-
-      if (state.selectedFilterItemsBK.Target.length === 0) {
-        state.selectedFilterItemsBK.Target = [...state.selectedFilterItems.Target]
-
-      }
-
-
-      if (category === "メール送付月") {
-        restoreFilterSelection("Target");
-      }
-
-
-      removeNullFilterOptions("Target");
-      syncSelectedFilterWithOptions("Target");
-
-      // if (category === "Target") {
-      //   for (const element of state.selectedFilterItems.Target) {
-      //     if (!mrList.includes(element) && element !== "すべて") {
-      //       state.selectedFilterItems.Target = state.selectedFilterItems.Target.filter((n) => n !== element);
-      //     }
-      //   }
-      // }
-
-      //       console.log(state.testObj.Target);
-      //     console.log(state.selectedFilterItems.Target);
-
-
-      //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
-      //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
-      //     console.log(diff);
-
-      //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
-      //       state.selectedFilterItems.Target.push('すべて')
-      //     }
-
-
-
-
-
-      return mrList;
-    };
-
-
-    const creatDataFlagment = (data, category) => {
-      // state.testObj.Target.list["すべて"] = "すべて"
-      // state.selectedFilterItems.Target = ["すべて"]
-
-      const mrList = data
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "半期実績") {
-            return false;
-          } else {
-            return true;
-          }
-        })
-        .map((p) => p["Email_Fragments_vod__r.Name"])
-        .flat(2)
-        .sort((a, b) => {
-          if (a > b) return 1;
-          if (a < b) return -1;
-        });
-
-      console.log('mrList');
-
-
-      console.log(mrList);
-
-      if (category !== "goScreen") {
-        for (const key of mrList) {
-          addFilterOption("フラグメント", key);
-          // state.selectedFilterItems.MR.push(key);
-        }
-      } else {
-        for (const key of mrList) {
-          if (!state.testObj.フラグメント.list[key]) {
-            state.testObj.フラグメント.list[key] = key;
-          }
-          // state.selectedFilterItems.MR.push(key);
-        }
-
-        restoreFilterSelection("フラグメント");
-
-      }
-
-
-
-
-      console.log(state.selectedFilterItems.フラグメント);
-
-
-
-      if (state.selectedFilterItemsBK.フラグメント.length === 0) {
-        state.selectedFilterItemsBK.フラグメント = [...state.selectedFilterItems.フラグメント]
-      }
-
-
-      if (category === "メール送付月") {
-        restoreFilterSelection("フラグメント");
-      }
-
-      syncSelectedFilterWithOptions("フラグメント");
-
-      // if (category === "Target") {
-      //   for (const element of state.selectedFilterItems.Target) {
-      //     if (!mrList.includes(element) && element !== "すべて") {
-      //       state.selectedFilterItems.Target = state.selectedFilterItems.Target.filter((n) => n !== element);
-      //     }
-      //   }
-      // }
-
-      //       console.log(state.testObj.Target);
-      //     console.log(state.selectedFilterItems.Target);
-
-
-      //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
-      //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
-      //     console.log(diff);
-
-      //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
-      //       state.selectedFilterItems.Target.push('すべて')
-      //     }
-
-
-
-
-
-      return mrList;
-    };
-
-    const creatDataProduct = (data, category) => {
-      // state.testObj.Target.list["すべて"] = "すべて"
-      // state.selectedFilterItems.Target = ["すべて"]
-
-      const mrList = data
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "半期実績") {
-            return false;
-          } else {
-            return true;
-          }
-        })
-        .map((p) => p["prodcut1"])
-        .flat(2)
-        .sort((a, b) => {
-          if (a > b) return 1;
-          if (a < b) return -1;
-        });
-
-      console.log('mrList');
-
-
-      console.log(mrList);
-
-      if (category !== "goScreen") {
-        for (const key of mrList) {
-          addFilterOption("製品", key);
-          // state.selectedFilterItems.MR.push(key);
-        }
-      } else {
-        for (const key of mrList) {
-          if (!state.testObj.製品.list[key]) {
-            state.testObj.製品.list[key] = key;
-          }
-          // state.selectedFilterItems.MR.push(key);
-        }
-
-        restoreFilterSelection("製品");
-
-      }
-
-
-
-
-      console.log(state.selectedFilterItems.製品);
-
-
-
-      if (state.selectedFilterItemsBK.製品.length === 0) {
-        state.selectedFilterItemsBK.製品 = [...state.selectedFilterItems.製品]
-      }
-
-
-      if (category === "メール送付月") {
-        restoreFilterSelection("製品");
-      }
-
-      syncSelectedFilterWithOptions("製品");
-
-
-      // if (category === "Target") {
-      //   for (const element of state.selectedFilterItems.Target) {
-      //     if (!mrList.includes(element) && element !== "すべて") {
-      //       state.selectedFilterItems.Target = state.selectedFilterItems.Target.filter((n) => n !== element);
-      //     }
-      //   }
-      // }
-
-      //       console.log(state.testObj.Target);
-      //     console.log(state.selectedFilterItems.Target);
-
-
-      //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
-      //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
-      //     console.log(diff);
-
-      //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
-      //       state.selectedFilterItems.Target.push('すべて')
-      //     }
-
-
-
-
-
-      return mrList;
-    };
-
-    const creatDatDocter = (data, category) => {
-      // state.testObj.Target.list["すべて"] = "すべて"
-      // state.selectedFilterItems.Target = ["すべて"]
-      removeNullFilterOptions("医師名");
-
-      const doctorFilterSource = state.isScreen === "集計画面"
-        ? [...data, ...getSummaryTargetRowsForFilters(["医師名"])]
-        : data;
-      const mrList = doctorFilterSource
-        .filter((x) => {
-          if (x.Total === 0 && state.isScreen === "半期実績") {
-            return false;
-          } else {
-            return true;
-          }
-        })
-        .map((p) => p["Dr_name"])
-        .flat(2)
-        .filter((name) => !isNullDoctorName(name))
-        .sort((a, b) => {
-          if (a > b) return 1;
-          if (a < b) return -1;
-        });
-
-      console.log('mrList');
-
-
-      console.log(mrList);
-
-      if (category !== "goScreen") {
-        for (const key of mrList) {
-          addFilterOption("医師名", key);
-          // state.selectedFilterItems.MR.push(key);
-        }
-      } else {
-        for (const key of mrList) {
-          if (!state.testObj.医師名.list[key]) {
-            state.testObj.医師名.list[key] = key;
-          }
-          // state.selectedFilterItems.MR.push(key);
-        }
-
-        restoreFilterSelection("医師名");
-
-      }
-
-
-
-
-
-
-
-      if (state.selectedFilterItemsBK.医師名.length === 0) {
-        state.selectedFilterItemsBK.医師名 = [...state.selectedFilterItems.医師名]
-      }
-
-
-      if (category === "メール送付月") {
-        restoreFilterSelection("医師名");
-      }
-
-      removeNullFilterOptions("医師名");
-      syncSelectedFilterWithOptions("医師名");
-
-      // if (category === "Target") {
-      //   for (const element of state.selectedFilterItems.Target) {
-      //     if (!mrList.includes(element) && element !== "すべて") {
-      //       state.selectedFilterItems.Target = state.selectedFilterItems.Target.filter((n) => n !== element);
-      //     }
-      //   }
-      // }
-
-      //       console.log(state.testObj.Target);
-      //     console.log(state.selectedFilterItems.Target);
-
-
-      //     let target = Object.values(state.testObj.Target.list).filter((n) => n !== "すべて")
-      //  const diff = target.filter((i) => state.selectedFilterItems.Target.indexOf(i) == -1);
-      //     console.log(diff);
-
-      //     if (target.length ===  state.selectedFilterItems.Target.length && diff.length === 0) {
-      //       state.selectedFilterItems.Target.push('すべて')
-      //     }
-
-
-
-
-
-      return mrList;
-    };
-
-
-    const creatDataDataMonth = () => {
-      if (state.monthArryOrg.length === 0) {
-        state.monthArryOrg = [...state.monthArry];
-      }
-
-      for (const key of state.monthArryOrg) {
-        addFilterOption("メール送付月", key);
-      }
+      refreshFilterOptions();
+      creatData(state.data, false);
     };
 
     const creatDataDataOptInProduct = () => {
 
-      const mrList = state.optIndata
-        .map((p) => p["製品"])
+      const mrList = [
+        ...state.optIndata.map((p) => p["製品"]),
+        ...state.optInDetaildata.map((p) => p["製品"]),
+      ].filter((key) => !isNullLikeValue(key))
+        .sort((a, b) => {
+          if (a > b) return 1;
+          if (a < b) return -1;
+        });
 
       for (const key of mrList) {
-        if (!state.optInObj.許諾製品.list.includes(key)) {
-          state.optInObj.許諾製品.list.push(key)
+        if (!state.optInObj.許諾製品.list[key]) {
+          state.optInObj.許諾製品.list[key] = key;
         }
       }
 
-      state.optInObj.許諾製品.list.sort((a, b) => {
-        if (a === "デフォルトに戻す" || b === "デフォルトに戻す") {
-          return 0
-        }
-        if (a > b) return 1;
-        if (a < b) return -1;
-      });
+      syncSelectedOptInProductsWithOptions();
     };
 
     const creatData = (data, flg) => {
@@ -6694,6 +4801,10 @@ export default defineComponent({
 
     const onTapOutside = async (evt) => {
 
+      if (!evt.target.closest?.(".filter-with-info")) {
+        state.activeFilterInfo = null;
+      }
+
 
 
       if (
@@ -6923,178 +5034,7 @@ export default defineComponent({
 
 
 
-          // if (state.selectedFilterItems["フラグメント"].includes("すべて")) {
-          //     state.selectedFilterItems["フラグメント"] = ["すべて"];
-          //     state.selectedFilterItems2["フラグメント"] = ["すべて"];
-          //     state.testObj["フラグメント"].list = {
-          //       すべて: "すべて",
-          //     };
-          //   } else {
-          //     state.testObj["フラグメント"].list = {
-          //       すべて: "すべて",
-          //     };
-          //     state.selectedFilterItems2["フラグメント"] = state.selectedFilterItems["フラグメント"];
-          //     state.selectedFilterItems["フラグメント"] = ["すべて"];
-          // }
-
-          // creatDataFlagment(state.dataContent,"メール送付月")
-
-
-
-          // if (state.selectedFilterItems["Target"].includes("すべて")) {
-          //     state.selectedFilterItems["Target"] = ["すべて"];
-          //     state.selectedFilterItems2["Target"] = ["すべて"];
-          //     state.testObj["Target"].list = {
-          //       すべて: "すべて",
-          //     };
-          //   } else {
-          //     state.testObj["Target"].list = {
-          //       すべて: "すべて",
-          //     };
-          //     state.selectedFilterItems2["Target"] = state.selectedFilterItems["Target"];
-          //     state.selectedFilterItems["Target"] = ["すべて"];
-          // }
-
-          // creatDataTarget(state.dataDetailOrg,"メール送付月")
-
-
-
-          let data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                x["prodcut1"]
-              );
-            }
-          }).filter((x) => {
-            if (isSelectedFilterAll("医師名")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                x["Dr_name"]
-              );
-            }
-          })
-
-
-          if (!isSelectedFilterAll("Target")) {
-            rememberFilterSelection("Target");
-            creatDataTarget(data, "goScreen");
-          } else {
-
-            resetFilterToAll("Target");
-            creatDataTarget(data, false);
-          }
-
-
-
-
-
-
-          state.testObj["フラグメント"].list = {
-            すべて: "すべて",
-          };
-
-          data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                x["prodcut1"]
-              );
-            }
-          }).filter((x) => {
-            if (isSelectedFilterAll("医師名")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                x["Dr_name"]
-              );
-            }
-          })
-
-
-
-          if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-            rememberFilterSelection("フラグメント");
-            creatDataFlagment(data, "goScreen");
-          } else {
-            resetFilterToAll("フラグメント");
-            creatDataFlagment(data, false);
-          }
-
-
-
-
-          data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (isSelectedFilterAll("医師名")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.医師名.includes(
-                x["Dr_name"]
-              );
-            }
-          })
-
-
-
-
-
-
-          if (!state.selectedFilterItems.製品.includes("すべて")) {
-            rememberFilterSelection("製品");
-            creatDataProduct(data, "goScreen");
-          } else {
-            resetFilterToAll("製品");
-            creatDataProduct(data, false);
-          }
-
-
-          state.testObj["医師名"].list = {
-            すべて: "すべて",
-          };
-
-          data = state.dataDetailOrg.filter((x) => {
-            if (state.selectedFilterItems.フラグメント.includes("すべて")) {
-              return true;
-            } else {
-              return x["Email_Fragments_vod__r.Name"].some((v) => state.selectedFilterItems.フラグメント.includes(v));
-            }
-          }).filter((x) => {
-            if (state.selectedFilterItems.製品.includes("すべて")) {
-              return true;
-            } else {
-              return state.selectedFilterItems.製品.includes(
-                x["prodcut1"]
-              );
-            }
-          })
-
-
-
-          if (!isSelectedFilterAll("医師名")) {
-            rememberFilterSelection("医師名");
-            creatDatDocter(data, "goScreen");
-          } else {
-            resetFilterToAll("医師名");
-            creatDatDocter(data, false);
-          }
-
-
-
+          refreshFilterOptions();
 
           state.iScrollObj.scrollTo(0, 0, 0);
           if (state.iScrollObj) {
@@ -7234,44 +5174,7 @@ export default defineComponent({
 
         }
 
-        console.log(state.dataDetail);
-
-
-
-
-
-        state.testObj["フラグメント"].list = {
-          すべて: "すべて",
-        };
-
-
-        if (!state.selectedFilterItems.フラグメント.includes("すべて")) {
-          rememberFilterSelection("フラグメント");
-          creatDataFlagment(state.dataContentOrg3, "goScreen");
-        } else {
-
-
-          resetFilterToAll("フラグメント");
-          creatDataFlagment(state.dataContentOrg3, false);
-        }
-
-
-
-
-
-
-        if (!state.selectedFilterItems.製品.includes("すべて")) {
-          rememberFilterSelection("製品");
-          creatDataProduct(state.dataContentOrg3, "goScreen");
-        } else {
-          resetFilterToAll("製品");
-          creatDataProduct(state.dataContentOrg3, false);
-        }
-
-
-
-        console.log(state.selectedFilterItems);
-
+        refreshFilterOptions();
 
       } else if (state.isScreen === "送付内容") {
 
@@ -8693,30 +6596,18 @@ export default defineComponent({
 
 
 
-    let target = [...state.data];
-
-
-
-    creatDataMR(target, false);
-
-    creatDataArea(target, false);
-
-    creatDataTerritory(target, false);
-
-    creatDataTarget(target, false);
-
-    creatDataFlagment(target, false);
-
-    creatDataProduct(target, false);
-
-    creatDatDocter(target, false);
-
-    creatData(target, false);
-
-    creatDataDataMonth();
-
     creatDataDataOptInProduct();
+    refreshFilterOptions();
+    creatData(state.data, false);
 
+    watch(
+      () => state.isScreen,
+      () => {
+        state.activeFilterInfo = null;
+        refreshFilterOptions();
+      },
+      { flush: "sync" }
+    );
 
     if (state.isScreen !== "送付内容") {
       window.addEventListener("resize", onResize);
@@ -8732,7 +6623,7 @@ export default defineComponent({
     }
 
     const onTapTargetPopup = async (mr, evt) => {
-      if (!state.selectedFilterItemsOptIn.許諾製品) {
+      if (!hasSelectedOptInProducts()) {
         return
       }
       state.isPopup = true
@@ -8745,15 +6636,13 @@ export default defineComponent({
       let result = state.optInDetaildata.filter((x) => {
         return mr === x.MR;
       }).filter((x) => {
-        return state.selectedFilterItemsOptIn.許諾製品 === x.製品;
+        return optInProductMatches(x.製品);
       }).sort((a, b) => {
 
         if (a.HP_name > b.HP_name) return 1;
         if (a.HP_name < b.HP_name) return -1;
       });
-      const uniqueUsers = Array.from(
-        new Map(result.map((user) => [user.uniqueID, user])).values()
-      );
+      const uniqueUsers = dedupeOptInDetailRows(result);
 
       console.log(uniqueUsers);
 
@@ -8935,7 +6824,7 @@ export default defineComponent({
     };
 
     const optInSummaryTotal = computed(() => {
-      if (!state.selectedFilterItemsOptIn.許諾製品) {
+      if (!hasSelectedOptInProducts()) {
         return null;
       }
 
@@ -8987,8 +6876,10 @@ export default defineComponent({
       optInSummaryTotal,
       onTapSelectBoxItem,
       onTapSelectBoxItem2,
+      onTapFilterInfo,
       onTapClearButton,
       getShareName,
+      getOptInPopupTitle,
       onTapOutside,
       getSpareClass,
       onHoverItem2_2,
@@ -8996,7 +6887,6 @@ export default defineComponent({
       onHoverItem2_3,
       onTapTarget2_2,
       onTapTarget2_3,
-      onTapSelectBoxItemCall,
       onTapSelectBoxItemScreen,
       onTapSort,
       onTapSort2,
@@ -9243,6 +7133,27 @@ export default defineComponent({
     color: rgb(89, 161, 79);
     font-size: 15px;
     font-weight: bold;
+  }
+}
+
+.filter-control-row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: max-content;
+
+  &--summary {
+    justify-content: flex-start;
+  }
+
+  >* {
+    flex: 0 0 auto;
+  }
+
+  :deep(.category-name) {
+    margin-bottom: 4px;
   }
 }
 
@@ -10207,6 +8118,21 @@ export default defineComponent({
   }
 }
 
+@media screen and (max-width: 1019px) {
+  .filter-control-row {
+    flex-wrap: nowrap;
+    row-gap: 0;
+
+    &--summary {
+      justify-content: flex-start;
+    }
+  }
+
+  .filter-with-info {
+    overflow: visible;
+  }
+}
+
 .sort-asc {
   width: 100%;
   height: 100%;
@@ -10571,6 +8497,79 @@ export default defineComponent({
   border-width: 17.8px 8.9px 0 8.9px;
   border-color: #ffffff transparent transparent;
   translate: -50% 100%;
+}
+
+.filter-with-info {
+  position: relative;
+  display: block;
+  width: 90px;
+  overflow: visible;
+
+  > :first-child {
+    width: 100% !important;
+  }
+}
+
+.filter-info-button {
+  position: absolute;
+  top: -6px;
+  right: -7px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  border: 0;
+  background: transparent;
+  color: #333333;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 13px;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+
+  >span {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #777;
+    border-radius: 50%;
+    background: #ffffff;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #333333;
+    outline-offset: 1px;
+  }
+}
+
+.filter-info-pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: auto;
+  right: 0;
+  z-index: 15;
+  width: 286px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1px solid #d6d6d6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  color: #333333;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.filter-info-pop--wide {
+  width: 286px;
+}
+
+.filter-control-row>.filter-with-info:last-child .filter-info-pop {
+  left: auto;
+  right: 0;
 }
 
 .optin-button {

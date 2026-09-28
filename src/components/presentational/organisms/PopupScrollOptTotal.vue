@@ -150,8 +150,13 @@ export default defineComponent({
 
     &title {
       position: relative;
-      font-size: 25px;
+      max-width: calc(100% - 60px);
+      margin-right: 60px;
       margin-bottom: 10px;
+      font-size: 22px;
+      line-height: 1.2;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
 
       &::before {
         content: '';

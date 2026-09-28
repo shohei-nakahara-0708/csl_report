@@ -1,6 +1,8 @@
 <template>
   <div ref="root" :style="style" @tap="changeSelectBoxDisplay" v-click-outside="onTapOutside">
-    <div class="fwb category-name">{{ getcategoryName(selectObj[category].name) }}</div>
+    <div :class="['fwb', 'category-name', { 'category-name--consent-product': category === '許諾製品' }]">
+      {{ getcategoryName(selectObj[category].name) }}
+    </div>
 
     <div class="select">
     <div class="select__value">{{ isValue(selectedValue)  }}</div>
@@ -16,7 +18,7 @@
           <div class="iscroll__scroller">
 
     
-           <div v-show="Object.keys(selectObj[category].list).length !== 1" style="padding-top: 10px;">
+           <div v-show="hasOptions || hasExplicitSelection" style="padding-top: 10px;">
               <template v-for="(value, key) in state.activityObj" :key="key">
 
 
@@ -29,12 +31,12 @@
 
     </div>
 
-              <div  v-show="Object.keys(selectObj[category].list).length === 1">
+              <div v-show="!hasOptions">
                   <span class="select__item-text-none">アイテムはありません。</span>
                 </div>
 
 
-               <span v-if="state.activityObj.length === 0" class="select__item-text-none">一致がありません。</span>
+               <span v-if="hasOptions && state.activityObj.length === 0" class="select__item-text-none">一致がありません。</span>
 
           </div>
         </div>
@@ -46,11 +48,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted, onUpdated, computed,watch, nextTick } from 'vue'
+import { defineComponent, ref, reactive, onMounted, onUnmounted, onUpdated, computed,watch, nextTick } from 'vue'
 import IScroll from 'iscroll'
 import vClickOutside from 'click-outside-vue3'
 import { sleep } from '@/utils/sleep'
 import dayjs from 'dayjs'
+import { normalizeFilterSelection, toggleFilterSelection } from '@/utils/emailFilters'
 
 
 interface State {
@@ -109,6 +112,14 @@ export default defineComponent({
        style3:null
     })
 
+    const hasOptions = computed(() => Object.keys(props.selectObj[props.category].list).some((value) => value !== 'すべて'))
+    const hasExplicitSelection = computed(() => !normalizeFilterSelection(props.selectedValue).includes('すべて'))
+
+    onUnmounted(() => {
+      state.iScrollObj?.destroy()
+      state.iScrollObj = null
+    })
+
     onMounted(async () => {
 
         state.iScrollObj = new IScroll(root.value.querySelector('.iscroll-wrapper'), {
@@ -142,6 +153,7 @@ export default defineComponent({
       
 
           return Object.keys(props.selectObj[props.category].list).filter((x) => {
+          if (!hasOptions.value) return x === 'すべて'
           let arr = state.keyword.split(/[\x20\u3000]/)
             let target = x.toUpperCase()
 
@@ -157,6 +169,13 @@ export default defineComponent({
           const isAllIncludes = (arr, target) => arr.every((el) => target.includes(el.toUpperCase()))
           return isAllIncludes(arr, target) != false
           }).sort((a, b) => {
+            if (props.category === 'メール送付月') {
+              if (a === b) return 0
+              if (a === 'すべて') return -1
+              if (b === 'すべて') return 1
+              return dayjs(a).valueOf() - dayjs(b).valueOf()
+            }
+
               const abool = priority.includes(a)
             const bbool = priority.includes(b)
 
@@ -204,127 +223,31 @@ export default defineComponent({
     
 
     const onTapItem = (e): void => {
-
-
-      const text = e.target.getAttribute('data-key')
-      console.log(text);
-      
-      
-      if (text === "すべて") {
-        if (props.selectedValue.includes("すべて")) {
-          e.stopPropagation()
-          emit('tapItem', {
-            category: props.category,
-            selectedValue: [],
-          })
-        } else {
-          e.stopPropagation()
-          emit('tapItem', {
-            category: props.category,
-            selectedValue: Object.keys(props.selectObj[props.category].list),
-          })
-        }
-
-      } else {
-
-        if (props.selectedValue.includes(text)) {
-
-           const copyObj = [...props.selectedValue]
-
-
-
-
-         let newArray = copyObj.filter(n => n !== text);
-
-
-
-          if (props.selectedValue.includes("すべて")) {
-            newArray = newArray.filter(n => n !== "すべて");
-            
-          }
-
-          e.stopPropagation()
-          emit('tapItem', {
-            category: props.category,
-            selectedValue: newArray,
-          })
-
-
-        } else {
-
-
-          const copyObj = [...props.selectedValue]
-
-          copyObj.push(text)
-
-          if (!props.selectedValue.includes("すべて")) {
-            const num = Object.keys(props.selectObj[props.category].list).length - copyObj.length 
-
-          if (num === 1) {
-            copyObj.push("すべて")
-          }
-
-            
-          }
-
-         
-          e.stopPropagation()
-          emit('tapItem', {
-            category: props.category,
-            selectedValue: copyObj,
-          })
-        }
-
-
-
-        // state.isShowSelectBox = false
-      }
-
+      const value = e.currentTarget.getAttribute('data-key')
+      if (!value) return
+      e.stopPropagation()
+      emit('tapItem', {
+        category: props.category,
+        selectedValue: toggleFilterSelection(
+          props.selectedValue as string[],
+          value,
+          Object.keys(props.selectObj[props.category].list)
+        ),
+      })
     }
 
-    const isValue = (_value) => {
-
-      // console.log('_value');
-      
-      // console.log(_value);
-      
-
-      if (_value.length === 0) {
-        return "なし"
-      }else if (_value.length === 1) {
-        if (_value[0] === "すべて" ) {
-          return "なし"
-        } else {
-          return getShareName(_value[0])
-        }
-      }else if (_value.length === 2) {
-        if (_value.includes("すべて")) {
-          if (_value.indexOf("すべて") === 0) {
-            return getShareName(_value[1])
-          } else {
-            return getShareName(_value[0])
-          }
-        
-        } else {
-        return "複数の値"
+    const isValue = (value) => {
+      const selected = normalizeFilterSelection(value)
+      if (selected.includes('すべて')) {
+        const options = Object.keys(props.selectObj[props.category].list).filter((item) => item !== 'すべて')
+        if (options.length === 0) return 'なし'
+        return options.length === 1 ? getShareName(options[0]) : 'すべて'
       }
-        
-        
-      } else if (_value.length > 2) {
-
-        if (_value.includes("すべて")) {
-        return "すべて"
-        } else {
-        return "複数の値"
-      }
-      
-        
-      }
-
-        
+      if (selected.length === 0) return 'なし'
+      return selected.length === 1 ? getShareName(selected[0]) : '複数の値'
     }
 
-    const changeSelectBoxDisplay = async (e) => {
+    const changeSelectBoxDisplay = async () => {
 
   
 
@@ -332,18 +255,12 @@ export default defineComponent({
       state.isShowSelectBox = true
       await nextTick()
          
-      console.log(window.innerWidth);
-      
-      console.log(e.target.parentElement.offsetLeft);
-
        const items = root.value.querySelector("#search2");
-      console.log(items.clientWidth);
 
-      let width = e.target.parentElement.offsetLeft + items.clientWidth
-      console.log(width);
+      const rootRect = root.value.getBoundingClientRect()
+      const width = rootRect.left + items.clientWidth
 
-      let m = window.innerWidth - width
-      console.log(m);
+      const m = window.innerWidth - width - 12
       
 
 
@@ -359,7 +276,7 @@ export default defineComponent({
    
 
              setTimeout(() => {
-         const item = document.getElementById('search') as HTMLInputElement
+         const item = root.value?.querySelector('input') as HTMLInputElement
       if (item) {
         item.focus()
       }
@@ -374,15 +291,17 @@ export default defineComponent({
 
       if (Math.sign(h) === -1) {
 
-        let w = h - 20
+        let w = h
                 state.style3 = {
          'left': `${w}px`,
+         'max-width': 'calc(100vw - 24px)',
        }
         
          
             } else {
                state.style3 = {
          'left': `0`,
+         'max-width': 'calc(100vw - 24px)',
        }
 
             }
@@ -411,7 +330,7 @@ export default defineComponent({
        const onTapOutside2 = async (evt) => {
       await sleep(100) // onTapFilterButton の同時発火でパネルがチラつかないよう対策
 
-      const item = document.getElementById('search') as HTMLInputElement
+      const item = root.value?.querySelector('input') as HTMLInputElement
       if (item) {
         item.blur()
       }
@@ -437,19 +356,9 @@ export default defineComponent({
 
     }
 
-    const isSelected = (_value) => {
- 
-     if (props.selectedValue.includes(_value)) {
-        return true
-      } else {
-        return false
-     }
-
-     
-
-      // console.log(props.selectedValue ? _value === props.selectedValue : _value === 'すべて');
-      
-      // return props.selectedValue ? _value === props.selectedValue : _value === 'すべて'
+    const isSelected = (value) => {
+      const selected = normalizeFilterSelection(props.selectedValue)
+      return selected.includes('すべて') || selected.includes(value)
     }
 
 
@@ -560,6 +469,8 @@ if (_str === "Target") {
       isValue,
       change,
       getShareName,
+      hasOptions,
+      hasExplicitSelection,
       getcategoryName
     }
   },
@@ -714,5 +625,12 @@ border-right: 1px solid #666;
   white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+}
+
+.category-name--consent-product {
+  box-sizing: border-box;
+  text-align: left;
+  padding-left: 2px;
+  padding-right: 20px;
 }
 </style>
